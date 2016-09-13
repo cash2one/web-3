@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>选项卡</title>
+
+	<style>
+		*{padding:0;margin:0;list-style:none;text-decoration:none;}
+		.clear:after{content:".";height:0;display:block;visibility:hidden;clear:both;}
+
+		ul li{float:left;width:120px;height:30px;line-height:30px;text-align:center;background:#ccc;}
+		ul li a{color:#000;}
+		.hover{background:#ff0000;}
+
+		#content{width:200px;height:200px;}
+	</style>
+</head>
+<body>
+	<ul class="clear">
+		<li><a href="#">军事新闻</a></li>
+		<li><a href="#">娱乐新闻</a></li>
+		<li><a href="#">财经新闻</a></li>
+	</ul>
+	<div>
+		<img src=""/>
+	</div>
+	<iframe src="http://www.baidu.com" style="width:500px;height:300px;"></iframe>
+	<div id="content"><b>end</b></div>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+	// .siblings(selector)————获得匹配集合中每个元素的同胞，通过选择器进行筛选是可选的。如果省略selector参数，则选取每个匹配元素的所有同辈元素。
+	$('li').mouseover(function(){
+		$(this).addClass('hover').siblings().removeClass('hover');
+		var i = $(this).index() + 1;
+		$('div > img').attr('src','image/'+i+'.jpg');
+	})
+	$('li').eq(1).mouseover();
+	$("iframe").contents().find("body").append("I'm in an iframe!");
+	$('#content').find('b').css('color','red').end().css('border','2px solid #ff0000');
+</script>

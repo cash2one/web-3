@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>自动下拉</title>
+<style>
+    * {
+        padding:0;
+        margin-left:200px;
+    }
+    div {
+        width:200px;
+        height:200px;
+        background:#ff0000;
+        color: #FFFFFF;
+        text-align: center;
+        display: none;
+    }
+    input {
+        width: 200px;
+        height: 30px;
+    }
+</style>
+</head>
+
+<body>
+	<input type="button" id="click" value="show/hide"/>
+	<div>
+        哈哈！傻逼！
+    </div>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+    $('#click').click(function(){
+        //slideDown(speed,callback)如果元素已经是完全可见，则该效果不产生任何变化，除非规定了callback 函数。
+     //    if($('div').css("display") == 'none'){
+     //        $('div').slideDown(1000);
+     //    }
+    	// else{
+     //        $('div').slideUp(1000)
+     //        //slideUp(speed,callback)
+     //    }
+        //或者
+        $('div').slideToggle(1000);
+    })
+</script>

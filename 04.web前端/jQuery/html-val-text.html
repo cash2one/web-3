@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jquery获取标签内容</title>
+	<script type="text/javascript" src="jquery-1.9.1.js"></script>
+</head>
+<body>
+
+	<h1 class="h1" id="h1">123456</h1>
+</body>
+</html>
+<!--
+    text() - 设置或返回所选元素的文本内容
+    html() - 设置或返回所选元素的内容（包括 HTML 标记）
+    val() - 设置或返回表单字段的值
+-->
+<script>
+    window.onload=function()
+    {
+    	alert($("#h1").attr('id'))//onload，表示页面包含图片等文件在内的所有元素都加载完成。
+    };
+
+    $(document).ready()//ready，表示文档结构已经加载完成（不包含图片等非文字媒体文件）。
+    {
+    	alert($("h1").html())
+    };
+
+    $().ready()//jQuery的默认参数是：“document”。
+    {
+    	alert(typeof $(".h1").html())
+    };
+</script>

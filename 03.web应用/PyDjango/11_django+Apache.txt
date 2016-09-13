@@ -1,0 +1,15 @@
+(1)在Django的开发环境，我们简单的通过“python manage.py runserver 0.0.0.0:8000”就可以启动一个简单的HTTP服务器进行Django的开发。当项目开发完成进行发布的时候，这个简单的应用服务器就不能满足需求了。这时候一个比较好的方案是把Django应用集成到Apache。
+
+(2)Django已经为我们做了许多工作，所以将Django集成到Apache是非常简单的事情。Django集成到Apache有两种方式：python_mod和wsgi，后者相对于前者更加稳定，所以这里我们通过wsgi的方式来进行集成。
+
+Django 都已经在文档中说“it has been mostly superseded by the simpler mod_wsgi deployment option./mod_python 多半已被更简单的 mod_wsgi 替代了。”
+
+modwsgi 性能评估中列出这样的数字对比：
+Mechanism                           Requests/sec
+mod_cgi (ScriptAlias)                  10
+mod_python (PythonHandler)            400
+mod_wsgi (WSGIDaemonProcess)          700
+mod_wsgi (.htaccess/SetHandler)       850
+mod_wsgi (WSGIScriptAlias)            900
+
+从数字可以看出，WSGIScriptAlias 是最优选择。当然这个数字也没什么，后面人家说了“任何性能提高，都将被你使用的大型Web框架如Django或TurboGears吃掉，尤其是用了数据库后端，大多数的 overhead 源自Python Web Framework以及任何访问数据库时的瓶颈。mod_wsgi上的overhead只是很小的一块，这一小块上的任何性能提高都很难被注意到。”

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>name</title>
+<style>
+*{padding:0;margin:0;}
+h4{width:120px;height:40px;line-height:40px;text-align:center;cursor:pointer;background:#ccc;border-bottom:1px solid #fff;}
+ul li{width:120px;height:30px;line-height:30px;text-align:center;cursor:pointer;background:#00ff00;border-bottom:1px solid #fff;}
+.hide{display:none;}
+</style>
+</head>
+
+<body>
+	<div id="left">
+		<h4>一级菜单</h4>
+		<ul>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+		</ul>
+		<h4>一级菜单</h4>
+		<ul>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+		</ul>
+		<h4>一级菜单</h4>
+		<ul>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+			<li>二级菜单</li>
+		</ul>
+	</div>
+</body>
+</html>
+<script>
+var div = document.getElementById('left');
+var h   = div.getElementsByTagName('h4');
+var ul  = div.getElementsByTagName('ul');
+var len = h.length;
+/*for(var i = 0; i < len; i++)
+{
+	h[i].onclick = function()
+	{
+		for(var j = 0; j < len; j++)
+		{
+			if(this == h[j])
+			{
+				(ul[j].className == 'hide') ? ul[j].className = '': ul[j].className = 'hide';
+			}
+		}
+	}
+}*/
+for(var i = 0; i < len; i++)
+{
+	h[i].index = i;
+	h[i].onclick = function()
+	{
+		var index = this.index;
+		(ul[index].className == 'hide') ? ul[index].className = '': ul[index].className = 'hide';
+	}
+}
+</script>

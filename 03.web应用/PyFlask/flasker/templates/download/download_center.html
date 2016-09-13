@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% set pindex=request.args.get('pindex',1) %}
+    {% set psize=request.args.get('psize',50) %}
+    <div class="form-inline">
+        <div class="container-fluid">
+            <div class="panel panel-info">
+                <div class="panel panel-heading">
+                    文件上传
+                </div>
+                <div class="panel panel-body">
+                    <div class="container">
+                        <div class="form-group">
+                            <label>文件名称</label>
+                            <input type="text" class="form-control" name="file_name"
+                                   value="" placeholder="请输入文件名" id="file_name" />
+                        </div>
+                        <div class="form-group">
+                            <label>上传地址</label>
+                            <input type="text" class="form-control" name="link"
+                                    value="" placeholder="请输入文件地址" id="link" />
+                        </div>
+                        <div class="form-group">
+                            <input type="button" class="btn btn-primary" id="add" name="add" value="添加" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        $("#add").click(function() {
+            var file_name = $("#file_name").val();
+            var link = $("#link").val();
+            reg = new RegExp(/^\s+/g);
+            if (file_name == '' || link == '' || reg.test(file_name) == true || reg.test(link) == true) {
+                alert("文件名和地址不能为空");
+                return false;
+            }
+            $.post("{{ url_for('download_center') }}", {
+                mark: 111,
+                file_name:file_name,
+                link:link
+            },
+            function (data) {
+                if (data.success == 'ok') {
+                    window.location.reload();
+                }
+                else {
+                    return false;
+                }
+            })
+        })
+    </script>
+
+
+    <form class="panel panel-info">
+        <div class="container-fluid">
+            <table class="table table-striped">
+                <tr>
+                    <td><input type="checkbox" id="checkall" value=""/>全选</td>
+                    <td>文件名</td>
+                    <td>文件类型</td>
+                    <td>上传时间</td>
+                    <td>下载</td>
+                    <td>操作</td>
+                </tr>
+                {% for i in data %}
+                <tr>
+                    <td><input type="checkbox" value="{{ i.id }}" name="checked" /></td>
+                    <td name="filename">{{ i.file_name }}</td>
+                    <td>{{ i.file_type }}</td>
+                    <td>{{ i.upload_at }}</td>
+                    <td>
+                        <a href="{{ i.link }}" class="btn btn-info order-btn">下载</a>
+                    </td>
+                    <td>
+                        <input type="button" value="删除文件" hid_attr="{{ i.id }}" name="remove" class="btn btn-info order-btn" />
+                    </td>
+                </tr>
+                    <input type="hidden" name="pindex" id="pindex" value="{{ pindex }}" />
+                    <input type="hidden" name="psize" id="psize" value="{{ psize }}" />
+                {% endfor %}
+            </table>
+        </div>
+    </form>
+
+
+    <script>
+        var boxes = document.getElementsByName("checked");
+        document.getElementById("checkall").onclick=function() {
+            for(i=0;i<boxes.length;i++) {
+                if ($("#checkall").prop('checked') == true) {
+                    boxes[i].checked = true;
+                }
+                else {
+                    boxes[i].checked = false;
+                }
+            }
+        };
+
+
+        function removing(ids, files) {
+            if (confirm('确定要删除' + files + '么？')) {
+                $.ajax({
+                    url: "{{ url_for('download_center') }}",
+                    data: {
+                        mark: 222,
+                        ids: ids
+                    },
+                    type: 'post',
+                    success: function (data) {
+                        if (data == 'ok') {
+                            window.location.reload();
+                        }
+                        else{
+                            return false;
+                        }
+                    }
+                });
+            }
+        }
+
+        $("[name=remove]").click(function(){
+            var currentid = $(this).attr('hid_attr');
+            var currentfile = $(this).parent().parent().children("[name=filename]").text();
+            var filenames = $("[name=filename]");
+            var ids = [];
+            var files = [];
+            for (i = 0; i < boxes.length; i++) {
+                if (boxes[i].checked == true) {
+                    var id = boxes[i].text();
+                    var file = filenames[i].innerHTML;
+                    ids.push(id);
+                    files.push(file);
+                }
+            }
+           if (ids.length == 0) {
+               ids.push(currentid);
+               files.push(currentfile);
+           }
+           removing(ids, files)
+        })
+    </script>
+
+<!--     <script>
+        var boxes = $("[name=checked]");
+
+        $("#checkall").click(function() {
+            for(i=0; i<boxes.length; i++) {
+                if ($("#checkall").prop('checked') == true) {
+                    boxes[i].checked = true;
+                }
+                else {
+                    boxes[i].checked = false;
+                }
+            }
+        });
+
+        function removing(ids, files) {
+            if (confirm('确定要删除' + files + '么？')) {
+               $.ajax({
+                   url: '${base}/downloadController/remove',
+                   data: {
+                       ids: ids
+                   },
+                   type: 'post',
+                   success: function (data) {
+                       if (data == 'ok') {
+                           window.location.reload();
+                       }
+                       else{
+                           return false;
+                       }
+                   }
+               });
+            }
+        }
+
+        $("[name=remove]").click(function(){
+            var currentid = $(this).attr('hid_attr');
+            var currentfile = $(this).parent().parent().children("[name=filename]").text();
+            var filenames = $("[name=filename]");
+            var ids = [];
+            var files = [];
+            for (i = 0; i < boxes.length; i++) {
+                if (boxes[i].checked == true) {
+                    var id = boxes[i].value;
+                    var file = filenames[i].innerHTML;
+                    ids.push(id);
+                    files.push(file);
+                }
+            }
+            if (ids.length == 0) {
+                ids.push(currentid);
+                files.push(currentfile);
+            }
+            removing(ids, files)
+        })
+    </script> -->
+
+    <div style="margin-left:6px;">
+        <ul class="pagination pull-right">
+            <li>
+                <a href="javascript:$('#pindex').val('1');$('form').submit();">
+                    <span aria-hidden="true">首页</span>
+                </a>
+            </li>
+            {% if pindex|int >3 %}
+            <li class="disabled">
+                <a href="javascript:$('#pindex').val('{{ pagecount }}');$('form').submit();">
+                    <span aria-hidden="true">
+                        ...
+                    </span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for i in range(1,pagecount + 1) %}
+                {% if i >= pindex|int - 2 and i<= pindex|int + 2 %}
+                    <li {% if i==(pindex|int) %}class="active"{% endif %}>
+                        <a href="javascript:$('#pindex').val('{{ i }}');$('form').submit();">{{ i }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if pindex|int < pagecount - 2 %}
+                <li class="disabled">
+                    <a href="javascript:$('#pindex').val('{{ pagecount }}');$('form').submit();">
+                        <span aria-hidden="true">...</span></a>
+                </li>
+            {% endif %}
+
+            <li class="disabled">
+                <a href="#">共{{ pagecount }}页</a>
+            </li>
+
+            <li>
+                <a href="javascript:$('#pindex').val('{{ pagecount }}');$('form').submit();">
+                    <span aria-hidden="true">末页</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}

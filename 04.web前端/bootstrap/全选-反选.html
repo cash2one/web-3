@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css"/>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <style type="text/css">
+    .div{
+        margin: 20px auto;
+        width: 200px;
+        text-align: center;
+    }
+    .div button{
+        width: 50px;
+        margin: 15px;
+    }
+    .div input{
+        margin: 10px;
+    }
+    </style>
+</head>
+<body>
+	<div class="div">
+        <button id="checkall" onclick="checkall()"/>全选</button>
+        <button id="inverse" onclick="inverse()"/>反选</button>
+        <br/>
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <br/>
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <input type='checkbox' value='' name='checked' />
+        <br/>
+        <button id="total" onclick="total()">统计</button>
+    </div>
+
+
+    <div class="modal fade" id="makeTotal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true" style="width: 300px;margin: 0 auto">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <strong class="modal-title">
+                    统计已选择个数
+                    </strong>
+                    <button type="button" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>                    
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        您已选<span id="checkednum" style="color:red"></span>个
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" id="" onclick="" data-id="">确定分配</button>
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+function checkall() {
+    var boxes = document.getElementsByName("checked");
+    for(i=0;i<boxes.length;i++) {
+        boxes[i].checked = true;
+    }
+}
+
+// function checkall() {
+//     $("[name=checked]").each(function(){
+//        $(this).attr('checked', true);
+//     })
+// }
+
+function inverse() {
+    var boxes = document.getElementsByName("checked");
+    for(i=0;i<boxes.length;i++) {
+        if(boxes[i].checked == true){
+            boxes[i].checked = false;
+        }
+        else {
+            boxes[i].checked = true;
+        }
+    }
+}
+
+function total(){
+    var num = 0;
+    var boxes = document.getElementsByName("checked");
+    for(i=0;i<boxes.length;i++) {
+        if(boxes[i].checked == true){
+            num += 1;
+        }
+    }
+    $('#checkednum').html(num);
+    $('#makeTotal').modal('show');
+}
+
+</script>

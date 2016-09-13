@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>IE地震</title>
+</head>
+<body>
+	<script>
+		if (window.top.moveBy){
+			for (i = 1;i < 50; i++){
+				for (j = 3;j > 0; j--){
+					window.top.moveBy(0,i);
+					window.top.moveBy(i,0);
+					window.top.moveBy(0,-i*2);
+					window.top.moveBy(-i*2,0);
+					window.top.moveBy(0,i);
+					window.top.moveBy(i,0);
+				}
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+breakfast_menu {
+    background-color: #ffffff;
+    width: 100%;
+}
+food {
+    display: block;
+    margin-bottom: 30pt;
+    margin-left: 0;
+}
+name {
+    color: #FF0000;
+    font-size: 20pt;
+}
+price {
+    color: #0000FF;
+    font-size: 20pt;
+}
+description, calories {
+    display: block;
+    color: #000000;
+    margin-left: 20pt;
+}

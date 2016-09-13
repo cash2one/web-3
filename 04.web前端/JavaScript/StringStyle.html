@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>StringStyle</title>
+	<style type="text/css">
+	* {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		margin-top: 4px;
+		padding-top: 0;
+		font-family: KaiTi;
+	}
+	h2 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		margin-top: 15px;
+		padding-top: 0;
+	}
+	p {
+		font-size: 20px;
+	}
+	</style>
+</head>
+<body>
+	<h2>为字符串添加样式</h2>
+	<script type="text/javascript">
+	var txt="Hello World!"
+	document.write("<p>原字符串： " + txt + "</p>")
+
+	document.write("<p>big()/small()，用大/小号字体显示字符串： " + txt.big() + "/" + txt.small() + "</p>")
+
+	document.write("<p>bold()/italics()，用粗体/斜体显示字符串： " + txt.bold() + "/" + txt.italics() + "</p>")
+
+	document.write("<p>blink()，显示闪动字符串： " + txt.blink() + " (does not work in IE)</p>")
+	document.write("<p>fixed()，以打字机文本显示字符串： " + txt.fixed() + "</p>")
+	document.write("<p>strike()，用删除线来显示字符串： " + txt.strike() + "</p>")
+
+	document.write("<p>fontcolor()/fontsize()，用指定的颜色/尺寸来显示字符串： " + txt.fontcolor("Red") + "/" + txt.fontsize(5) + "</p>")
+
+	document.write("<p>toLowerCase()/toLocaleLowerCase()，把字符串转换为小写： " + txt.toLowerCase() + "/" + txt.toLocaleLowerCase() + "</p>")
+	document.write("<p>toUpperCase()/toLocaleUpperCase()，把字符串转换为大写： " + txt.toUpperCase() + "/" +txt.toLocaleUpperCase() + "</p>")
+
+	document.write("<p>sub()/sup()，把字符串显示为下标/上标： " + txt.sub() + "/" + txt.sup() + "</p>")
+
+	document.write("<p>link()，将字符串显示为链接： " + txt.link("http：//www.w3school.com.cn") + "</p>")
+	</script>
+</body>
+</html>

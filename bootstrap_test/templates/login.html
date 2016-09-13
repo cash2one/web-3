@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "%HTMLlat1;%HTMLsymbol;%HTMLspecial;...";>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Examples</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <!-- <link rel="shortcut icon" href="***.ico" type="image/x-icon" /> -->
+    <link type="text/css" rel="stylesheet" href="../static/css/bootstrap.css"/>
+    <link type="text/css" rel="stylesheet" href="../static/css/navbar.css"/>
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/js/bootstrap.js"></script>
+    <style type="text/css">
+        h1 {
+            
+            height: 300px
+        }
+        body {
+            padding-top: 70px;/*有顶部固定导航条时设置*/
+            padding-bottom: 70px;/*有底部固定导航条时设置*/
+        }
+    </style>
+</head>
+<body class="bg-info" style="text-align: center">
+
+    <div class="container">
+        <div class="row" id="login">
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+
+            <div class="panel panel-success col-md-4 col-sm-6 col-xs-8" style="background:#dff0d8">
+                <form role="form" class="panel-body form-horizontal" style="padding-top:50px; padding-bottom:50px;text-align: center">
+                    <div class="form-group form-inline">
+                        <label class="glyphicon glyphicon-user text-primary btn-lg"></label>
+                        <input type="text" class="form-control" placeholder="请输入用户名" />
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label class="glyphicon glyphicon-lock text-primary btn-lg"></label>
+                        <input type="text" class="form-control" placeholder="请输入密码" />
+                    </div>
+
+                    <div class="form-group form-inline" style="padding-left:80px;padding-right:80px;">
+                        <a class="pull-left" href="#" id="secret">忘记密码</a>
+                        <a class="pull-right" href="#" id="register">免费注册</a>
+                    </div>
+
+                    <div class="form-group form-inline" style="padding-left:20px">
+                        <input type="button" class="btn btn-success" value="登录" style="width:55%">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+        </div>
+
+        <script type="text/javascript">
+            $("#secret").click(function () {
+                $("#login").hide();
+                $("#found-secret").show();
+            })
+            $("#register").click(function () {
+                $("#login").hide();
+                $("#new-register").show();
+            })
+        </script>
+        
+        <div class="row" id="found-secret" hidden>
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+
+            <div class="panel panel-success col-md-4 col-sm-6 col-xs-8" style="background:#fcf8e3">
+                <form role="form" class="panel-body form-horizontal" style="padding-top:50px; padding-bottom:50px;text-align: center">
+                    <div class="form-group form-inline">
+                        <span class="text-default btn-lg">手机号</span>
+                        <input type="text" class="form-control" placeholder="请输入预留手机号"/>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <input type="text" class="form-control" placeholder="请输入短信验证码"/>
+                        <button class="btn btn-info">获取验证码</button>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <input type="button" class="btn btn-warning" value="立即验证" style="width:55%">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+        </div>
+
+        <div class="row" id="new-register" hidden>
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+
+            <div class="panel panel-success col-md-4 col-sm-6 col-xs-8" style="background:#337ab7">
+                <form role="form" class="panel-body form-horizontal" style="padding-top:50px; padding-bottom:50px;text-align: center">
+                    <div class="form-group form-inline">
+                        <label class="glyphicon glyphicon-user text-default btn-lg"></label>
+                        <input type="text" class="form-control" placeholder="请输入手机号"/>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <input type="text" class="form-control" placeholder="请输入短信验证码" style="width:150px" />
+                        <button class="btn btn-info">获取验证码</button>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label class="glyphicon glyphicon-lock text-default btn-lg"></label>
+                        <input type="text" class="form-control" placeholder="请输入6~12位密码"/>
+                    </div>
+
+                    <div class="form-group form-inline">
+                        <label class="glyphicon glyphicon-lock text-default btn-lg"></label>
+                        <input type="text" class="form-control" placeholder="请再次输入密码"/>
+                    </div>
+
+                    <div class="form-group form-inline" style="padding-left:20px">
+                        <input type="button" class="btn btn-info" value="立即注册" style="width:55%">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-4 col-sm-3 col-xs-2"></div>
+        </div>
+    </div>
+
+    <div class="navbar navbar-default navbar-fixed-bottom" role="navigation">
+        <ul style="text-align:center;list-style:none">
+            <li class="">Copyright © 2004-2015 **网 版权所有</li>
+            <li class="">贵宾统计 站长统计</li>
+        </ul>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $("#nav-ul li").mouseover(function () {
+        $(this).addClass("active");
+    })
+    $("#nav-ul li").mouseleave(function () {
+        $(this).removeClass("active");
+    })
+</script>

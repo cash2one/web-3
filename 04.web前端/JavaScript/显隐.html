@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>hidden</title>
+	<style type="text/css">
+		p,h4 {
+			width: 400px;
+			margin: 0 auto;
+			height: 30px;
+			line-height: 30px;
+			background: #4AA37B;
+			text-align: center;
+			color: #FA7F7F;
+		}
+		input {
+			display: block;;
+			width: 120px;
+			margin: 0 auto;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+	
+	<h4 hidden>这个段落应该被隐藏。</h4>
+	<!--
+	hidden 属性是 HTML5 中的新属性。
+	在 XHTML 中，属性简写是禁止的，hidden 属性必须定义为 <element hidden="hidden">。
+	-->
+	<input type="button" value="显示/隐藏" />
+	<hr/>
+	<!-- 
+	visibility:  hidden会占据区域，显示空白；
+	display: none,hidden不会占据区域； 
+	-->
+	<p style="visibility:  hidden">这个段落应该被隐藏。</p>
+	<p style="visibility:  hidden">这个段落应该被隐藏。</p>
+	<input type="button" value="显示/隐藏" />
+
+
+	<script type="text/javascript">
+	document.getElementsByTagName('input')[0].onclick=function ()
+	{
+		//元素被设为"hidden"的时候，就不能再接收响应到事件了，因此也就无法通过JS令其显示出来。
+		if (document.getElementsByTagName('h4')[0].hidden == true)//hidden 属性是布尔属性。
+		{
+			document.getElementsByTagName('h4')[0].removeAttribute("hidden")
+			//JavaScript 可以删除 hidden 属性，使此元素可见。
+		}
+		else
+		{
+			document.getElementsByTagName('h4')[0].setAttribute("hidden","hidden")
+		}
+	}
+
+	document.getElementsByTagName('input')[1].onclick=function ()
+	{
+		p = document.getElementsByTagName('p');
+		// alert(p.length)
+		//尽量不要在js中使用for in遍历
+		// for(i in p){
+		// 	alert(i)
+		// 	alert(typeof i);//遍历出来的是索引和其它节点对象
+		// 	// alert(p[i])
+		// }
+		for(var i=0;i<p.length;i++){
+			// alert(p[i])
+			// alert(p[i].style.visibility)
+			//Object.style.visibility=visible|hidden|collapse
+			if (p[i].style.visibility == "visible")//jq中用p[i].is(':visible') == true
+			{
+				p[i].style.visibility = "hidden"
+			}
+			else
+			{
+				p[i].style.visibility = "visible"
+			}
+		}
+	}
+	</script>
+</body>
+</html>

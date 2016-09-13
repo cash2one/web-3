@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>dataType</title>
+</head>
+<body>
+	<h2>
+		如何判断js中的数据类型：typeof、instanceof、 constructor、 prototype方法比较
+	</h2>
+	<h2>（一）最常见的判断方法：typeof</h2>
+		<script type="text/javascript">
+			var a = "iamstring.";
+			var b = 222;
+			var c= [1,2,3];
+			var d = new Date();
+			var e = function(){document.write(111);};
+			var f = function(){this.name="22";};
+			//使用 document.write() 向输出流写 HTML
+			document.write("<p>")
+			document.write(a,'-->',typeof a)//string
+			document.write("</p>")
+			document.write("<p>")
+			document.write(b,'-->',typeof b)//number
+			document.write("</p>")
+		</script>
+		<h4>另外typeof 可以判断function的类型。</h4>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(e,'-->',typeof e)//function
+			document.write("</p>")
+			document.write("<p>")
+			document.write(f,'-->',typeof f)//function
+			document.write("</p>")
+		</script>
+		<h4>typeof 在判断Object类型的对象时不方便。</h4>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(c,'-->',typeof c)//object
+			document.write("</p>")
+			document.write("<p>")
+			document.write(d,'-->',typeof d)//object
+			document.write("</p>")
+		</script>
+		<h4>typeof返回的类型都是字符串形式。</h4>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(typeof a == "string")//true
+			document.write("</p>")
+			document.write("<p>")
+			document.write(typeof a == string)
+			document.write("</p>")
+		</script>
+	<h2>（二）判断已知对象类型的方法：instanceof</h2>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(c instanceof Array)//true
+			document.write("</p>")
+			document.write("<p>")
+			document.write(d instanceof Date)//true
+			document.write("</p>")
+			document.write("<p>")
+			document.write(f instanceof Function)//true
+			document.write("</p>")
+			//document.write(f instanceof function)
+		</script>
+		<h4>注意：instanceof 后面一定要是对象类型，并且大小写不能错，该方法适合一些条件选择或分支。</h4>
+	<h2>（三）根据对象的constructor（构造函数）判断： constructor</h2>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(c.constructor === Array)//true
+			document.write("</p>")
+			document.write("<p>")
+			document.write(d.constructor === Date)//true
+			document.write("</p>")
+			document.write("<p>")
+			document.write(e.constructor === Function)//true
+			document.write("</p>")
+		</script>
+		<h4>注意： constructor 在类继承时会出错</h4>
+		<script type="text/javascript">
+			function A(){};
+			function B(){};
+		    A.prototype = new B(); //A继承自B
+		    var aobj = new A();
+		    document.write("<p>")
+		    document.write(aobj.constructor === B)//true;
+		    document.write("</p>")
+		    document.write("<p>")
+		    document.write(aobj.constructor === A)//false;
+		    document.write("</p>")
+		</script>
+		<h4>而instanceof方法不会出现该问题，对象直接继承和间接继承的都会报true</h4>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(aobj instanceof B)//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(aobj instanceof A)//true;
+			document.write("</p>")
+		</script>
+		<h4>解决construtor的问题通常是让对象的constructor手动指向自己</h4>
+		<script type="text/javascript">
+			aobj.constructor = A; //将自己的类赋值给对象的constructor属性
+			document.write("<p>")
+		    document.write(aobj.constructor === A)//true;
+		    document.write("</p>")
+		    document.write("<p>")
+		    document.write(aobj.constructor === B)//false; //基类不会报true了;
+		    document.write("</p>")
+		</script>
+	<h2>（四）通用但很繁琐的方法： prototype</h2>
+		<script type="text/javascript">
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(a) === '[object String]')//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(b) === '[object Number]')//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(c) === '[object Array]')//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(d) === '[object Date]')//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(e) === '[object Function]')//true;
+			document.write("</p>")
+			document.write("<p>")
+			document.write(Object.prototype.toString.call(f) === '[object Function]')//true;
+			document.write("</p>")
+		</script>
+		<h4>大小写不能写错，比较麻烦，但胜在通用。通常情况下用typeof 判断就可以了，遇到预知Object类型的情况可以选用instanceof或constructor方法。</h4>
+</body>
+</html>

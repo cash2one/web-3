@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"></head>
+<style type="text/css">
+div {
+    width: 100px;
+    height: 100px;
+    background-color: #a72525;
+}
+#div1 {
+    border-radius: 5px; /* 所有角都使用半径为5px的圆角，此属性为CSS3标准属性 */
+    -moz-border-radius: 5px; /* Mozilla浏览器的私有属性 */
+    -webkit-border-radius: 5px; /* Webkit浏览器的私有属性 */
+    border-radius: 5px 4px 3px 2px; /* 四个半径值分别是左上角、右上角、右下角和左下角 */
+}
+#div2 {
+    -webkit-border-radius: 50px;
+}
+#div3 {
+    background-color: #efefef; /* Can be set to transparent */
+    border: 3px #a72525 dashed;
+    -webkit-border-radius: 50px 50px 50px 50px;
+}
+
+#div4 {
+    width: 100px;
+    height: 200px;
+    -webkit-border-radius: 100px 0 0 100px;
+}
+
+#div5 {
+    width: 200px;
+    height: 200px;
+    -webkit-border-radius: 200px 0 0 0;
+}
+</style>
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <div id="div3"></div>
+    <div id="div4"></div>
+    <div id="div5"></div>
+</body>
+</html>

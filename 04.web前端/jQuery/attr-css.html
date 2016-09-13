@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>attr&css</title>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+</head>
+
+<body>
+
+    <p>ceshi</p>
+
+    <!--     
+    $('p').css('color','#00ff00');                              //设置一个样式
+    $('p').css({width:'150px',border:'1px solid #ff0000'});     //设置多个样式
+    var w = $('p').css('width');                                //获取样式
+    $('img').attr("width", "1000px");                           //设置一个属性 
+    $('img').attr({src:'image/1.jpg', alt:'图片1'});            //设置多个属性
+    var att = $('img').attr("src");                             //获取属性
+
+    //.attr('checked',false)只在第一次点击时生效
+    -->
+
+    <script type="text/javascript">
+        //用js实现jquery的css()函数
+        function css(obj,prop)
+        {
+            for(var o in prop)
+            {
+                obj.style[o] = prop[o];
+            }
+        }
+        var p = document.getElementsByTagName('p')[0];
+        css(p,{color:'#ff0000',background:'#00ff00'});
+    </script>
+
+    <select id="a">
+        <option value="1">河北</option>
+        <option value="2">河南</option>
+        <option value="3">山东</option>
+        <option value="4">安徽</option>
+    </select>
+
+    <script type="text/javascript">
+        $('#a').change(function(){
+            alert($('select option:selected').val());   //selected 选择器
+        })
+    </script>
+</body>
+</html>
+

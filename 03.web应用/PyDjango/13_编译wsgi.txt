@@ -1,0 +1,17 @@
+之前版本的mod_wsgi还有二进制版本提供的，但是后来的版本已经不提供二进制版本了，只能下载源代码自己编译了，下载地址：https://github.com/GrahamDumpleton/mod_wsgi/releases。
+
+下载解压后，在win32目录下找到与自己的python和apache服务器版本对应（或相近）的.mk文件，用记事本打开，将其中的APACHE_ROOTDIR和PYTHON_ROOTDIR修改为自己的apache和python的根目录。
+
+然后打开命令行设置一下环境进行编译。设置环境变量，这里需要设置path, include和lib，在cmd窗口中输入:
+set path = 
+	C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin;
+	C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin;
+	C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7;
+
+set include = C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include;
+
+set lib = C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\lib;
+
+设置好环境变量，然后输入：nmake -f ap24py34-win32-VC10.mk install，就开始进行编译了。
+
+#include <C:\Python27\include\Python.h>

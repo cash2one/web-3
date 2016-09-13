@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+
+	//Load XML，创建了微软 XML 解析器的一个实例，然后把 XML 文件载入了内存。
+	var xml = new ActiveXObject("Microsoft.XMLDOM")
+	xml.async = false
+	xml.load("cd.xml")
+
+	//Load XSL，创建了解析器的另一个实例，然后把 XSL 文件载入了内存。
+	var xsl = new ActiveXObject("Microsoft.XMLDOM")
+	xsl.async = false
+	xsl.load("cdFormat.xsl")
+
+	//Transform，使用 XSL 文档转换了 XML 文档，并在浏览器中把结果作为 XHTML 显示出来。
+	document.write(xml.transformNode(xsl))
+
+	//由于并非所有的浏览器都支持 XSLT，另一种解决方案是在服务器上完成 XML 至 XHTML 的转化。
+	</script>
+</body>
+</html>

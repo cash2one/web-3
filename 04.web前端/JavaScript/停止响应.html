@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>不停返回上一页</title>
+</head>
+<body>
+	<script>
+	function freeze(){
+		alert ('从现在开始本窗口不再响应!!!');
+		while(true){window.history.back(-1)
+		}
+	}
+	</script>
+	<form>
+	<input TYPE="BUTTON" VALUE="想试试就点这里" onClick="freeze()">
+	</form>
+</body>
+</html>

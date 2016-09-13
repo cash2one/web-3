@@ -1,0 +1,59 @@
+结构控制标记
+jinja2中的控制标记包括：条件判断标记(if/elif/else)，循环控制(for-loop),另外还有macro（宏)和上文中提到 的block。
+
+for，循环打印一个序列，例如：
+<h1>Members</h1>
+<ul>
+{% for user in users %}
+  <li>{{ user.username|e }}</li>
+{% endfor %}
+</ul>
+在循环内部，你可以访问一些特殊的变量
+Variable    Description
+loop.index  当 前迭代的索引，从1开始算
+loop.index0     当前迭代的索引，从0开始算
+loop.revindex   相 对于序列末尾的索引，从1开始算
+loop.revindex0  相对于序列末尾的索引，从0开始算
+loop.first  相 当于 loop.index == 1.
+loop.last   相当于 loop.index == len(seq) - 1
+loop.length     序列的长度.
+loop.cycle  是 一个帮助性质的函数，可以接受两个字符串参数，如果当前循环索引是偶数，则显示第一个字符串，是奇数则显示第二个字符串。它常被在表格中用来用不同的背景 色区分相邻的行。
+
+{% for row in rows %}
+    <li class="{{ loop.cycle('odd', 'even') }}">{{ row }}</li>
+{% endfor %}
+需要注意的是，jinja2的循环不支持break和continue标记。你可以对需要迭代的sequence使用过滤器来达到与break和 continue相同的目的。
+下面的例子中，如果user.hidden属性为true的则continue
+{% for user in users if not user.hidden %}
+    <li>{{ user.username|e }}</li>
+{% endfor %}
+jinja2的for语句有一个和python相同的用法，那就是“else'：当无循环时显示else中的内容，如下例：
+<ul>
+{% for user in users %}
+    <li>{{ user.username|e }}</li>
+{% else %}
+    <li><em>no users found</em></li>
+{% endif %}
+</ul>
+
+if语句用来在jinja2中做比较判断，比较常见的用法是判断一个变量是否已定义，是否非空，是否为true
+
+{% if users %}
+<ul>
+{% for user in users %}
+    <li>{{ user.username|e }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+和python一样，也可以使用elif和else
+
+{% if kenny.sick %}
+    Kenny is sick.
+{% elif kenny.dead %}
+    You killed Kenny!  You bastard!!!
+{% else %}
+    Kenny looks okay --- so far
+{% endif %}
+
+if语句也可以被用来做内联表达式或者for语句过滤器。

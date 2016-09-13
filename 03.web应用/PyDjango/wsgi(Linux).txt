@@ -1,0 +1,62 @@
+配置
+1、支持用户个人主页：在../conf/httpd.conf中加入UserDir/home/*/public_html设置用户可以使用CGI等：optionsExecCGISetHandlercgi-bin#如果在全局设置了AddHandlercgi-bin.cgi。
+2、虚拟主机设置：
+基于IP的虚拟主机若该机器的IP地址为192.168.0.2，虚拟的IP为192.168.0.3首先，在一台机器的网卡上绑定多个IP地址去服务多个虚拟主机。
+/sbin/ifconfigeth0：0192.168.0.2netmask255.255.255.0broadcast192.168.11.255up
+/sbin/routeadd-host192.168.0.2eth0：0
+设置../conf/httpd.conf文件：看DocumentRoot是什么，如果为/home/httpdDocumentRoot/home/httpd/aaa创建目录/home/httpd/aaa。
+基于名字的虚拟主机：编辑../conf/httpd.conf
+NameVirtualHost192.168.0.2DocumentRoot/home/httpd/aaaServerNameaaa.yourdomain.com
+要有NameVirtualHost在最前面，下面依次为各个虚拟主机，还需要把aaa.yourdomain.com的DNS都指向IP地址192.168.0.2
+3、Apache用户认证基本的Apache用户认证假定，对目录/home/aaa下的文件需要做到用户认证，在httpd.conf中加入下面的行allowoverrideauthconfigorderallow，denyallowfromall用在目录/home/aaa下放文件.htaccess，内容如下：authname"PleasegivemeyourIDnumberandPassword"authtypebasicauthuserfile/etc/.passwdrequirevalid-user
+用htpasswd生成文件/etc/.passwd，htpasswd-c/etc/.passwdusername
+
+
+集成第一步：安装mod_wsgi
+
+集成第二步：编辑python27-mod_wsgi.conf
+WSGIScriptAlias / "/search/lizhigang/mysite/mysite/wsgi.py"
+WSGIPythonPath /search/lizhigang/mysite
+
+<Directory "/search/lizhigang/mysite/mysite">
+<Files wsgi.py>
+Order deny,allow
+Allow from all
+</Files>
+</Directory>
+这里需要说明一下，我的Django工程位于“/search/lizhigang/mysite/”，请根据自己工程的位置进行替换。
+
+
+集成第三步：重启Apache
+service apache restart
+
+在浏览器访问你的Django应用（不是8000端口，而是Apache的端口），正常情况下这时候会提示“500，服务器内部错误”。
+ 
+检查/etc/httpd/logs/error_log，看是否有如下错误：
+[Errno 13] Permission denied: '/var/www/.python-eggs'
+这时候需要编辑“/search/lizhigang/mysite/mysite/wsgi.py”，对“PYTHON_EGG_CACHE”进行设置：
+
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
+os.environ.setdefault("PYTHON_EGG_CACHE", "/tmp/.python-eggs")
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+
+刷新浏览器，这时候Django就成功集成到Apache了。
+
+但是，如果你的应用使用了静态资源，比如图片、css、js，这些，就需要配置static了。我们假设这些资源均位于mysite/static目录。
+
+集成第四步：配置static
+打开python26-mod_wsgi.conf，加入对static/访问的支持：
+
+Alias /static/ /search/lizhigang/mysite/static/
+<Directory "/static/">
+    Order allow,deny
+    Options Indexes
+    Allow from all#将deny修改为Allow
+    IndexOptions FancyIndexing
+</Directory>
+
+刷新网站试试，是不是所有功能都与8000端口开发相同？
+至此，我们就完成了Django到Apache的集成。

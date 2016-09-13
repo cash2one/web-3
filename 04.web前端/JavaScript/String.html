@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>String</title>
+	<style type="text/css">
+	* {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		margin-top: 4px;
+		padding-top: 0;
+		font-family: KaiTi;
+	}
+	h3 {
+		margin-bottom: 0;
+		padding-bottom: 0;
+		margin-top: 15px;
+		padding-top: 0;
+	}
+	</style>
+</head>
+<body>
+	<h2>String对象用于处理字符块。JavaScript字符串是不可变的（immutable），String类定义的方法都不能改变字符串内容。</h2>
+
+	<h3>计算字符串的长度</h3>
+	<script type="text/javascript">
+	var txt="Hello World!"
+	document.write("字符串长度：" + txt.length)
+	</script>
+
+
+	<h3>indexOf()，检索字符串；lastIndexOf()，从后向前搜索字符串</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write(str.indexOf("Hello") + "&nbsp;&nbsp;")
+	document.write(str.indexOf("World") + "&nbsp;&nbsp;")
+	document.write(str.indexOf("world")+ "<br />")
+	document.write(str.lastIndexOf("Hello") + "&nbsp;&nbsp;")
+	document.write(str.lastIndexOf("World") + "&nbsp;&nbsp;")
+	document.write(str.lastIndexOf("world"))
+	</script>
+
+	<h3>match()，找到一个或多个正则表达式的匹配；search()，检索与正则表达式相匹配的值</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write("匹配到 " + str.match("world") + "&nbsp;&nbsp;")
+	document.write("匹配不到 " + str.match("World") + "<br/>")
+	document.write("匹配到 " + str.search("world") + "&nbsp;&nbsp;&nbsp;&nbsp;")
+	document.write("匹配不到 " + str.search("World"))
+	</script>
+
+	<h3>charAt()，返回在指定位置的字符；charCodeAt()，返回在指定的位置的字符的Unicode编码；fromCharCode()，可接受一个指定的Unicode值，然后返回一个字符串</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write(str.charAt(6) + "&nbsp;&nbsp;" + str.charCodeAt(6) + "<br />")
+	document.write(String.fromCharCode(119) + "&nbsp;&nbsp;")
+	document.write(String.fromCharCode(34) + "&nbsp;&nbsp;")
+	</script>
+
+	<h3>replace()，替换字符串中的字符</h3>
+	<script type="text/javascript">
+	var str="Visit Microsoft!"
+	document.write(str.replace(/Microsoft/,"W3School")+ "<br />")
+	</script>
+
+	<h3>concat()，连接字符串</h3>
+	<script type="text/javascript">
+	var str="Visit Microsoft!"
+	var stt="Hello world!"
+	document.write(str.concat(stt) + "<br />")
+	document.write(str.concat(123,4,'bbb') + "<br />")
+	</script>
+
+	<h3>localeCompare()，用本地特定的顺序来比较两个字符串</h3>
+	<script type="text/javascript">
+	var st1="hello"
+	var st2="Hello"
+	var st3="hello"
+	var res=st1.localeCompare(st2)
+	//console.log(res)
+	document.write("输出：" + res + "（不等）" + "<br/>")
+	var res=st1.localeCompare(st3)
+	//console.log(res)
+	document.write("输出：" + res + "（相等）")
+	</script>
+
+	<h3>valueOf()，返回某个字符串对象的原始值</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write(str + "的原始值是" + str.valueOf())
+	</script>
+
+	<h3>toString()，原始布尔值或者booleanObject对象的值返回字符串 "true" 或 "false"</h3>
+	<script type="text/javascript">
+	var a=true
+	document.write(a.toString() + "&nbsp;&nbsp;" + typeof(a.toString()) + "<br/>")
+	document.write(false.toString() + "&nbsp;&nbsp;" + typeof(false.toString()))
+	</script>
+
+	<h3>toSource()，代表对象的源代码</h3>
+	<p>只有 Gecko 核心的浏览器（比如 Firefox）支持该方法，也就是说 IE、Safari、Chrome、Opera 等浏览器均不支持该方法。</p>
+	<script type="text/javascript">
+	function employee(name,job,born)
+	{
+		this.name=name;
+		this.job=job;
+		this.born=born;
+	}
+	var bill=new employee("Bill Gates","Engineer",1985);
+	document.write(bill.toSource());
+	</script>
+
+	<h3>slice()、substring()，提取字符串中两个指定的索引号之间的字符；substr()，提取字符串中从指定索引号开始、指定数目的字符</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write("slice默认到最后一个字符：" + str.slice(2) + "<br/>")
+	document.write("substring默认到最后一个字符：" + str.substring(2) + "<br/>")
+	document.write("substr默认到最后一个字符：" + str.substr(2) + "<br/>")
+	document.write("<br/>")
+	document.write("slice提取2与5之间的字符：" + str.slice(2,5) + "<br/>")
+	document.write("substring提取2与5之间的字符：" + str.substring(2,5) + "<br/>")
+	document.write("substr提取从2起5个字符：" + str.substr(2,5))
+	</script>
+	<h4>当接收的参数是负数时，slice会将它字符串的长度与对应的负数相加，结果作为参数；substr则仅仅是将第一个参数与字符串长度相加后的结果作为第一个参数；substring则干脆将负参数都直接转换为0。</h4>
+
+	<h3>split()，把字符串分割为字符串数组</h3>
+	<script type="text/javascript">
+	var str="Hello world!"
+	document.write("字符分割：" + str.split('l') + "&nbsp;类型：" + typeof str.split('l') + "<br/>")
+	document.write("正则分割：" + str.split(/\w\s/) + "&nbsp;类型：" + typeof str.split('l'))
+	</script>
+
+	<h3>anchor()，创建HTML锚（a标签）</h3>
+	<script type="text/javascript">
+	str="搜索引擎"
+	document.write(str.anchor("baidu"))
+	</script>
+</body>
+</html>

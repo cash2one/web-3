@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>全选&反选</title>
+</head>
+
+<body>
+    <input type="checkbox" value="1" /> 1
+    <input type="checkbox" value="2" />2
+    <input type="checkbox" value="3" />3
+    <input type="checkbox" value="4" />4
+    <input type="button" value="全选" class="q"/>
+    <input type="button" value="反选" class="f"/>
+</body>
+</html>
+<script type="text/javascript" src="jquery-1.9.1.js"></script>
+<script>
+    //.attr('checked',false)只在第一次点击时生效
+    $('.q').click(function(){
+    	$.each($("input:checkbox"),function () {
+            this.checked = true;
+        })
+    })
+    $('.f').click(function(){
+    	$.each($("input:checkbox"),function(){
+    		(this.checked == true)  ? this.checked = false : this.checked = true;
+    	})
+    })
+</script>

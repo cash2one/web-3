@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>渐变</title>
+</head>
+
+<body>
+	<div style="width:500px;height:300px;border:2px solid #ff0000;background:#00ff00;"></div>
+	<input type="button" value="显示" id="s"/>
+	<input type="button" value="隐藏" id="h"/>
+	<input type="button" value="显示/隐藏" id="sh"/>
+	<input type="button" value="to" id="to"/>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+	// $(selector).fadeIn([speed[,callback]])，使用淡入效果来显示被选的隐藏元素。
+	//speed，可选，默认为 "normal"。（毫秒、"slow"、"normal"、"fast"）
+	$('#s').click(function(){
+		$('div').fadeIn(2000);
+	})
+	//$(selector).fadeOut([speed[,callback]])，使用淡出效果来隐藏被选的隐藏元素。
+	$('#h').click(function(){
+		$('div').fadeOut(2000);
+	})
+	$('#sh').click(function(){
+		$('div').fadeToggle(2000);
+	})
+	// $(selector).fadeTo([speed,]opacity[,callback])，将被选元素的不透明度逐渐地改变为指定的值。
+	// speed，可选。规定元素从当前透明度到指定透明度的速度。
+	// opacity，必需。规定要淡入或淡出的透明度（0.00~1.00）。
+	// callback，可选。fadeTo 函数执行完之后，要执行的函数。
+	$('#to').click(function(){
+		$('div').fadeTo(1000,0.08);
+	})
+</script>

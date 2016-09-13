@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>is</title>
+	<style>
+		li {
+			border:2px solid #fff000
+		}
+	</style>
+</head>
+
+<body>
+	<ul>
+		<li><strong>123</strong></li>
+		<li><strong>123</strong><strong>123</strong></li>
+		<li><strong>123</strong></li>
+		<li><strong>123</strong></li>
+	</ul>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+	$('ul>li').click(function(){
+		//.is(selector) 根据选择器、元素或 jQuery 对象来检测匹配元素集合，如果这些元素中至少有一个元素匹配给定的参数，则返回 true。
+		var two = $(this).is(function(){
+			return $('strong',this).length == 2;
+		});
+		if(two)
+		{
+			$(this).css('background','#ff0000');
+		}
+		else $(this).css('background','#00ff00');
+	})
+	var arr = ['hello','wordl','worlt'];
+	arr = arr.join(' ');//arrayObject.join([separator])-->string
+	document.write(arr);
+	document.write('<br/>');
+	var str = 'hello world worlf';
+	str = str.split(' ');//stringObject.split(separator,howmany)-->arrayObject
+	document.write(str);
+</script>

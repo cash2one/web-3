@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>固定定位</title>
+<style>
+* {
+    padding: 0px;
+    margin: 0px;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+img {
+    border: 0px;
+}
+body {
+    background: #f3f3f3;
+}
+.box {
+    width: 1000px;
+    margin: 0 auto;
+    background: #828282;
+    height: 1000px;
+}
+.fixed {
+    width: 66px;
+    border: #000 solid 1px;
+    position: fixed;
+    bottom: 140px;
+    right: 20px;
+}
+.fixed ul li {
+    margin-bottom: 5px;
+    text-align: center;
+    width: 64px;
+    height: 42px;
+    line-height: 42px;
+    background: #FFF;
+    border: #e3e3e3 solid 1px;
+}
+.fixed ul li img {
+    padding-right: 6px;
+    vertical-align: middle;
+}
+.fixed ul li a {
+    color: #666666;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+<div class="box"></div>
+<div class="fixed">
+    <ul>
+        <li>
+            <a href="#">
+                <img src="images/a1.jpg">笑话</a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="images/a2.jpg">看片</a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="images/a3.jpg">购物</a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="images/a4.jpg">游戏</a>
+        </li>
+        <li>
+            <a href="#">生活百科</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

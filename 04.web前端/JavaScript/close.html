@@ -1,0 +1,149 @@
+{% extends "App/appbase.html" %}
+{% block header %}
+<title>关闭房源</title>
+    <link rel="stylesheet" href="/static/app/css/follow-up.css">
+    <link rel="stylesheet" href="/static/app/css/DateTimePicker.min.css">
+    <script src="/static/app/js/DateTimePicker.min.js"></script>
+    <script src="/static/app/js/i18n/DatetimePicker-i18n-zh-CN.js"></script>
+{% endblock %}
+{% block body %}
+<header>
+            <a href="#">
+                <div class="top topl">关闭房源</div>
+            </a>
+        </header>
+        <div id="content">
+            <div class="details-infomation no-background">
+                <div class="infomation-title">
+                    <span>选择原因</span>
+                    <a href="#invalid" class="state" id="31">无效</a>
+                    <a href="#rentIn" class="state" id="32">优办成交</a>
+                    <a href="#rentIn" class="state active" id="33">已租</a>
+                </div>
+                <div id="invalid" class="hide">
+                    <span>无效类型</span>
+                    <a href="#" class="db btn-state">房源不存在</a>
+                    <a href="#" class="db btn-state">业主信息错误或已更换</a>
+                    <a href="#" class="db btn-state">房源重复录入</a>
+                    <a href="#" class="db btn-state active">其他</a>
+
+                    <div class="pr">
+                        <span class="red tip-note">*备注必填</span>
+                        <textarea class="textarea-box indent5" name="logreason1" id="logreason1" placeholder="请填写备注，例如：该房源已租，截止至2017年1月1日。" style="height:133px;"></textarea>
+                    </div>
+                    <input type="submit" class="btn-sub submit" value="提交" style="margin-top:20px;">
+                </div>
+                <div id="rentIn">
+                    <input type="text" class="inp mt10 indent1" name="company" id="company" placeholder="输入公司名称">
+                    <div class="double-inp mt10">
+                        <input type="text" class="inp-left" name="rent_customer" id="rent_customer" placeholder="输入联系人名称">
+                        <input type="tel" class="inp-right" name="rent_contact" id="rent_contact" maxlength="11" placeholder="输入联系人电话">
+                    </div>
+                    <div class="double-inp mt10 mb10">
+                        <input type="text" data-field="date" data-format="yyyy-MM-dd"  data-startend="start" id="startDateTime1" data-startendelem="#endDateTime1" readonly class="inp-left"  placeholder="输入起始时间">
+                        <input type="text" data-field="date" data-format="yyyy-MM-dd" data-startend="end" id="endDateTime1" data-startendelem="#startDateTime1" readonly class="inp-right"  placeholder="输入结束时间">
+                    </div>
+                    <textarea class="textarea-box" name="logreason" id="logreason" placeholder="该房源已租，截止至2017年1月1日"  style="height:133px;"></textarea>
+                    <input type="button" class="btn-sub submit" value="提交" style="margin-top:20px;">
+                </div>
+            </div>
+        </div>
+        <div id="dtBox"></div>
+        <script>
+            $(function(){
+                $("a.state").click(function(){
+                    $("a.state").siblings().removeClass("active");
+                    $(this).addClass("active");
+                    if($("a.state.active").html()=="已租" || $("a.state.active").html()=="优办成交"){
+                        $("#invalid").addClass("hide");
+                        $("#rentIn").removeClass("hide");
+                    }else if($("a.state.active").html()=="无效"){
+                        $("#invalid").removeClass("hide");
+                        $("#rentIn").addClass("hide");
+                    }
+                });
+
+                $("a.db").click(function(){
+                    $("a.db").siblings().removeClass("active");
+                    $(this).addClass("active");
+                })
+            });
+
+            function changestatus() {
+                if($("a.state.active").html() == "无效")
+                {
+                    var logreason = $("#logreason1").val()
+                }
+                else
+                {
+                    var logreason = $("#logreason").val()
+                }
+                var hid = arguments[0];
+                var status = arguments[1];
+                var company = arguments[2] ? arguments[2] : '';
+                var rent_customer = arguments[3] ? arguments[3] : '';
+                var rent_contact = arguments[4] ? arguments[4] : '';
+                var rent_beg_time = arguments[5] ? arguments[5] : '';
+                var rent_end_time = arguments[6] ? arguments[6] : '';
+                var invalid_type = arguments[7];
+                if (logreason == '') {
+                    alert('备注必填');
+                    return false;
+                }
+                if (rent_beg_time != '' && rent_end_time != '') {
+                    if (parseInt(get_unix_time($("[name=rent_beg_time]").val())) > parseInt(get_unix_time($("[name=rent_end_time]").val()))) {
+                        alert('起始时间必须小于结束时间');
+                        return false;
+                   }
+                }
+
+                $.ajax({
+                    url: "{{ url_for('house_move') }}",
+                    type: 'post',
+                    data: {
+                        hid:{{house.id}},
+                        status: status,
+                        logreason: logreason,
+                        company: company,
+                        rent_customer: rent_customer,
+                        rent_contact: rent_contact,
+                        rent_beg_time: rent_beg_time,
+                        rent_end_time: rent_end_time,
+                        invalid_type: invalid_type
+                    },
+                    success: function(data){
+                        if (data.success == 'ok')
+                        {
+                            alert(123);
+                        }
+                    }
+                })
+            }
+
+
+            $(function () {
+                $(".submit").click(function () {
+                    var status = $("a.state.active").attr('id');
+                    var hid = {{ house.id }};
+                    var company = $("#company").val();
+                    var rent_customer = $("#rent_customer").val();
+                    var rent_contact = $("#rent_contact").val();
+                    var rent_beg_time = $("#startDateTime1").val();
+                    var rent_end_time = $("#endDateTime1").val();
+                    var invalid_type = $("input[name='invalid_type']:checked").val();
+                    changestatus(hid, status, company, rent_customer, rent_contact, rent_beg_time, rent_end_time, invalid_type)
+                })
+            });
+
+
+            $(document).ready(function() {
+                $("#dtBox").DateTimePicker({
+                    language:"zh-CN",
+                    dateFormat: "yyyy-MM-dd",
+                    timeFormat: "HH:mm",
+                    dateTimeFormat: "yyyy-MM-dd HH:mm:ss AA"
+                })
+            })
+
+		</script>
+{% endblock %}

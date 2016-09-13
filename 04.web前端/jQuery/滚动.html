@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>滚动</title>
+	<style>
+	* {
+		margin:0;
+		padding:0
+	}
+	#content {
+		width:150px;
+		height:1000px;
+		background:#00ff00
+	}
+	li {
+		list-style-type: none;
+		text-align: center;
+		color: red
+	}
+	</style>
+</head>
+
+<body>
+	<div id="content">
+		<ul>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+			<li>-||-</li>
+		</ul>
+	</div>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+	// $(selector).offset(value)
+	// $(selector).offset(function(index,oldoffset))————设置所有匹配元素的偏移坐标。
+	$(function () {
+		// alert($('div').offset().left);
+		$('#content').offset({left:200,top:100});//offset的设置值，必须成对出现
+	});
+
+	// $(selector).scrollTop(offset)————返回或设置匹配元素的滚动条的垂直位置。
+	var i = 0;
+	function g()
+	{
+		i+= 2;
+		$(document).scrollTop(i);
+	}
+	setInterval(g,100);
+</script>

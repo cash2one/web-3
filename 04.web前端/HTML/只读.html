@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>只读</title>
+</head>
+
+<body>
+	<input type="text" value="25.00" readonly="readonly" />
+    <!-- HTML中的input元素、button元素、option元素等都具有一个disabled属性。当赋予该属性时该元素将变得不可交互。 -->
+	<input type="button" value="按钮" disabled="disabled"/>
+    <!-- 属性值“disabled”可以替换成任何的其它单词甚至是“enabled”（不过“false”除外），因为属性值为“false”时表示属性不启用，属性值“true”表示启用属性。 -->
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+    $(':enabled').css('background','#ff0000');
+    $(':disabled').css('color','#00ff00');
+</script>

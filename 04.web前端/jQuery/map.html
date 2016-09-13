@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>map</title>
+</head>
+
+<body>
+<form>
+    <input type="text" name="name" value="John"/>
+    <input type="text" name="password" value="password"/>
+    <input type="text" name="url" value="http://ejohn.org/"/>
+</form>
+<div style="margin:10px">
+    <button id="btn">显示数据</button>
+</div>
+<p>Values: <b></b></p>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+    // .map(callback(index,domElement))，把每个元素通过函数传递到当前匹配集合中，生成包含返回值的新的 jQuery 对象。
+    // callback(index,domElement)，对当前集合中的每个元素调用的函数对象。
+    $("#btn").click(function () {
+        // remove() – 删除指定的元素（包括其子元素）
+        // empty() – 清空指定元素的子元素
+        $("b").empty();
+        $('b').append($('input').map(function(){
+            return $(this).val();
+        }).get().join(' '));
+    })
+</script>

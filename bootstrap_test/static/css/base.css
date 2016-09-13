@@ -1,0 +1,54 @@
+body {
+    /*padding-top: 70px;*/
+    /*有顶部固定导航条（navbar-fixed-top）时设置*/
+    /*padding-bottom: 70px;*/
+    /*有底部固定导航条（navbar-fixed-bottom）时设置*/
+    font-family: Microsoft YaHei;
+    /*
+    SimHei
+    sans-serif
+    SimSun
+    Microsoft YaHei
+    Microsoft JhengHei
+    KaiTi
+    NSimSun
+    STKaiti
+    */
+    /*font-weight: bold;*/
+    /*font-size: large;*/
+    }
+
+form label {
+    width:80px;
+    text-align: right;
+    }
+
+#returnTop {
+    position: fixed;
+    bottom: 60px;
+    right: 40px;
+    cursor: pointer;
+    display: none;
+    
+    width: 40px;
+    height: 40px;
+    border: 3px solid;
+    font-size: 24px;
+    padding-left: 2px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px%;
+    border-radius: 20px;
+}
+
+#nav-bottom {
+    margin:0
+}
+
+#nav-bottom ul{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#img-carousel img{
+    width: 100%;
+}

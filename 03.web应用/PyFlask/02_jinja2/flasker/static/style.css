@@ -1,0 +1,14 @@
+* {
+	margin: 0 auto;
+}
+
+body {
+	font-family: sans-serif;
+	background: #E0FFFF;
+}
+
+h1{
+	border-bottom: 2px solid #030303;
+	width: 400px;
+	text-align: center;
+}

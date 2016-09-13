@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>name</title>
+    <style>
+        p{color:#ff0000;}
+    </style>
+</head>
+
+<body>
+<img />
+<img />
+<img />
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    var p = document.createElement('p');
+    var t = document.createTextNode('动态创建');
+    p.appendChild(t);
+    document.body.appendChild(p);
+    $('img').each(function(i){
+    	this.src = 'image/'+(i+1)+'.jpg';
+    })
+</script>

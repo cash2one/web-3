@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>遍历</title>
+</head>
+
+<body>
+	<p>123</p>
+	<p>123</p>
+	<p>123</p>
+<dl>
+    <dt id="term-1">term 1</dt>
+    <dd>definition 1-a</dd>
+    <dd>definition 1-b</dd>
+    <dd>definition 1-c</dd>
+    <dd>definition 1-d</dd>
+
+    <dt id="term-2">term 2</dt>
+    <dd>definition 2-a</dd>
+    <dd>definition 2-b</dd>
+    <dd>definition 2-c</dd>
+
+    <dt id="term-3">term 3</dt>
+    <dd>definition 3-a</dd>
+    <dd>definition 3-b</dd>
+</dl>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+    // .slice(selector,end)，把匹配元素集合缩减为指定的指数范围的子集（有下限无上限）。
+    $('p').slice(1,2).wrapInner('<em></em>');
+    // event.target——event参数，必需，来自事件绑定函数，规定需要检查的事件。target 属性规定哪个 DOM 元素触发了该事件。
+    $(document).bind('click',function(e){
+        // .closest(selector)，从当前元素开始沿 DOM 树向上，获得匹配选择器的第一个祖先元素。
+    	$(e.target).closest('p').css('background','#ff0000');
+    })
+</script>

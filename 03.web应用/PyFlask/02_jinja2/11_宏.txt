@@ -1,0 +1,70 @@
+宏（Macro）
+宏的作用和函数比较类似。用来把一部分常用的代码封装起来，避免重复性的工作。
+宏可以定义在一个帮助性质的模板中，用imported的方式被其它模板引用；也可以在模板中定义并直接使用。这两种方式有个显著的不同：在模板 中定义的宏可以访问传给模板的上下文变量；在其它模板中定义的宏则只能访问到传递给它的变量，或者全局变量。
+
+这里有个打印表单元素的简单的宏
+<pre>
+{% macro input(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+{%- endmacro %}
+</pre>
+这个宏可以在命名空间中被直接调用
+<pre>
+<p>{{ input('username') }}</p>
+<p>{{ input('password', type='password') }}</p>
+</pre>
+如果这个宏在其它模板中，你必须先用import引入。
+在一个模板中你可以访问三种特殊变量：
+
+*'''varargs''' 等同于python语法中的"*args"
+*'''kwargs''' 等同于python语法中的"**kwargs"
+*'''caller''' 被call标签调用的宏，调用者会被存储在一个叫做caller的变量中。
+
+宏其实也是一个对象，它有一些属性可以在模板中使用：
+*'''name''' 宏的名称。{{ 'input.name':string }}
+*'''arguments''' 宏可以接受的参数，这个属性是一个元组
+*'''defaults''' 缺省值的元组
+*'''catch_kwargs''' 这个宏是否可以接受关键字参数
+*'''catch_varargs''' 这个宏是否可以接受索引位置参数
+*'''caller''' 是否有caller变量，可以被call标签调用
+
+Call
+
+在某些情况下，你可能需要将一个宏对象传递到另外一个宏中使用。为了实现此目的，你可以使用call block。
+<pre>
+{% macro render_dialog(title, class='dialog') -%}
+    <div class="{{ class }}">
+        <h2>{{ title }}</h2>
+        <div class="contents">
+            {{ caller() }}
+        </div>
+    </div>
+{%- endmacro %}
+
+{% call render_dialog('Hello World') %}
+    This is a simple dialog rendered by using a macro and
+    a call block.
+{% endcall %}
+</pre>
+在这里例子里，我们用"call render_dialog"调用了宏render_dialog，其中，'hello world作为render_dialog的title参数。在render_dialog中用{{ caller() }}将 call block中的内容显示出来。
+
+在使用 {{ caller() }} 时，也可以传入参数，如下例:
+<pre>
+{% macro dump_users(users) -%}
+    <ul>
+    {%- for user in users %}
+        <li><p>{{ user.username|e }}</p>{{ caller(user) }}</li>
+    {%- endfor %}
+    </ul>
+{%- endmacro %}
+
+{% call(user) dump_users(list_of_user) %}
+    <dl>
+        <dl>Realname</dl>
+        <dd>{{ user.realname|e }}</dd>
+        <dl>Description</dl>
+        <dd>{{ user.description }}</dd>
+    </dl>
+{% endcall %}
+</pre> 

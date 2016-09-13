@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>全选</title>
+</head>
+
+<body>
+	<input type="checkbox" name="like[]" value="1" />1
+	<input type="checkbox" name="like[]" value="2" />2
+	<input type="checkbox" name="like[]" value="3" />3
+	<input type="checkbox" name="like[]" value="4" />4
+	<input type="checkbox" name="like[]" value="5" />5
+	<input type="checkbox" name="like[]" value="6" />6
+	<input type="checkbox" name="like[]" value="7" />7
+	<input type="button" value="全选" onclick="ck(true)"/>
+	<input type="button" value="全不选" onclick="ck(false)"/>
+	<input type="button" value="反选" onclick="f()"/>
+</body>
+</html>
+<script>
+	var like = document.getElementsByName('like[]');
+	var len  = like.length;
+	function ck(bool)
+	{
+		for(var i = 0; i < len; i++)
+		{
+			like[i].checked = bool;
+		}
+	}
+	function f()
+	{
+		for(var i = 0; i < len; i++)
+		{
+			(like[i].checked == true) ? like[i].checked = false:like[i].checked = true;
+		}
+	}
+</script>
