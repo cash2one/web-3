@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<!--
+	device-width 可以确保网站正确呈现在不同分辨率的设备上。
+	initial-scale=1.0 确保网页加载时，以 1:1 的比例呈现，不会有任何的缩放。
+	user-scalable=no 禁用移动设备缩放（zooming）功能。
+	maximum-scale=1.0 与 user-scalable=no 一起使用。这样禁用缩放功能后，用户只能滚动屏幕，让您的网站看上去更像原生应用。
+	-->
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.css">
+	<style type="text/css">
+	*{
+		font-size: 18px;
+	}
+	</style>
+</head>
+<body>
+	<!--容器
+	container 用于包裹页面上的内容。
+	左右外边距（margin-right、margin-left）交由浏览器决定。
+	请注意，由于内边距（padding）是固定宽度，默认情况下容器是不可嵌套的。
+	-->
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4">
+			行必须放置在 .container 内，以便获得适当的对齐（alignment）和内边距（padding）。</div>
+			<div class="col-lg-3">
+			使用行来创建列的水平组。内容应放置在列内，且唯有列可以是行的直接子元素。
+			</div>
+			<div class="col-lg-3">
+			预定义的网格类，比如 .row 和 .col-xs-4，可用于快速创建网格布局。
+			</div>
+			<div class="col-lg-2">
+			网格系统通过指定十二个可用的列来创建。
+			</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				.col-lg-* 大屏幕——大桌面显示器 (大于1200px)
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				.col-md-* 中等屏幕——桌面显示器 (大于992px，小于1200px)
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				.col-sm-* 小屏幕——平板 (大于768px，小于1200px)
+			</div>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+				.col-xs-* 超小屏幕——手机 (小于768px)
+			</div>
+
+			<div class="clearfix visible-xs">
+			可以使用 .clearfix 和 响应式实用工具 来解决在小设备浏览时无法确定网格显示的位置问题。
+			</div>
+		</div>
+		<hr/>
+		<div class="row">
+			<div class="col-xs-8">
+				偏移是一个用于更专业的布局的有用功能。
+			</div>
+			<div class="col-xs-8 col-md-offset-1">
+				.col-*-offset-* 类会把一个列的左外边距（margin）增加 * 列，其中 * 范围是从 1 到 11。
+			</div>
+		</div>
+		<hr/>
+		<div class="row">
+			<div class="col-md-3" style="background:grey">
+				<p>第一列：不嵌套</p>
+			</div>
+			<div class="col-md-9" style="background:grey">
+				<p>第二列：嵌套——分成两个row</p>
+				<div class="row" style="background:#B18904">
+					<div class="col-md-6">
+						第1个row分成两个盒子
+					</div>
+					<div class="col-md-6">
+						第1个row分成两个盒子
+					</div>
+				</div>
+				<div class="row" style="background:#B18904">
+					<div class="col-md-6">
+						第2个row分成两个盒子
+					</div>
+					<div class="col-md-6">
+						第2个row分成两个盒子
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr/>
+		<div class="row">
+			<p>排序前</p>
+			<div class="col-md-4" style="background:grey">左边</div>
+			<div class="col-md-8" style="background:#B18904">右边</div>
+		</div>
+		<div class="row">
+			<p>
+				排序后
+				<br/>
+				.col-md-push-* 和 .col-md-pull-* 类中 * 范围是从 1 到 11。
+			</p>
+			<div class="col-md-4 col-md-push-8" style="background:grey">左边</div>
+			<div class="col-md-8 col-md-pull-4" style="background:#B18904">右边</div>
+		</div>
+	</div>
+</body>
+</html>

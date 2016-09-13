@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	/*
+    判断多少种分辨率，完全取决于你产品的需求
+     */
+    @media screen and (max-width: 320px) {
+    	body{
+    		font-size:16px;
+    	}
+    }
+    @media screen and (min-width: 320px) and (max-width: 1024px) {
+    	body{
+    		font-size:22px;
+    	}
+    }
+    @media screen and (min-width: 1024px) {
+    	body{
+    		font-size:28px;
+    	}
+    }
+
+    /*
+    iphone5的小屏幕分辨率达到了1136*640，几乎等于一个笔记本的分辨率。
+    iphone4以上像素比是2。
+    判断终端的像素比是2的话，所渲染的样式。
+     */
+    @media only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)
+    /*
+    一般来说显示一张1px的背景图片，我们要准备一张2px的，然后再background-size:50%这样。
+    1.5像素比同例。
+    */
+	</style>
+
+	<!-- 结合用户需求和实现成本，对适用的尺寸进行取舍。比如一些功能操作的页面，用户一般没有在移动端进行操作的需求，没有必要进行响应式设计。 -->
+</head>
+<body>
+	<p>123</p>
+</body>
+</html>

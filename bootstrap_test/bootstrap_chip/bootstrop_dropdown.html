@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.css"/>
+	<script type="text/javascript" src="../jquery.min.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+</head>
+<body>
+	<div class="dropdown">
+	<!--
+	在使用dropmenu时需要引入jquery.js，而且引入的路径需要在boostrap.js前面。
+	下拉菜单的触发器和整个下拉菜单都需要包裹在.dropdown中，或者声明为position: relative;的其它页面元素中。
+	-->
+		<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+			触发器
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+			<li>
+				<a href="#">一个链接</a>
+			</li>
+			<li>
+				<a href="#">另一个链接</a>
+			</li>
+			<li>
+				<a href="#">其它链接</a>
+			</li>
+		</ul>
+	</div>
+</body>
+</html>

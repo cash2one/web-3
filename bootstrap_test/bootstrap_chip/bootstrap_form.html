@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link type="text/css" rel="stylesheet" href="../bootstrap/css/bootstrap.css" />
+</head>
+<body>
+	<h3>
+		垂直或基本表单：
+    	向 &lt;form> 元素添加 role="form"。
+    	把标签和控件放在一个 .form-group &lt;div>中——这是获取最佳间距所必需的。
+    	向所有的文本元素 &lt;input>、&lt;textarea> 和 &lt;select> 添加 class .form-control。
+    </h3>
+	<form role="form">
+		<div class="form-group">
+			<label>名称</label>
+			<input type="text" class="form-control" placeholder="请输入名称" />
+			<label>年龄</label>
+			<input type="text" class="form-control" placeholder="请输入年龄" />
+			<label>文件输入</label>
+			<input type="file"/>
+			<p class="help-block">这里是块级帮助文本的实例。</p>
+		</div>
+		<div class="checkbox">
+			<label><input type="checkbox">请打勾</label>
+		</div>
+		<button type="submit" class="btn btn-default">提交</button>
+	</form>
+	<hr/>
+	<h3>
+		内联表单：
+		向 &lt;form&gt; 标签添加 class .form-inline。
+		所有元素是内联的，向左对齐的，标签是并排的。
+	</h3>
+	<form class="form-inline" role="form">
+		<div class="form-group">
+			<label class="sr-only sr-only-focusable">名称</label>
+			<!--
+			sr-only除了屏幕阅读器外，其他设备上隐藏。
+			sr-only-focusable与 .sr-only 类结合使用，在元素获取焦点时显示(如：键盘操作的用户)-->
+			<input type="text" class="form-control" placeholder="请输入名称" />
+			<label>年龄</label>
+			<input type="text" class="form-control" placeholder="请输入年龄" />
+			<label class="sr-only">文件输入</label>
+			<input type="file"/>
+			<p class="help-block">这里是块级帮助文本的实例。</p>
+		</div>
+		<div class="checkbox">
+			<label><input type="checkbox">请打勾</label>
+		</div>
+		<button type="submit" class="btn btn-default">提交</button>
+	</form>
+	<hr/>
+	<h3>
+		水平表单：
+		向 &lt;form> 添加 .form-horizontal。
+		把标签和控件放在一个带有 class .form-group 的 &lt;div> 中。
+		向标签添加 class .control-label
+	</h3>
+	<form class="form-horizontal" role="form">
+		<div class="form-group">
+			<label class="col-sm-2 control-label">名称</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" placeholder="请输入名称" />
+			</div>
+			<label class="col-sm-2 control-label">年龄</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" placeholder="请输入年龄" />
+			</div>
+			<label>文件输入</label>
+			<input type="file"/>
+			<p class="help-block">这里是块级帮助文本的实例。</p>
+			<label for="name">文本框</label>
+			<textarea class="form-control" rows="3"></textarea>
+			</div>
+		<div class="col-sm-offset-2 col-sm-10">
+			<div class="checkbox">
+				<label><input type="checkbox">请打勾</label>
+				<label><input type="checkbox">请打勾</label>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-default">默认按钮</button>
+		<button type="submit" class="btn btn-default active">激活按钮</button>
+		<button type="submit" class="btn btn-default" disabled="disabled">禁用按钮</button>
+		<button type="submit" class="btn btn-primary">原始按钮</button>
+		<button type="submit" class="btn btn-success">成功按钮</button>
+		<button type="submit" class="btn btn-info">信息按钮</button>
+		<button type="submit" class="btn btn-warning">警告按钮</button>
+		<button type="submit" class="btn btn-danger">危险按钮</button>
+		<button type="submit" class="btn btn-success btn-link">链接按钮</button>
+		<a href="#" class="btn btn-default btn-lg" role="button">
+			链接
+		</a>
+		<a href="#" class="btn btn-default btn-lg disabled" role="button">
+			禁用链接
+		</a>
+		<button type="submit" class="btn btn-success btn-lg">大按钮</button>
+		<button type="submit" class="btn btn-success btn-sm">小按钮</button>
+		<button type="submit" class="btn btn-success btn-xs">超小按钮</button>
+		<button type="submit" class="btn btn-success btn-block">块级按钮</button>
+	</form>
+</body>
+</html>
