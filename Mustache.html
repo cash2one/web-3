@@ -1,0 +1,57 @@
+
+<!-- html -->
+<div class="modal fade" id="logModel" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="panel">
+                    <div class="panel-heading">
+                        操作日志
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="false">
+                            ×
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped" id="log_table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- js -->
+<script>
+    var optionDetail = function(modifyAt, modifyName, descrption) {
+        debugger;
+        var info = { modifyAt: modifyAt, modifyName: modifyName, descrption: descrption };
+        $("#logModel").modal('show');
+        // Mustache.render————接收json格式的数据，渲染模板
+        // 可以用js生成json数据
+        // 也可以用var info = {"data": data}，其中data为java的JSONArray
+        $("#log_table").html(Mustache.render($("#logtable").html(), info));
+    };
+</script>
+
+<script id="logtable" type="x-tmpl-mustache">
+    {% raw %}
+    <thead style="display:block">
+        <tr>
+            <th style="width:200px">操作时间</th>
+            <th style="width:200px">操作人</th>
+            <th style="width:200px">操作详情</th>
+        </tr>
+    </thead>
+    <tbody style="display:block;height:151px;overflow-y:scroll;">
+        <tr>
+            <td style="width:200px;line-height:34px;">{{modifyAt}}</td>
+            <td style="width:200px;line-height:34px;">{{modifyName}}</td>
+            <td style="width:200px;line-height:34px;">{{descrption}}</td>
+        </tr>
+    </tbody>
+    {% endraw %}
+</script>
