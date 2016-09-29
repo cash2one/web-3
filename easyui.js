@@ -1,6 +1,6 @@
 /*
 * @Date:   2016-08-04 10:59:28
-* @Last Modified time: 2016-08-26 10:02:19
+* @Last Modified time: 2016-09-29 18:07:21
 */
 
 var getGroupName = function(){
@@ -29,3 +29,11 @@ var getGroupName = function(){
     }
     return groupIds;
 };
+
+$("#departmentUserComboxTree").combotree({
+    onChange: function() {
+        alert(123)
+        var userIds = getUserIds();
+        $("#accendantIds").val(userIds);
+    }
+});
