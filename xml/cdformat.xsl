@@ -18,7 +18,7 @@
         <xsl:for-each select="CATALOG/CD">
           <!-- <xsl:for-each>
           用于选取指定的节点集中的每个 XML 元素。-->
-          <!-- 
+          <!--
             在<xsl:for-each>
           中添加一个选择属性的判别式（select="CATALOG/CD[ARTIST='Bob Dylan']"），过滤 XML 文件输出的结果。
             合法的过滤运算符:= (等于)!= (不等于)&lt; (小于)&gt; (大于)
@@ -65,7 +65,6 @@
               </xsl:if>
             </xsl:for-each>
           </table>
-
 </body>
         </html>
       </xsl:template>
