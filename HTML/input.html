@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>input</title>
+<style type="text/css">
+    *{
+        padding: 10px;
+        /*margin: 0 auto;*/
+    }
+</style>
+</head>
+
+<body>
+	<input type="text" value="只读" readonly="readonly" />
+    <!-- readonly————{input、button、option} -->
+	<input type="button" value="按钮" disabled="false"/>
+    <!-- disabled=enabled/true/all_other_word_except_false -->
+    <hr/>
+    <div>
+        <input type="text" placeholder="单行输入框" value="" />
+    </div>
+    <div>
+        <textarea placeholder="多行文本框" cols="40" rows="5"></textarea>
+        <textarea placeholder="多行文本框" cols="40" rows="5">
+            textarea折行会产生空格
+        </textarea>
+    </div>
+</body>
+</html>
+<script src="jquery-1.9.1.js"></script>
+<script>
+    $(':enabled').css('background','#ff0000');
+    $(':disabled').css('color','#00ff00');
+</script>
