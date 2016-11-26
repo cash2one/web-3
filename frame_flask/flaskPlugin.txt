@@ -1,0 +1,51 @@
+flask轻巧、灵活，靠插件进行扩展，插件丰富。以插件的形式学习flask比较容易理解。
+http://flask.pocoo.org/extensions/
+包括了下面类别的插件：
+<<<<<>>>>>
+flask......................这个就不多解释了。
+flask-principal............简单的权限管理，非 RBAC 完备，仅支持角色匹配，但一般情况下够用。
+<<<<<>>>>>
+jinja2.....................flask默认模板引擎。
+flask-Assets...............一个管理静态文件的插件。自动编译 LessCSS、压缩 JavaScript 脚本、合并打包多个 JavaScript/CSS 等。可以设置只在生产环境才开启。它允许你在Python代码中定义多组（bundles）可以同时插入你的模板的静态文件。
+flask-themes...............设计可替换主题包的视图层，可以用于制作类似豆瓣小站的私人空间，也可以用于制作在线杂志平台等允许用户自行更换主题的应用。基于 Jinja 2 模板和 Flask 内置的静态资源管理&反向路由。
+<<<<<>>>>>
+sqlalchemy.................用ORM操作数据，用来替代django提供的ORM系统。
+flask-sqlalchemy...........对sqlalchemy进行了一些封装。集成最暴力的ORM框架SQLAlchemy，声明式定义模型和关联，用Python内置操作符查询。
+flask-migrate..............提供数据库迁移功能，比如改了个字段什么的不用重建数据库了。
+<<<<<>>>>>
+flask-login................提供用户登录、登出等相关操作。#
+flask-wtf..................提供表单相关功能，基于wtform。#
+【声明式定义表单和验证器，自动产生表单的 HTML（当然也可以手动），集字段过滤、验证、CSRF 攻击防范与一体，还可以和 SQLAlchemy 集成，把字段和数据库项绑定。】
+flask-bcrypt...............提供加密功能，将字符串加密。  #
+flask-user.................一个完整的实现了相关用户功能的插件（与上面三个#功能较多类似）。
+<<<<<>>>>>
+flask-cache................提供缓存的相关功能。
+<<<<<>>>>>
+flask-script...............用来执行flask脚本的。什么意思呢？就是flask中有很多操作需要上下文环境的，有了这个东西就不用每次都启动flask环境了。结合flask-migrate进行数据库迁移、结合flask-cache进清空缓存都爽歪歪。manage.py createdb 初始化数据库，manage.py deploy 部署到生产环境，manage.py pep8 检查代码风格。
+flask-Testing...............辅助编写针对边界层的自动化测试脚本。
+<<<<<>>>>>
+flask-restful(Framework)...提供restful api接口的，类似django-rest-framework。【比较灵活】
+flask-less.................也是提供restful api接口的。【比较简单快捷】
+<<<<<>>>>>
+flask-httpauth.............一个简单的HttpAuth插件。
+<<<<<>>>>>
+flask-uploads..............文件上传的插件，这里需要注意，使用pip安装的flask-uploads是 https://pythonhosted.org/Flask-Uploads/这个作者的，还有一个版本的https://github.com/FelixLoether/flask-uploads这两个并不一样。【管理文件上传，上传文件之后只存放一个标识在数据库，然后可以从这个标识反向换算得到文件 URL，避免硬编码路径保存在数据库。】
+flask-cloudy...............还是文件上传，支持上传到各种云环境或者本地。
+<<<<<>>>>>
+flask-mail..................用本地邮件服务器发送邮件，使用时需要改from flask(.)ext.mail import Mail
+flask-babel.................国际化，自动化产生翻译模板，填充翻译模板可制成多国语言包。支持运行时切换语言，并且语言切换线程独立，也就是说每个用户可以设置自己的界面语言。
+flask-oauth/flask-openid....用 XXX 帐号登录，绑定 XXX 帐号，自动发布信息到 XXX 平台。
+<<<<<>>>>>
+frozen-flask................全自动将站点打包成静态页面，数据库更新之后可以支持重新生成，非常适用于新闻专题。
+<<<<<>>>>>
+flask-session
+flask-exceptional
+flask-Admin
+singals: 其实信号不常用，因为sqlalchemy太强大了，不过也会有用它的地方的。
+twitter: 这个非flask插件，是twitter的api，很有意思的功能，在线发推啦（国内主机不能支持这个功能）
+pygments: 代码高亮
+kissy-editor：淘宝编辑器，这个编辑器很不错。
+前端已有的插件都满足不了基本需求，需要自己 grunt 配置好来走 asset pipline
+http://flask.pocoo.org/snippets/ 这里还有别人分享的一些技巧性的代码段，那些代码段都是很实用的场景下产生的，
+比如跨域访问：http://flask.pocoo.org/snippets/56/ 
+再比如像新浪微博一样动态显示“发布于 n 秒前”：http://flask.pocoo.org/snippets/49/。

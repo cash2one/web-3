@@ -1,0 +1,59 @@
+			############################
+###################peewee.RawQuery###################
+			############################
+from peewee import RawQuery
+SQL Functions, “Raw expressions” and the R() object采用原始结构来查询
+################
+R是RawQuery的简写。
+动态查询
+a_users = query.where(R('first_letter=%s', 'a'))
+a=RawQuery()
+			############################
+#####################peewee查询#####################
+			############################
+			############
+#############1.查询数据############
+			############		
+var = table_name.select().where(table_name.column_name == value)[index]
+############
+var = table_name.select(table_name.column_nameX).where(table_name.column_name? == value)[index]
+############
+var = table_name.get(table_name.column_name == value)
+############
+var = table_name.select().where((table_name.column_nameX == value)&(table_name.column_name > value)).count()
+############
+var = table_name.select().where(table_name.column_name == value).dicts()[index]
+			############
+#############2.更新数据############
+			############
+table_name.update(column_nameX = valueX,column_nameY = valueY,...).where(table_name.column_name? == value).execute()
+############
+dictX=dict(...);table_name.update(**dictX).where(table_name.column_name==value).execute()
+			############
+#############3.添加数据############
+			############
+table_name.create(column_nameX = valueX,column_nameY = valueY,...).where(table_name.column_name? == value).execute()
+############
+dictX=dict(...);table.create(**dictX)
+		##################
+#########4.合表查询并排序##########
+		##################
+dy = table_nameX.column_name? == table_nameX.column_name?
+dy = dy & (table_name?.column_name? == value)
+############
+== 	x equals y
+< 	x is less than y
+<= 	x is less than or equal to y
+> 	x is greater than y
+>= 	x is greater than or equal to y
+!= 	x is not equal to y
+<< 	x IN y, where y is a list or query
+>> 	x IS y, where y is None/NULL
+% 	x LIKE y where y may contain wildcards
+** 	x ILIKE y where y may contain wildcards
+############
+var = table_nameX.select(table_nameX,table_nameY).join(table_nameY, on=(table_nameX.column_nameX == table_nameY.column_nameY).alias('alia_name')).where(dy).order_by(table_name?.column_name?,table_name?.column_name?,...)
+
+if buildingno != '':
+    buildingno = '%{0}%'.format(buildingno.lower().strip())
+    dy &= fn.Lower(Houseinfo.buildingno) % buildingno

@@ -1,0 +1,31 @@
+sql 里 符号<> 于 != 的区别：
+<> 与!=都是不等于的意思，但是一般都是用<>，因为<>在任何SQL中都起作用，但是!=在sql2000、sqlserver中是语法错误，不兼容，所以建议用<>。
+
+
+mysql怎样查询不包括某个字符的结果？
+比如，查询不包括“张”,“王”,“李”这几个姓的结果：
+select * from tt where 字段 not like '%张%'  and 字段 not like '%王%' and 字段 not like '%李%'
+
+
+SELECT 
+  o.id,
+  o.name,
+  ...
+FROM
+  crm.office o
+WHERE o.id NOT IN (SELECT office_id FROM office_auditperson) 
+  AND o.city_id IN (12, 13) 
+ORDER BY o.modify_at DESC 
+
+
+SELECT 
+  office.`Id`
+FROM
+  `crm`.`office` 
+  LEFT JOIN `office_auditperson`
+  ON office_auditperson.`office_id`=office.`Id`
+  WHERE office_auditperson.`office_id` IS NULL
+LIMIT 0, 1000 ;
+
+
+jspath=http://mytest.uban.com:8080

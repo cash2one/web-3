@@ -1,0 +1,40 @@
+【jinja2的语法主要参考自Django和python。】
+(1)异常
+class TemplateError() 	所有模板异常的基类
+class UndefinedError() 	操作一个未定义对象时
+class TemplateNotFound(name) 	模板未找到
+class TemplateSyntaxError(message, lineno, name) 	模板语法错误
+
+(2)变量
+你可以传递python的变量给模板，用来替换模板中的标记。这些变量可以是任何Python对象。在模板中可以直接操作传入的变量对象，也可以访问这些变量的属性。
+访问变量属性有两种方式，一种是用"obj.attr"的方式，另一种是类似字典的方式："obj['attr']".
+<pre>
+  {{ foo.bar }}
+  {{ foo['bar'] }}
+</pre>
+'{{ .. }}是jinja2用来打印变量标记。如果要在其它标签中访问变量，则不能在变量名旁边加花括号。 
+
+(3)过滤器(filters)
+变量可以在模板中被过滤器修改。使用过滤器的方式比较类似管道（pipe）操作。
+<pre>'{{ name|striptags|title }}'</pre>
+这个例子的意思是：将name变量用striptags消除变量值中的tag（用<>括起来的内容），再用title过滤器将首字符 大写。
+
+过滤器也可以接受参数，用起来比较像调用函数
+<pre> '{{ list|join(', ') }}'</pre>
+
+(4)检查器(Tests)
+检查器用来在jinja2的if块里面检查一个变量是否符合某种条件。它的用法是 varname is atest, 例如检查一个变量是否存在
+  {% if name is defined %}
+这里， defined就是一个检查器。
+检查器跟过滤器一样，也可以有参数，如果检查器只有一个参数，可以不写括号，直接用一个空格将检查器名和参数隔开，如下例中，两行代码的作用是一样的：
+  {% if loop.index is divisibleby 3 %}
+  {% if loop.index is divisibleby(3) %}
+
+(5)注释
+jinja2中可以加入注释，如：
+  {# note: disabled template because we no longer user this
+      {% for user in users %}
+        ...
+      {% endfor %}
+  #}
+这些注释内容不会出现在模板产生的文本中。

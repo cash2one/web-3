@@ -1,0 +1,36 @@
+class CustomerSearch(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('pageindex', default=1, type=int, help='页码，第一页为数字1')
+        parser.add_argument('pagesize', default=4, type=inputs.int_range(1, 20), help='每页条数')
+        parser.add_argument('unixtime', type=int, help='时间戳')
+        args = parser.parse_args(strict=True)
+        try:
+            userid = get_current_user_id()
+        except Exception, e:
+            return {'status': '-100', 'msg': '用户未登录'}
+        dy = Customer.id == Customer.id
+        dy &= Customer.belongingid << PerUserSearch().down_user_search(get_current_user_id())
+        dy &= Customer.status << [1, 2]
+        data = Customer.select().where(dy).order_by(Customer.create_time.desc())
+        count = data.count()
+        re = data.paginate(args["pageindex"], args["pagesize"])
+        relist = []
+        for i in re:
+            relist.append({
+                "id": i.id,
+                "name": i.customer_name,
+                "phone": i.phone_num,
+                "city": i.order_city_name,
+                "district": i.order_district_name,
+                "businesscircle": i.order_businesscircle_name,
+                "area_begin": i.order_area_begin,
+                "area_end": i.order_area_end,
+                "price_begin": i.order_price_begin,
+                "price_end": i.order_price_end,
+                "remark": i.other_remark,
+                "iseffective": i.status,
+                "isji": (i.orderid != '' and i.source != 11)
+
+            })
+        return {'status': '1', 'msg': '成功', 'count': count, 'customerlist': relist, 'unixtime': args['unixtime']}
