@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-10-09 18:16:48
-# @Last Modified time: 2016-10-10 14:50:29
+# @Last Modified time: 2016-11-27 21:34:47
 #
 #
 # Django默认settings————${Python}\Lib\site-packages\django\conf\global_settings.py
@@ -98,18 +98,12 @@ MIDDLEWARE_CLASSES = [
 
 
 # =====================================
-# 分散配置template信息
-from template_settings import *
-# 分散配置database信息
-from database_settings import *
-# 分散配置static信息
-from static_settings import *
-# 分散配置user信息
-from manager_settings import *
-# 分散配置local信息
-from local_settings import *
-# 分散配置url信息
-from url_settings import *
+from template import *  # 分散配置template信息
+from database import *  # 分散配置database信息
+from static import *  # 分散配置static信息
+from manager import *  # 分散配置user信息
+from local import *  # 分散配置local信息
+from url import *  # 分散配置url信息
 # ======================================
 # wsgi
 #

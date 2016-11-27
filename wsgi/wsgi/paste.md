@@ -1,1 +1,0 @@
-Python Paste————WSGI底层工具集，包括多线程、SSL和 基于Cookies、sessions等的验证(authentication)库，可以用Paste方便地搭建自己的Web框架。

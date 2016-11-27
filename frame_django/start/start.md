@@ -3,9 +3,16 @@ cmd> python                     打开python交互式shell；
 cmd> python managr.py shell     打开django交互式shell（测试Django代码）；
 *exit()，cmd下退出程序。*
 
-#####1. 创建项目————cd (project_dir) -> python ${django-admin.py} startproject (project_name)
-${python}/Scripts/django-admin.py，可复制到任何方便的路径
-#####2. 创建App————cd (app_dir) -> python ${manage.py} startapp (app_name)
+#####1. 创建项目
+- cd (project_dir)
+- windows————python ${django-admin.py} startproject ***
+    + ${python}/Scripts/django-admin.py，可复制到任何方便的路径
+- linux————django-admin startproject ***
+
+#####2. 创建App
+- cd (app_dir)
+- python ${manage.py} startapp (app_name)
+
 #####3. 后台管理————图形化操作数据库
 - python manage.py validate（check）  检查
 - python manage.py sqlall appName     建立数据库表，自动生成的表名是app名称和模型的小写名称的组合。Django为每个表格自动添加一个id主键，你可以重新设置它。Django添加 "_id" 后缀到外键字段名。

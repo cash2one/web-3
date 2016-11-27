@@ -1,3 +1,12 @@
+#####CGI
+使用Python开发Web，最简单，原始和直接的办法是使用CGI标准，在1998年这种方式很流行。
+
+- 首先做一个Python脚本，输出HTML代码，然后保存成.cgi扩展名的文件，通过浏览器访问此文件。
+- 用户请求CGI，脚本代码打印Content-Type行，后面跟着换行。
+- 再接下来是一些HTML的起始标签，然后连接数据库并执行一些查询操作，获取最新的十本书。在遍历这些书的同时，生成一个书名的HTML列表项。
+- 最后，输出HTML的结束标签并且关闭数据库连接。
+
+
 ###Web应用
 - 浏览器发送一个HTTP请求；
 - 服务器收到请求，生成一个HTML文档；
@@ -31,3 +40,6 @@ PythonWeb服务器网关接口————Python Web Server Gateway Interface，
 - 2008年： Lua WSAPI，Lua版本
 - 2009年： JSGI，Java版本
 - 2009年： PSGI，Perl版本
+
+
+###Python Paste————WSGI底层工具集，包括多线程、SSL和 基于Cookies、sessions等的验证(authentication)库，可以用Paste方便地搭建自己的Web框架。

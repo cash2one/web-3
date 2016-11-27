@@ -15,9 +15,9 @@ uwsgi --http :8001 --chdir ${django目录} --wsgi-file ***/wsgi.py --master --pr
 - wsgi-file————载入wsgi-file
 - processes、chdir、master、vacuum————同myweb_uwsgi.ini文件参数
 
-#####uwsgi配置文件————将wsgi --***，给文件化
+#####uwsgi配置文件————将wsgi命令文件化
 uwsgi支持多种类型的配置文件，如xml，ini
-通过uwsgi命令读取uwsgi配置文件启动项目————uwsgi --ini myweb_uwsgi.ini
+通过uwsgi命令读取uwsgi配置文件启动项目————uwsgi --ini web_uwsgi.ini
 
 ###uwsgi + nginx————配置nginx.conf
 ```
