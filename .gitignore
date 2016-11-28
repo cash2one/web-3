@@ -56,3 +56,7 @@ __pycache__/
 .project
 *.class
 bin/
+
+
+# django project
+frame_django/web_project/*
