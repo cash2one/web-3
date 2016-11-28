@@ -1,11 +1,12 @@
-django.contrib是一套庞大的功能集，它是Django基本代码的组成部分，Django框架就是由众多包含附加组件(add-on)的基本代码构成的。  
+###django.contrib包————Django自带的很多优秀附加组件
+- 管理工具（django.contrib.admin）
+- 用户鉴别系统（django.contrib.auth）
+- 支持匿名会话（django.contrib.sessioins）
+- 用户评注系统（django.contrib.comments）
+- 这些配置是可选的，可以在INSTALLED_APPS中添加。
 
-Django自带很多优秀的附加组件，它们都存在于django.contrib包里。  
-管理工具（django.contrib.admin）  
-用户鉴别系统（django.contrib.auth）  
-支持匿名会话（django.contrib.sessioins）  
-用户评注系统（django.contrib.comments）  
-这些配置是可选的，可以在INSTALLED_APPS中添加。  
+django.contrib是一套庞大的功能集，它是Django基本代码的组成部分，Django框架就是由众多包含附加组件(add-on)的基本代码构成的。
+
 
 把'django.contrib.auth'加进INSTALLED_APPS后，第一次运行syncdb命令时, 系统会请你创建一个超级用户。  
 将admin访问配置在URLconf(url(r'^admin/', admin.site.urls))中。  
