@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-07-12 13:06:06
-# @Last Modified time: 2016-11-28 15:05:20
+# @Last Modified time: 2016-11-28 18:59:02
 #
 # 测试uwsgi————通过uwsgi运行该文件
 # uwsgi --http :8001 --wsgi-file test.py
 # 通过浏览器访问localhost
-#
-#
-#(1)
 
 
 def application(environ, start_response):
@@ -19,7 +16,7 @@ def application(environ, start_response):
 
 
 '''
-(1)application()函数就是符合WSGI标准的一个HTTP处理函数，它接收两个参数：
+application()函数就是符合WSGI标准的一个HTTP处理函数，它接收两个参数：
 environ：一个包含所有HTTP请求信息的dict对象；
 start_response：一个发送HTTP响应的函数，加上application函数返回值作为Body。
 
