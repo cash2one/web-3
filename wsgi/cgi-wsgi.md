@@ -1,3 +1,12 @@
+```
+    浏览器                      chrome、firefox、ie等
+      ｜
+    web服务器                   nginx、apache等
+      ｜
+    网关接口                    CGI、FastCGI、WSGI等
+      ｜
+    Python（程序、Web框架）     Django、Flask、Tornado等
+```
 #####CGI
 使用Python开发Web，最简单，原始和直接的办法是使用CGI标准，在1998年这种方式很流行。
 
