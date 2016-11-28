@@ -9,7 +9,8 @@ Django：一个可以使Web开发工作愉快并且高效的Web开发框架，�
 #####2. 测试django安装
 - python
 - import django
-- django.VERSION
+- django.VERSION————版本
+- django————安装路径
 
 #####3.  安装数据库
 1. 安装和配置数据库服务器本身。

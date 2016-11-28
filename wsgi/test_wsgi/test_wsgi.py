@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-07-12 13:06:06
-# @Last Modified time: 2016-10-12 14:59:27
+# @Last Modified time: 2016-11-28 15:05:20
+#
+# 测试uwsgi————通过uwsgi运行该文件
+# uwsgi --http :8001 --wsgi-file test.py
+# 通过浏览器访问localhost
+#
+#
+#(1)
 
 
 def application(environ, start_response):
     start_response('200 OK', [('Content-Type', 'text/html')])  # (2)
     return '<h1>Hello, web!</h1>'  # (3)
     # return ['<html><body>Hello world!</body></html>']
+    # return [b"Hello World"]
     # return '<h1>Hello, %s!</h1>' % (environ['PATH_INFO'][1:] or 'web')  # 4
 
 

@@ -1,7 +1,8 @@
 ###uwsgi————类似一个桥接器，起到桥梁的作用
 将nginx作为服务器最前端，它将接收WEB的所有请求，统一管理请求。nginx把所有静态请求自己来处理（这是NGINX的强项）。然后，NGINX将所有非静态请求通过uwsgi传递给Django，由Django来进行处理，从而完成一次WEB请求。
 
-pip install uwsgi
+- pip install uwsgi
+- uwsgi --version————查看 uwsgi 版本
 
 ###Django + uwsgi
 uwsgi --http :8001 --chdir ${django目录} --wsgi-file ***/wsgi.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
@@ -14,28 +15,3 @@ uwsgi --http :8001 --chdir ${django目录} --wsgi-file ***/wsgi.py --master --pr
 - pidfile————指定pid文件的位置，记录主进程的pid号
 - wsgi-file————载入wsgi-file
 - processes、chdir、master、vacuum————同myweb_uwsgi.ini文件参数
-
-#####uwsgi配置文件————将wsgi命令文件化
-uwsgi支持多种类型的配置文件，如xml，ini
-通过uwsgi命令读取uwsgi配置文件启动项目————uwsgi --ini web_uwsgi.ini
-
-###uwsgi + nginx————配置nginx.conf
-```
-server {
-    listen       uwsgi对外的端口号;
-    server_name  网址/ip;
-    location / {
-        include uwsgi_params;
-        uwsgi_pass 127.0.0.1:8000; # 与uwsgi配置文件一致
-        uwsgi_read_timeout 2;
-    }
-    location /static {
-        expires 30d; autoindex on;
-        add_header Cache-Control private;
-        alias /home/www/mysite/static;
-    }
-}
-```
-
-静态请求：网址————请求————nginx————root/index
-django网站：网址————请求————nginx————uwsgi————django

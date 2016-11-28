@@ -73,6 +73,7 @@ mysql -uroot -p，回车进入。（默认是没有密码的，有密码的话�
     + unix系统上，mysql的登陆方式有两种，分别是socket和tcp/ip方式登陆
     + 指定参数-h，会使用tcp/ip的方式连接
     + 远程使用tcp
+- 重启防火墙
 - 授权————GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '123456' WITH GRANT OPTION;
 - 刷新————flush privileges;
 
