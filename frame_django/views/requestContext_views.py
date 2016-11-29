@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-10-11 11:31:13
-# @Last Modified time: 2016-10-11 11:43:18
+# @Last Modified time: 2016-11-29 15:16:56
 from django.template.loader import get_template
 from django.shortcuts import render
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+
+# #
+# # context处理器
+# # 接收一个 HttpRequest对象，返回一个字典
+# return {
+#     'app': 'My app',
+#     'user': request.user,
+#     'ip_address': request.META['REMOTE_ADDR']
+# }
 
 
 def custom_pros(request):  # context处理器
