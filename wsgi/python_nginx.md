@@ -3,6 +3,7 @@
 
 - pip install uwsgi
 - uwsgi --version————查看 uwsgi 版本
+- killall -9 uwsgi————关闭uwsgi
 
 ###Django + uwsgi
 uwsgi --http :8001 --chdir ${django目录} --wsgi-file ***/wsgi.py --master --processes 4 --threads 2 --stats 127.0.0.1:9191
