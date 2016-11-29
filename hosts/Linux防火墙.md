@@ -17,6 +17,7 @@
     + --zone————作用域
     + --add-port=10086/tcp————添加端口————端口/通讯协议
     + --permanent————永久生效，没有此参数重启后失效
+- 关闭端口————firewall-cmd --zone= public --remove-port=8001/tcp --permanent
 - 重启防火墙————firewall-cmd --reload
 
 数据包要进入到内核必须要通过firewall的zone中的一个，而不同的zone里定义的规则不一样（即信任度不一样，过滤的强度也不一样）
