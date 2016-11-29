@@ -24,7 +24,7 @@ class TemplateView(TemplateResponseMixin, ContextMixin, View):
 
 取出指定 model 中的所有数据，指定变量名后传递给指定模板。
 
-当需要使用过滤条件或者对数据进行一定的操作时，则需要重写 ListView 中获取数据的方法（get_queryset 方法）。(示例)[http://www.jianshu.com/p/6d6c890f5f72]
+当需要使用过滤条件或者对数据进行一定的操作时，则需要重写 ListView 中获取数据的方法（get_queryset 方法）。
 
 ```
     def get_queryset(self):
