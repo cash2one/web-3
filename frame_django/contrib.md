@@ -1,8 +1,8 @@
 ###django.contrib包————Django自带的很多优秀附加组件
-- 管理工具（django.contrib.admin）
-- 用户鉴别系统（django.contrib.auth）
-- 支持匿名会话（django.contrib.sessioins）
-- 用户评注系统（django.contrib.comments）
+- 管理工具————django.contrib.admin
+- 用户鉴别系统————django.contrib.auth
+- 支持匿名会话————django.contrib.sessioins
+- 用户评注系统————django.contrib.comments
 - 这些配置是可选的，可以在INSTALLED_APPS中添加。
 
 django.contrib是一套庞大的功能集，它是Django基本代码的组成部分，Django框架就是由众多包含附加组件(add-on)的基本代码构成的。
