@@ -1,4 +1,4 @@
-###django.contrib包————Django自带的很多优秀附加组件
+###django.contrib包————Django自带的优秀附加组件
 - 管理工具————django.contrib.admin
 - 用户鉴别系统————django.contrib.auth
 - 支持匿名会话————django.contrib.sessioins
@@ -41,4 +41,3 @@ admin.site.register(mcj, mcjAdmin)
 - filter_horizontal和filter_vertical选项只能用在多对多字段上，而不能用于ForeignKey字段。默认地，管理工具使用`下拉框`来展现`外键`字段。但是，正如`多对多字段`那样，有时候你不想忍受因装载并显示这些选项而产生的大量开销，以致于添加页面装载时间较久。解决这个问题的办法是使用`raw_id_fields`选项。它是一个包含外键字段名称的元组，它包含的字段将被展现成`文本框`，而不再是`下拉框`。
 - admin.site.register()函数接受一个ModelAdmin子类作为第二个参数。如果你忽略第二个参数，Django将使用默认的选项。
 -   
-
