@@ -1,6 +1,6 @@
 /*
 * @Date:   2016-10-20 17:30:30
-* @Last Modified time: 2016-10-20 17:41:44
+* @Last Modified time: 2016-12-01 15:15:55
 */
 USE `crm`;
 -- 2016 05 20 09 17 56
@@ -29,3 +29,22 @@ SELECT
         RIGHT(o4.`StartDate`,2)
         ) AS StartDate
 FROM order_400calllog o4;
+
+SELECT
+    CASE startdate
+    WHEN '' THEN ''
+    ELSE CONCAT(
+        LEFT(jc.`startdate`,4),
+        "-",
+        SUBSTRING(jc.`startdate`,5,2),
+        "-",
+        SUBSTRING(jc.`startdate`,7,2),
+        " ",
+        SUBSTRING(jc.`startdate`,9,2),
+        ":",
+        SUBSTRING(jc.`startdate`,11,2),
+        ":",
+        RIGHT(jc.`startdate`,2)
+        )
+    END AS startdate
+FROM `jiya_connecting` jc;
