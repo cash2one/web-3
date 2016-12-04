@@ -41,21 +41,12 @@
     + action=""将表单提交给与当前页面相同的URL。
 - request.raw_data 这个是获取 post提交的xml原始数据。
 
-send_mail(  
-　　request.POST['subject'],  
-　　request.POST['message'],  
-　　request.POST.get('email', 'noreply@example.com'),  
-　　['siteowner@example.com'],  
-)  
-django.core.mail.send_mail()是Django的EmailMessage类的一个发送e-mail的函数。  
-有四个必选参数：
-    + 主题
-    + 正文
-    + 寄信人
-    + 收件人列表
+
+django.core.mail.send_mail()是Django的EmailMessage类的一个发送e-mail的函数。
+
 EmailMessage类提供了更高级的方法，比如附件，多部分邮件，以及对于邮件头部的完整控制。若要使用send_mail()函数来发送邮件，那么服务器需要配置成能够对外发送邮件，并且在Django中设置出站服务器地址。  
 若用户刷新一个包含POST表单的页面，那么请求将会重新发送造成重复。这通常会造成非期望的结果，比如说重复的数据库记录、发送两封同样的邮件等。 如果用户在POST表单之后被重定向至另外的页面，就不会造成重复的请求了。
-我们应每次都给成功的POST请求做重定向。  
+我们应每次都给成功的POST请求做重定向。 
 
 若数据验证失败后，将原来的提交数据返回给模板，并且编辑HTML里的各字段来填充原来的值。以便用户查看哪里出现错误（用户也不需再次填写正确的字段值）。  
 
