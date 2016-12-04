@@ -1,5 +1,4 @@
-####一、 HttpRequest对象包含当前请求URL的一些信息：  
-
+####HttpRequest对象————包含当前请求URL的一些信息
 |        属性/方法        |                    说明/举例                     |
 |-------------------------|--------------------------------------------------|
 | request.path            | 除域名以外的请求路径，以正斜杠开头-->"/hello/"   |
@@ -7,8 +6,8 @@
 | request.get_full_path() | 请求路径，可能包含查询字符串-->"/hello/?p=true"  |
 | request.is_secure()     | 是否通过HTTPS访问，返回True/False                |
 
-####二、 request.META 是一个Python字典，包含了所有本次HTTP请求的Header信息，比如用户IP地址和用户Agent（浏览器的名称和版本号）。  
-注意，Header信息的完整列表取决于用户所发送的Header信息和服务器端设置的Header信息。这个字典中几个常见的键值有：  
+####request.META——————一个Python字典，包含了所有本次HTTP请求的Header信息，比如用户IP地址和用户Agent（浏览器的名称和版本号）。
+注意，Header信息的完整列表取决于用户所发送的Header信息和服务器端设置的Header信息。这个字典中几个常见的键值有：
 
 - HTTP_REFERER，进站前链接网页，如果有的话。（是REFERRER的笔误。）
 - HTTP_USER_AGENT，用户浏览器的user-agent字符串，如果有的话。 例如： "Mozilla/5.0 (X11; U; Linux i686; fr-FR; rv:1.8.1.17) Gecko/20080829 Firefox/2.0.0.17"。
