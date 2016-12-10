@@ -1,4 +1,8 @@
-所有基于类的视图中定义的方法需要在类视图调用 as_view() 方法后被自动调用，因为 Django 的 URL 解析器将请求和关联的参数发送给一个可调用的函数而不是一个类，所以基于类的视图有一个 as_view() 类方法用来作为类的可调用入口。
+###调用方式
+- as_view()————类方法用来作为类的可调用入口————必须
+    + Django的URL解析器将请求和关联的参数发送给一个可调用的函数
+- 子类化并在子类中覆盖属性和方法
+- 在URLconf 中用as_view()  调用的关键字参数配置类的属性
 
 ###TemplateView————仅仅展示一个模板的视图
 - 可以方便的定义要返回的模板但它不能把数据库中的内容查询展示出来。
@@ -27,18 +31,18 @@ class TemplateView(TemplateResponseMixin, ContextMixin, View):
 当需要使用过滤条件或者对数据进行一定的操作时，则需要重写 ListView 中获取数据的方法（get_queryset 方法）。
 
 ```
-    def get_queryset(self):
-        """
-            重写 get_queryset 方法，取出发表的文章并转换文章格式
-        """
-        article_list = Article.objects.filter(status='p')
-        for article in article_list:
-            article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'], )
-        return article_list
+def get_queryset(self):
+    """
+    重写 get_queryset 方法，取出发表的文章并转换文章格式
+    """
+    article_list = Article.objects.filter(status='p')
+    for article in article_list:
+        article.body = markdown2.markdown(article.body, extras=['fenced-code-blocks'], )
+    return article_list
 
-    def get_context_data(self, **kwargs):
-        kwargs['category_list'] = Category.objects.all().order_by('name')
-        return super(IndexView, self).get_context_data(**kwargs)
+def get_context_data(self, **kwargs):
+    kwargs['category_list'] = Category.objects.all().order_by('name')
+    return super(IndexView, self).get_context_data(**kwargs)
 ```
 
 ###DetailView————获取每个数据的详细信息
