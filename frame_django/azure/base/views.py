@@ -88,7 +88,7 @@ def login(request, param):
 
 
 class DownloadList(ListView):
-    # 存放数据库搜索结果的变量名，用于模板循环
+    # 存放数据库搜索结果的变量名，用于模板循环，默认为object_list
     # context_object_name = "object_list"
 
     template_name = 'base/download_list.html'

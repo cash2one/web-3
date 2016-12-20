@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-11-28 11:03:52
-# @Last Modified time: 2016-12-01 16:40:46
+# @Last Modified time: 2016-12-20 18:30:33
 #
 """
 https://docs.djangoproject.com/en/1.10/topics/http/urls/
@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/1.10/topics/http/urls/
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
+from focus import urls as focus_urls
 #
 # "r"————正则表达式字符串的开头字母————匹配原始字符串，不需要处理"/"（转义符）
 # 默认参数值是字符串————这是为了保持一致，因为捕捉的url请求路径总是字符串（Unicode str）
@@ -24,7 +25,9 @@ urlpatterns = [
     #
     # 包含其它URLconf，此处r'^'不应有$
     url(r'^base/', include('base.urls')),
-    url(r'^forward/', include('forward.urls'))
+    url(r'^forward/', include('forward.urls')),
+    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^focus/', include(focus_urls)),
 ]
 #
 #
