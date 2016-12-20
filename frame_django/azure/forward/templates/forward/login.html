@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" " http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% include "base/include/head.html" %}
+</head>
+{% load staticfiles %}
+<body class="bg-success">
+    {% include "base/include/top.html" %}
+    <div class="container vertical-center">
+        <div class="row" id="login-row">
+            <div class="col-md-7 col-sm-6">
+                <img src="{% static 'base/images/login.jpg' %}" class="img-responsive img-circle img-width" alt="login img">
+            </div>
+            <div class="panel panel-success col-md-4 col-sm-6 col-xs-12 col-md-offset-1 bg-grey" id="login">
+                <form role="form" class="panel-body form-horizontal text-center" id="login_form" method="get">
+                    <input name="not_first" value="not_first" type="hidden"/>
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label class="input-group-addon">
+                            <span class="glyphicon glyphicon-user text-primary"></span>
+                        </label>
+                        <input type="text" name="email" class="form-control" placeholder="请输入邮箱" />
+                    </div>
+                    {% if form.email.errors %}
+                        <ul>
+                            {% for error in form.email.errors %}
+                                <li class="text-red text-left" style="list-style-type: none;"><strong>{{ error }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>&nbsp;</p>
+                    {% endif %}
+                    <div class="input-group">
+                        <input type="text" name="random" class="form-control" placeholder="请输入验证码"/>
+                        <span class="input-group-addon text-primary" style="cursor: pointer" onclick="getcode()">获取验证码</span>
+{#                        <span class="input-group-addon text-primary">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>#}
+                    </div>
+                    {% if form.random.errors %}
+                        <ul>
+                            {% for error in form.random.errors %}
+                                <li class="text-red text-left" style="list-style-type: none;"><strong>{{ error }}</strong></li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>&nbsp;</p>
+                    {% endif %}
+                    <div class="form-group form-inline" style="padding-left:20px">
+                        <input type="submit" class="btn btn-success" value="登录" style="width:55%">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% include "base/include/foot.html" %}
+</body>
+</html>
+<script type="text/javascript" src="{%static 'forward/js/login.js' %}"></script>
