@@ -59,4 +59,14 @@ bin/
 
 
 # django project
-frame_django/azure/
+frame_django/azure/static/
+migrations/
+frame_django/azure/temp/
+
+
+# log
+uwsgi6688.log
+*.sqlite3
+
+
+password.py
