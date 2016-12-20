@@ -126,6 +126,9 @@ class DownloadList(ListView):
         # context['annotate'] = annotate
         return context
 
+    # def get_object(self, queryset=None):
+    #     return get_object_or_404(Product, key=self.kwargs.get('name'))
+
 
 # excel导出视图
 def report_excel(request):
@@ -172,3 +175,7 @@ class AddDownload(View):
             # id = d.id
             data = "ok"
         return HttpResponse(data)
+
+
+# from django.shortcuts import get_object_or_404
+# publisher = get_object_or_404(DownLoad, name__iexact=self.args[0])

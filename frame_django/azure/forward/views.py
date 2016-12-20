@@ -21,6 +21,8 @@ def form_test(request):
             # form表单绑定接收的数据，进行数据验证，反馈错误提示信息
             fm_check = MyForm(request.GET)
             if fm_check.is_valid():
+                # new_product = fm_check.save()
+                # return HttpResponseRedirect(new_product.get_absolute_url())
                 return render(request, "forward/form_with_style.html", {'form': fm})
             #
             # “提交的信息不符合要求”时被调用
