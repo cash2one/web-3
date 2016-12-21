@@ -7,14 +7,16 @@
             <label class="input-group-addon">
                 <span class="glyphicon glyphicon-user text-primary"></span>
             </label>
-            <input type="text" name="phone" class="form-control" placeholder="请输入手机号" />
+            {{ form.uname }}
+            {{ form.uname.errors }}
         </div>
         <p class="text-red text-left">&nbsp;</p>
         <div class="input-group">
             <label class="input-group-addon">
                 <span class="glyphicon glyphicon-lock text-primary"></span>
             </label>
-            <input type="password" name="passwd" class="form-control" placeholder="请输入密码" />
+            {{ form.pwd }}
+            {{ form.pwd.errors }}
         </div>
         <p class="text-red text-left">&nbsp;</p>
 

@@ -1,9 +1,9 @@
 from django.conf.urls import url, include
-from login.views import login_views
+from login import views
 
 
 urlpatterns = [
-    url(r'^', include([
-        url(r'^([a-z]+_[a-z]+|)$', login_views.LoginView.as_view(), name="login")
+    url(r'^login/', include([
+        url(r'^([a-z]+_[a-z]+|)$', views.LoginView.as_view(), name="login")
     ])),
 ]
