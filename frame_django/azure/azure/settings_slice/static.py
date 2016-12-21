@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-01 22:46:25
-# @Last Modified time: 2016-12-06 07:40:05
+# @Last Modified time: 2016-12-21 17:04:19
 #
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(
@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(
 STATICFILES_FINDERS = [
     # 从STATICFILES_DIRS目录查找————默认开
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    # 从每一个INSTALLED_APPS/static目录查找————默认
+    # 从每一个INSTALLED_APPS/static目录查找————默认开
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
 ]

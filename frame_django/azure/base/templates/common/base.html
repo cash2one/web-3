@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-{% include "login/include/head.html" %}
+{% include "common/include/head.html" %}
 {% block addHeader %}{% endblock %}
 </head>
 
 <body class="bg-success">
 
-    {% include "login/include/top.html" %}
+    {% include "common/include/top.html" %}
     <br/>
     <br/>
     <br/>
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    {% include "login/include/foot.html" %}
+    {% include "common/include/foot.html" %}
 
 </body>
 </html>
@@ -42,4 +42,4 @@
     "{% static '***/***.css' %}"————生成静态文件的绝对URL————不能用在静态文件（比如样式表）中
 {% endcomment %}
 {% load staticfiles %}
-<script type="text/javascript" src="{% static 'login/js/base.js' %}"></script>
+<script type="text/javascript" src="{% static 'common/js/base.js' %}"></script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" " http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    {% include "common/include/head.html" %}
+    {% block addHeader %}{% endblock %}
+</head>
+
+<body class="bg-success">
+
+    {% include "common/include/top.html" %}
+    <br/>
+    <br/>
+    <br/>
+{#    <div class="container-fluid">#}
+    <div class="container">
+        <div class="row">
+{#            {% include "login/include/sidebar.html" %}#}
+            {% block center %}{% endblock %}
+        </div>
+    </div>
+
+    {% include "common/include/foot.html" %}
+
+</body>
+</html>
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'common/js/base.js' %}"></script>

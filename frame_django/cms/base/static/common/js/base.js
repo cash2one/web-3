@@ -52,10 +52,3 @@ $(document).ready(function(){
     //}
 });
 
-
-/**
- * 分頁
- */
-//$("#page-break li").hover(function () {
-//    $(this).toggleClass("active");
-//});

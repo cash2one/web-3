@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-11-28 11:03:52
-# @Last Modified time: 2016-12-12 09:30:58
+# @Last Modified time: 2016-12-21 17:17:08
 #
 import os
 #
@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = [
 #=========================================================================
 from settings_slice.security import *
 from settings_slice.session import *
-from settings_slice.dbs import *
+from settings_slice.databases import *
 from settings_slice.templates import *
 from settings_slice.static import *
 # from settings_slice.upload import *
