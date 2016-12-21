@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     # 如果项目和sentry位于不同服务器，可能需要安装raven
     # 'raven.contrib.django',
     'base',
-    'forward'
+    'login',
+    # 'forward'
 ]
 #
 # 中间件
@@ -55,7 +56,7 @@ MIDDLEWARE_CLASSES = [
     # 开启国际化的支持（放在Session后）————把管理工具翻译你想要的语言
     # 'django.middleware.locale.LocaleMiddleware',
     # 自定义登录拦截器
-    'base.security.interceptor.InterceptorMiddleware'
+    'login.common.interceptor.InterceptorMiddleware'
 ]
 #=========================================================================
 from settings_slice.security import *

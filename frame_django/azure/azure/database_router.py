@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-01 09:29:01
 # @Last Modified time: 2016-12-07 15:26:17
-
+#
+#'app_name':'database_name'
 DATABASE_APPS_MAPPING = {
-    #'app_name':'database_name',
     'default': 'manage',
-    'base': 'base',
+    'login': 'login',
     'forward': 'forward',
 }
 

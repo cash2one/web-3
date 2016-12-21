@@ -4,9 +4,6 @@
 import views
 from django.conf.urls import url, include
 urlpatterns = [
-    url(r'^form_test', views.form_test),
-    url(r'^login', views.LoginView.as_view()),
-    url(r'^getcode', views.login_email_validate),
 ]
 
 '''

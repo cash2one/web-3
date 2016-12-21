@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" " http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    {% include "login/include/head.html" %}
+</head>
+{% load static from staticfiles %}
+<body class="bg-success">
+    {% include "login/include/top.html" %}
+    <div class="container vertical-center">
+        <div class="row" id="login-row">
+{#        md————笔记本，sm————平板，xs————手机#}
+            <div class="col-md-7 col-sm-6">
+                <img src="{% static 'login/images/login.jpg' %}" class="img-responsive img-circle img-width" alt="login img">
+            </div>
+{#            {{ form }}、{{ form | length }}#}
+            {% if not form %}
+                {% comment %}
+                    if，对变量求值，判断True/False
+                    支持else，新版支持elif；
+                    支持 and、or、not、and not；
+                    支持  ==, !=, <, >, <=, >= 和 in；
+                    不支持在同一个标签中同时使用and和or；
+                    不支持用()来组合比较操作；
+                {% endcomment %}
+                {% include 'login/login/login.html' %}
+            {% else %}
+                {% ifequal form "new_register" %}
+                    {% comment %}
+                        ifequal合法参数————模板变量，字符串，整数和小数
+                        ifequal非法参数————其他任何类型，例如Python的字典类型、列表类型、布尔类型
+                        支持else，不支持elif
+                    {% endcomment %}
+                    {% include 'login/login/new_register.html' %}
+                {% endifequal %}
+                {% ifequal form 'change_secret'  %}
+                    {% include 'login/login/change_secret.html' %}
+                {% endifequal %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="returnTop" class="text-center text-primary">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+    </div>
+
+
+    <div class="navbar navbar-bottom navbar-fixed-bottom" id="nav-bottom">
+        <ul class="text-center list-unstyled">
+            <li class="">Copyright ©20**-20** *** 版权所有</li>
+            <li class="">*ICP备*****号</li>
+        </ul>
+    </div>
+</body>
+</html>
+{% load staticfiles %}
+<script type="text/javascript" src="{%static 'login/js/login.js' %}"></script>

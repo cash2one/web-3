@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-11-29 10:19:11
-# @Last Modified time: 2016-12-08 13:27:52
+# @Last Modified time: 2016-12-21 09:18:44
 #
 # import re
 import platform
@@ -56,15 +56,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-#
-# 定义django admin使用的User模型
-AUTH_USER_MODEL = 'auth.User'
-# AUTH_USER_MODEL = 'azure.authentication_modify.User'
-#
-# 进行用户验证的python类————调用django.contrib.auth.authenticate()会一一尝试
-# 如果用户名和密码在多个后台中都是合法的，Django 将在第一个匹配成功后停止处理
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
-
 # 可以接收代码错误通知的用户
 # ADMINS = [
 #     ('Full Name', 'email@example.com'),
@@ -83,8 +74,3 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 # @xframe_options_sameorigin————视图可以显示在iframe框架里
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 # X_FRAME_OPTIONS = 'DENY'
-#
-# （后台系统）登录登出重定向
-LOGIN_URL = '/accounts/login/'
-LOGOUT_URL = '/accounts/logout/'
-LOGIN_REDIRECT_URL = '/accounts/profile/'

@@ -43,9 +43,9 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
     },
-    'base': {
+    'login': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'base',
+        'NAME': 'login',
         'USER': 'root',
         'PASSWORD': 'zdd12315',
         'HOST': host,
