@@ -15,8 +15,8 @@ import views
 urlpatterns = [
     # test必须有/
     url(r'^test/', include([
-        url(r'^form_test', views.form_test),
-        url(r'^login_test', views.LoginView.as_view()),
+        url(r'^test_form', views.test_form),
+        url(r'^test_login', views.LoginView.as_view()),
         url(r'^getcode', views.login_email_validate)
     ]))
 ]

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
-# @Last Modified time: 2016-12-22 13:31:10
+# @Last Modified time: 2016-12-22 23:45:30
 from django.http import HttpResponse
 from django.views import View
 from django.shortcuts import render
@@ -30,6 +30,8 @@ class LoginView(View):
             form = EmailRegisterForm(request.POST)
             html = "login/email_register.html"
             if form.is_valid():
+                # new_product = fm_check.save()
+                # return HttpResponseRedirect(new_product.get_absolute_url())
                 u = SimpleUser(
                     email=form.cleaned_data['email'],
                     is_active=1,

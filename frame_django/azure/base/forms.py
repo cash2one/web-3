@@ -3,6 +3,7 @@
 # @Last Modified time: 2016-12-22 18:21:02
 #
 # 创建表单类————进行后台数据验证
+# django1.10默认会在后台验证之前在前台进行必填字段验证，弹出悬浮提示标签
 from django import forms
 
 from base.models import EmailLogin
@@ -10,14 +11,11 @@ from base.models import EmailLogin
 
 class MyForm(forms.Form):
     textInput = forms.CharField(label='字段1', max_length=10)
-    textArea = forms.CharField(
-        label='字段2', max_length=30, widget=forms.Textarea)
+    textArea = forms.CharField(label='字段2', max_length=30, widget=forms.Textarea)
 
 
 # error_messages————自定义错误信息
 # pip install -U django
-# django1.10默认提示为在输入框下方弹出悬浮提示框（取决于初始化，不经过后台）
-# django1.9以下默认在输入框下方生成提示列表
 class LoginForm(forms.Form):
     email = forms.EmailField(
         # widget=forms.TextInput(

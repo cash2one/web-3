@@ -9,7 +9,7 @@ from login import views
 
 urlpatterns = [
     # 声明共同的路径前缀，然后include，不能直接把父级、子级写在一起
-    url(r'^', include([
+    url(r'^login/', include([
         # 使用命名组，传递关键字参数————忽略非命名组————(?P<name>pattern)
         # name是组的名字，pattern是匹配模式
         # 没有命名组，传递位置参数————(name)

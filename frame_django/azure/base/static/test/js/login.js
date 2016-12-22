@@ -3,7 +3,7 @@
  */
 var getcode = function(){
     $.ajax({
-        url: '/login/test/getcode',
+        url: '/test/getcode',
         data: {email: $("[name=email]").val()},
         success: function(data) {
             alert(data)

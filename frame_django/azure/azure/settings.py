@@ -56,7 +56,7 @@ MIDDLEWARE_CLASSES = [
     # 开启国际化的支持（放在Session后）————把管理工具翻译你想要的语言
     # 'django.middleware.locale.LocaleMiddleware',
     # 自定义登录拦截器
-    'login.common.interceptor.InterceptorMiddleware'
+    # 'login.common.interceptor.InterceptorMiddleware'
 ]
 #=========================================================================
 from settings_slice.security import *

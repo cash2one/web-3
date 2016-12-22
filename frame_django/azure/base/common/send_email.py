@@ -8,19 +8,20 @@ import random
 from django.core.mail import send_mail, send_mass_mail
 from azure.settings import DEFAULT_FROM_EMAIL
 
+
 def return_a_code(address):
     chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     code = random.sample(chars, 4)
-    str = ''
+    str_code = ''
     for i in code:
-        str += i
+        str_code += i
     #
     # 四个必选参数————主题、正文、寄信人、收件人列表
     send_mail(
         '登录验证',
-        '邮箱登录验证码%s' % str,
+        '邮箱登录验证码%s' % str_code,
         DEFAULT_FROM_EMAIL,
         [address],
         fail_silently=False
     )
-    return str
+    return str_code

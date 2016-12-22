@@ -23,8 +23,9 @@ urlpatterns = [
     # url(r'^$', RedirectView.as_view(url='/base/hello')),
     #
     # include————包含其它URLconf，此处r'^'不应有$
-    url(r'^base/', include('base.urls')),
-    url(r'^forward/', include('forward.urls')),
-    url(r'^login/', include(login_urls)),
+    url(r'^', include([
+        url(r'^', include('base.urls')),
+        url(r'^', include(login_urls)),
+    ]))
 ]
 
