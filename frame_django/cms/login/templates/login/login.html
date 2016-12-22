@@ -1,39 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" " http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    {% include "common/include/head.html" %}
-</head>
+{% extends "login/base_login.html" %}
+{% block center %}
+    {% load staticfiles %}
 
-{% load static from staticfiles %}
-<body class="bg-success">
+    <div class="panel panel-success col-md-4 col-sm-6 col-xs-12 col-md-offset-1 bg-grey" id="login">
+        <form role="form" class="panel-body form-horizontal text-center" id="login_form" method="post">
+            {% csrf_token %}
 
-    {% include "common/include/top.html" %}
+            {{ form.from_id }}
+            <div class="input-group">
+                <label class="input-group-addon">
+                    <span class="glyphicon glyphicon-user text-primary"></span>
+                </label>
+                {{ form.phone }}{{ form.phone.errors }}
+            </div>
+            <br/>
+            <div class="input-group">
+                <label class="input-group-addon">
+                    <span class="glyphicon glyphicon-lock text-primary"></span>
+                </label>
+                {{ form.pwd }}{{ form.pwd.errors }}
+            </div>
+            <br/>
 
-    <div class="container vertical-center">
-
-        <div class="row" id="login-row">
-            <div class="col-md-7 col-sm-6">
-                <img src="{% static 'login/images/login.jpg' %}" class="img-responsive img-circle img-width" alt="login img">
+            <div class="form-group form-inline" style="padding-left:80px;padding-right:80px;">
+{#                <a class="pull-left" href="{% url 'login' 'change_secret' %}" id="secret">忘记密码</a>#}
+                <a class="pull-right" href="{% url 'login' 'email_register' %}" id="register">免费注册</a>
             </div>
 
-            {% if form_name == "phone_register"  %}
-                {% include 'login/forms/phone_register.html' %}
-            {% elif form_name == "email_register" %}
-                {% include 'login/forms/email_register.html' %}
-            {% elif form_name == "change_secret" %}
-                {% include 'login/forms/change_secret.html' %}
-            {% else %}
-                {% include 'login/forms/login.html' %}
-            {% endif %}
-
-        </div>
-
+            <div class="form-group form-inline" style="padding-left:20px">
+                <input type="submit" class="btn btn-success" value="登录" style="width:55%">
+            </div>
+        </form>
     </div>
-
-    {% include "common/include/foot.html" %}
-
-</body>
-</html>
-{% load staticfiles %}
-{% load staticfiles %}
-<script type="text/javascript" src="{%static 'login/js/login.js' %}"></script>
+    <script type="text/javascript" src="{% static 'login/js/login.js' %}"></script>
+{% endblock %}

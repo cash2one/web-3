@@ -32,6 +32,7 @@ var addDownload = function() {
         //dataType: "html",
         data: {
             csrfmiddlewaretoken: getCookie('csrftoken'),
+            // csrfmiddlewaretoken: '{{ csrf_token }}',
             create_name: $("[name=create_name]").val(),
             file_name: $("[name=file_name]").val(),
             address: $("[name=address]").val()

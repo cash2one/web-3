@@ -17,5 +17,19 @@ DATABASES = {
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
+    },
+    'login': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'login',
+        'USER': 'root',
+        'PASSWORD': 'zdd12315',
+        'HOST': host,
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
     }
 }
+
+
+DATABASE_ROUTERS = ['cms.database_router.DatabaseAppsRouter']

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 10:26:23
-# @Last Modified time: 2016-12-21 10:27:29
+# @Last Modified time: 2016-12-22 18:21:02
 #
 # 创建表单类————进行后台数据验证
 from django import forms
@@ -15,7 +15,7 @@ class MyForm(forms.Form):
 
 # error_messages————自定义错误信息
 # pip install -U django
-# django1.10默认提示为在输入框下方弹出悬浮提示框
+# django1.10默认提示为在输入框下方弹出悬浮提示框（取决于初始化，不经过后台）
 # django1.9以下默认在输入框下方生成提示列表
 class LoginForm(forms.Form):
     email = forms.EmailField(
@@ -44,8 +44,9 @@ class LoginForm(forms.Form):
     # Django的form系统自动寻找合法的校验函数
     def clean_random(self):
         # cleaned_data————在数据合法的情况下，它包含干净的提交数据的字典
-        email = self.cleaned_data['email']
-        code = self.cleaned_data['random']
+        cleaned_data = self.cleaned_data
+        email = cleaned_data['email']
+        code = cleaned_data['random']
         try:
             u = EmailLogin.objects.get(email=email)
             random = u.random
@@ -54,3 +55,4 @@ class LoginForm(forms.Form):
         else:
             if random != code:
                 raise forms.ValidationError('验证码不正确')
+        return cleaned_data
