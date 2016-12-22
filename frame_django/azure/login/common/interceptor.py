@@ -29,6 +29,8 @@ white_ips = [
     '127.0.0.1',
 ]
 
+ignore_urls = []
+
 
 class InterceptorMiddleware(MiddlewareMixin):
     def process_request(self, request):
@@ -37,16 +39,15 @@ class InterceptorMiddleware(MiddlewareMixin):
             ip = request.META['HTTP_X_FORWARDED_FOR']
         else:
             ip = request.META['REMOTE_ADDR']
-        # 不对/login/test下的url进行拦截
-        reg = re.compile("/login/test/")
-        if re.match(reg, request.path) or request.path == '/login/test':
+        # 不对特定的url进行拦截
+        if request.path in ignore_urls:
             return None
-        else:
-            if request.path != '/login/' or ip not in white_ips:
-                try:
-                    phone = request.session['phone']
-                    passwd = request.session['passwd']
-                    if not check_pwd(phone, passwd):
-                        return HttpResponseRedirect('/login')
-                except Exception, e:
+        if request.path != '/login/' or ip not in white_ips:
+            try:
+                phone = request.session['phone']
+                passwd = request.session['passwd']
+                if not check_pwd(phone, passwd):
                     return HttpResponseRedirect('/login')
+            except Exception, e:
+                return HttpResponseRedirect('/login')
+        return None

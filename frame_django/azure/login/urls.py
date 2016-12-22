@@ -4,8 +4,8 @@
 #
 # 传递额外的参数到视图函数
 # url(r'^foo/$', views.foobar_view, {'template_name': 'template1.html'}),
-from views import views, test_views
 from django.conf.urls import url, include
+from login import views
 
 urlpatterns = [
     # 声明共同的路径前缀，然后include，不能直接把父级、子级写在一起
@@ -22,12 +22,4 @@ urlpatterns = [
         url(r'^add_download', views.AddDownload.as_view()),
     ])),
 ]
-# 邮箱验证码登录测试
-urlpatterns += [
-    # test必须有/
-    url(r'^test/', include([
-        url(r'^form_test', test_views.form_test),
-        url(r'^login_test', test_views.LoginView.as_view()),
-        url(r'^getcode', test_views.login_email_validate)
-    ]))
-]
+

@@ -6,6 +6,7 @@
         <form role="form" class="panel-body form-horizontal text-center" id="login_form" method="post">
             {% csrf_token %}
 
+            <input type="text" class="form-control" value="" required/>
             {{ form.from_id }}
             <div class="input-group">
                 <label class="input-group-addon">

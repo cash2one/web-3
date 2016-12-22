@@ -11,3 +11,13 @@
 
 在template中，每个field获取自己错误的方式是：{{ form.username.errors }}。
 如果有错误is_valid()返回False，否则返回True。
+
+
+####绑定数据到表单————接收一个字典————键对应表单类中的属性————us = UserForm(request.GET)
+- us.is_bound————检验表单是否绑定
+    + 未绑定的表单没有关联的数据，渲染时，表单为空或包含默认的值
+    + 绑定的表单具有提交的数据，可以用来检验数据是否合法
+    + 如果渲染一个不合法的绑定的表单，页面反馈ValidationError错误信息
+- us.is_valid()————检验表单数据是否合法
+    + us.is_valid!=True————带着表单返回到模板，表单不再为空，HTML表单将用之前提交的数据填充，然后可以根据要求编辑并改正它
+    + us.is_valid=True————将合法的表单数据放到cleaned_data属性中

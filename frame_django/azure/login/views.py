@@ -21,8 +21,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.generic import ListView, View
 # from django.views.generic import TemplateView
 from login.common.security import create_pwd, create_session
-from login.forms.forms import UserForm
-from login.models.models import SimpleUser, DownLoad
+from login.forms import UserForm
+from login.models import SimpleUser, DownLoad
 from base.common.excelDownload import big_excel_download
 #
 # Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
@@ -38,18 +38,8 @@ def login(request, param):
             # 填充{% csrf_token %}
             fill.update(form=param)
         fill.update(csrf(request))
-        # 使用dict.get('key')取值，找不到返回None，不报错
-        # 尽量避免使用dict['key']取值
         if request.GET.get('form_name') == "login":
-            # 绑定数据到表单————接收一个字典————键对应表单类中的属性
-            # us.is_bound————检验表单是否绑定（表单为空————未绑定）
-            # 未绑定的表单没有关联的数据，当渲染给用户时，它将为空或包含默认的值
-            # 绑定的表单具有提交的数据，可以用来检验数据是否合法
-            # 如果渲染一个不合法的绑定的表单，它将包含内联的错误信息，告诉用户如何纠正数据
             us = UserForm(request.GET)
-            # us.is_valid————检验表单数据是否合法
-            # us.is_valid!=True————带着表单返回到模板，表单不再为空，HTML表单将用之前提交的数据填充，然后可以根据要求编辑并改正它
-            # us.is_valid=True————将合法的表单数据放到cleaned_data属性中
             if us.is_valid():
                 phone = us.cleaned_data['phone']  # 访问“清洁”的数据
                 passwd = us.cleaned_data['passwd']
@@ -148,6 +138,7 @@ def report_excel(request):
 
 # 基于类的表单处理视图
 class AddDownload(View):
+
     @method_decorator(csrf_protect)
     def dispatch(self, request, *args, **kwargs):
         return super(AddDownload, self).dispatch(request, *args, **kwargs)
@@ -165,7 +156,8 @@ class AddDownload(View):
         if not address:
             data = "文件链接必填"
         if not data:
-            d = DownLoad(file_name=file_name, create_name=create_name, address=address)
+            d = DownLoad(file_name=file_name,
+                         create_name=create_name, address=address)
             # save()————保存到数据库
             d.save()
             # 获取增加的这条数据的ID

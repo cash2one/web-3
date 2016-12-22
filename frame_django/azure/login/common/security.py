@@ -4,7 +4,7 @@
 #
 # 密码加密模块
 from django.contrib.auth.hashers import *
-from login.models.models import *
+from login.models import SimpleUser
 
 
 def create_pwd(ps):

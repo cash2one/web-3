@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-10 22:05:10
 # @Last Modified time: 2016-12-10 22:05:30
-
+from models import SimpleUser, UserLoginLog, DownLoad
 from django.contrib import admin
-
-# Register your models here.
-from base.models import *
 
 
 class UserAdmin(admin.ModelAdmin):

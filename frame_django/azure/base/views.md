@@ -1,4 +1,5 @@
 ####HttpRequest对象————包含当前请求URL的一些信息
+
 |         属性/方法         |                         说明/举例                          |
 |---------------------------|------------------------------------------------------------|
 | request.path              | 除域名以外的请求路径，以正斜杠开头-->"/hello/"             |
@@ -49,19 +50,15 @@ request.session['foo'] = {}
 request.session['foo']['bar'] = 'baz'
 ```
 
+#####使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
 ```
-*GOOD (VERSION 1)*
-    def ua_display_good1(request):
-        try:
-            ua = request.META['HTTP_USER_AGENT']
-        except KeyError:
-            ua = 'unknown'
-        return HttpResponse("Your browser is %s" % ua)
-
-*GOOD (VERSION 2)*
-    def ua_display_good2(request):
-        ua = request.META.get('HTTP_USER_AGENT', 'unknown')
-        return HttpResponse("Your browser is %s" % ua)
+def ua_display_good1(request):
+    try:
+        ua = request.META['HTTP_USER_AGENT']
+    except KeyError:
+        ua = 'unknown'
+    # ua = request.META.get('HTTP_USER_AGENT', 'unknown')
+    return HttpResponse("Your browser is %s" % ua)
 ```
 
 ###类字典对象————行为像Python标准字典对象，但在技术底层上不是标准字典对象
@@ -69,7 +66,7 @@ request.session['foo']['bar'] = 'baz'
 - 可以用 for key in request.GET获取所有的键；
 - 同时request.GET和request.POST拥有一些普通的字典对象所没有的方法；
 
-###类文件对象————有一些基本文件操作方法，如read()，用来做真正的Python文件对象的代用品
+####类文件对象————有一些基本文件操作方法，如read()，用来做真正的Python文件对象的代用品
 
 ###EmailMessage
 - django.core.mail.send_mail()————EmailMessage类的一个发送e-mail的函数；

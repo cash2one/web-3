@@ -9,9 +9,17 @@ from azure import settings
 from base import tests
 from base.tests import hello
 from django.views.generic import RedirectView
+import views
 
-
-urlpatterns = []
+# 邮箱验证码登录测试
+urlpatterns = [
+    # test必须有/
+    url(r'^test/', include([
+        url(r'^form_test', views.form_test),
+        url(r'^login_test', views.LoginView.as_view()),
+        url(r'^getcode', views.login_email_validate)
+    ]))
+]
 ########################################
 # 调试模式特例————DEBUG 为 True 时才有效
 # 个人测试————isTest
