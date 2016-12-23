@@ -12,7 +12,7 @@ $.validator.addMethod(
     "手机号格式不正确"
 );
 $.validator.addMethod(
-    "passwd",
+    "password",
     function (value, element) {
         var pattern  = /^[a-zA-Z0-9_@%-]{6,12}$/;
         return this.optional(element) || (pattern.test(value));

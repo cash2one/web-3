@@ -1,20 +1,22 @@
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title></title>
 <meta name="description" content="">
 <meta name="keywords" content="">
 {% load static from staticfiles %}
 {#    facvicon.ico#}
 <link rel="shortcut icon" href="{% static 'common/images/logo.ico' %}" type="image/x-icon" />
+
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap-theme.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'common/css/tipso.css' %}"/>
+
 <script type="text/javascript" src="{% static 'common/js/jquery.min.js' %}"></script>
-{#    bootstrap，依赖jquery#}
+{#    bootstrap，jquery插件#}
 <script type="text/javascript" src="{% static 'common/js/bootstrap.min.js' %}"></script>
-{#    validate，表单验证插件，依赖jquery#}
+{#    validate，jquery表单验证插件，#}
 <script type="text/javascript" src="{% static 'common/js/jquery.validate.min.js' %}"></script>
-{#    validate的中文提示包#}
+{#    validate中文提示包#}
 <script type="text/javascript" src="{% static 'common/js/messages_zh.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/validate.add.js' %}"></script>
+{#    Tipso，jQuery提示框插件#}
+<script type="text/javascript" src="{% static 'common/js/tipso.js' %}"></script>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/navbar.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/base.css' %}"/>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 10:26:23
-# @Last Modified time: 2016-12-23 09:36:47
+# @Last Modified time: 2016-12-23 09:50:54
 #
 # 创建表单类————进行后台数据验证
 # django1.10默认会在后台验证之前在前台进行必填字段验证，弹出悬浮提示标签
@@ -19,6 +19,7 @@ class MyForm(forms.Form):
 # pip install -U django
 class LoginForm(forms.Form):
     email = forms.EmailField(
+        # attrs=可以省略
         # widget=forms.TextInput(
         #     attrs={
         #         'class': 'form-control',
