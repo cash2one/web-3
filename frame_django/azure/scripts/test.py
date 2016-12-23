@@ -18,7 +18,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "azure.settings")
 # 启动django
 django.setup()
 
-from base.models import DownLoad
+from login.models import DownLoad
 
 d = DownLoad.objects.all()
 for i in d:

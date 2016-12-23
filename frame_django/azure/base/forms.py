@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 10:26:23
-# @Last Modified time: 2016-12-22 18:21:02
+# @Last Modified time: 2016-12-23 09:36:47
 #
 # 创建表单类————进行后台数据验证
 # django1.10默认会在后台验证之前在前台进行必填字段验证，弹出悬浮提示标签
@@ -11,7 +11,8 @@ from base.models import EmailLogin
 
 class MyForm(forms.Form):
     textInput = forms.CharField(label='字段1', max_length=10)
-    textArea = forms.CharField(label='字段2', max_length=30, widget=forms.Textarea)
+    textArea = forms.CharField(
+        label='字段2', max_length=30, widget=forms.Textarea)
 
 
 # error_messages————自定义错误信息
@@ -19,8 +20,11 @@ class MyForm(forms.Form):
 class LoginForm(forms.Form):
     email = forms.EmailField(
         # widget=forms.TextInput(
-        #     {'class': 'form-control'}
-        # ),
+        #     attrs={
+        #         'class': 'form-control',
+        #         'id': 'email',
+        #         'placeholder': '请输入邮箱地址'
+        #     }),
         error_messages={
             'required': '邮箱必填',
             'invalid': 'Email地址无效'
