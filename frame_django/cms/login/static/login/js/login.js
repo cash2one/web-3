@@ -13,21 +13,6 @@ var getEmailCode = function() {
 
 
 $(function() {
-    $('[name=tip]').tipso({
-        //position: 'top',
-        //speed: 400,
-        //delay: 200,
-        //width: 200,
-        //color: '#ffffff',
-        useTitle: false,
-        offsetX: 60,
-        background: 'tomato'
-    });
-    $('#tip_security_code').tipso({
-        useTitle: false,
-        offsetX: 100,
-        background: 'tomato'
-    });
     $("#email_register").validate({
         //debug: true,
         rules: {
@@ -70,5 +55,20 @@ $(function() {
         errorPlacement: function(error, element){
             element.parent().attr("data-tipso", error.html());
         }
+    });
+    $('[name=tip]').tipso({
+        //position: 'top',
+        //speed: 400,
+        //delay: 200,
+        //width: 200,
+        //color: '#ffffff',
+        useTitle: false,
+        offsetX: 60,
+        background: 'tomato'
+    });
+    $('#tip_security_code').tipso({
+        useTitle: false,
+        offsetX: 100,
+        background: 'tomato'
     });
 });
