@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.shortcuts import render
 from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
+from login.common.security import create_pwd
 from models import SimpleUser
 
 
@@ -15,7 +16,7 @@ class LoginView(View):
         form = html = None
         if not form_name:
             form = LoginForm()
-            html = "login/login.html"
+            html = "login/email_login.html"
         if form_name == "email_register":
             form = EmailRegisterForm()
             html = "login/email_register.html"
@@ -30,16 +31,14 @@ class LoginView(View):
             form = EmailRegisterForm(request.POST)
             html = "login/email_register.html"
             if form.is_valid():
-                # new_product = fm_check.save()
-                # return HttpResponseRedirect(new_product.get_absolute_url())
-                u = SimpleUser(
+                u = SimpleUser.objects.filter(
                     email=form.cleaned_data['email'],
+                    is_active=0
+                ).update(
                     is_active=1,
-                    pass_word=form.cleaned_data['pwd']
+                    pass_word=create_pwd(form.cleaned_data['pwd'])
                 )
-                u.save()
-        if request.path == '/login/phone_register':
-            pass
+                return HttpResponseRedirect("/login")
         return render(request, html, {'form': form})
 
 
@@ -47,14 +46,24 @@ def get_email_code(request):
     email = request.GET.get('email')
     try:
         u = SimpleUser.objects.get(email=email)
-        return HttpResponse("此邮箱已经被注册")
+        if u.is_active != 0:
+            return HttpResponse("此邮箱已经被注册")
+        security_code = send_email_code(email)
+        u = SimpleUser.objects.filter(
+            email=email
+        ).update(
+            security_code=security_code
+        )
     except Exception, e:
         print(e)
         try:
             security_code = send_email_code(email)
-            u = SimpleUser(email=email, security_code=security_code)
+            u = SimpleUser(
+                email=email,
+                security_code=security_code
+            )
             u.save()
-            return HttpResponse("验证码已发送，请在10分钟内完成注册")
         except Exception, e:
             print(e)
             return HttpResponse("邮箱地址不正确")
+    return HttpResponse("ok")

@@ -1,8 +1,9 @@
 {% extends "login/base_login.html" %}
 {% block addHeader %}
+    <title>邮箱注册</title>
     <style type="text/css">
     .tipso_bubble {
-        padding: 6px;
+        padding: 5px;
     }
     .tipso_bubble.top > .tipso_arrow {
         left: 70%;
@@ -65,5 +66,5 @@
         </form>
     </div>
 
-    <script type="text/javascript" src="{% static 'login/js/login.js' %}"></script>
+    <script type="text/javascript" src="{% static 'login/js/email_register.js' %}"></script>
 {% endblock %}

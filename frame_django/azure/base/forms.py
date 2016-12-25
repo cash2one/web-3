@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 10:26:23
-# @Last Modified time: 2016-12-23 09:50:54
+# @Last Modified time: 2016-12-25 17:57:47
 #
 # 创建表单类————进行后台数据验证
 # django1.10默认会在后台验证之前在前台进行必填字段验证，弹出悬浮提示标签
@@ -59,4 +59,4 @@ class LoginForm(forms.Form):
         else:
             if random != code:
                 raise forms.ValidationError('验证码不正确')
-        return cleaned_data
+        return code

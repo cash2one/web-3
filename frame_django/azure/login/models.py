@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-11-28 12:41:50
-# @Last Modified time: 2016-12-03 17:23:52
+# @Last Modified time: 2016-12-25 17:35:47
 from __future__ import unicode_literals
 from django.db import models
 # django中获取当前时间不要用datetime.today()，要用timezone.now()
@@ -10,12 +10,14 @@ from django.utils import timezone
 class SimpleUser(models.Model):
     # _database = "base" # 使用多个数据库时指明用哪个
     # id = models.AutoField()
-    name = models.CharField(verbose_name="用户名",max_length=20)
-    sex = models.IntegerField(verbose_name="性别",default=0, help_text="1，男；2，女")
-    passwd = models.CharField(verbose_name="密码",max_length=100)
-    phone = models.BigIntegerField(verbose_name="电话号码", unique=True) # 电话号码唯一
+    name = models.CharField(verbose_name="用户名", max_length=20)
+    sex = models.IntegerField(
+        verbose_name="性别", default=0, help_text="1，男；2，女")
+    passwd = models.CharField(verbose_name="密码", max_length=100)
+    # 电话号码唯一————unique————非空、不能设默认值
+    phone = models.BigIntegerField(verbose_name="电话号码", unique=True)
     # 使用 EmailValidator 来验证输入合法性
-    email = models.EmailField(verbose_name="邮箱",max_length=50)
+    email = models.EmailField(verbose_name="邮箱", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
     modify_at = models.DateTimeField("最后修改时间", auto_now=True)
     remarks = models.CharField(verbose_name="备注", max_length=50)
@@ -27,7 +29,7 @@ class SimpleUser(models.Model):
         verbose_name_plural = "用户信息表"
         # 自定义数据库表名————默认————'库名_模块名'
         db_table = 'simple_user'
-        # 设置不重复的字段组合————可以是一维，或多维
+        # 联合主键————不重复的字段组合————可以是一维或多维
         unique_together = ('phone', 'name')
         # 减少默认权限
         # default_permissions = ('add', 'change', 'delete')
@@ -40,7 +42,7 @@ class SimpleUser(models.Model):
 
     def __str__(self):
         # 将一个（或多个）对象以unicode的方式显示出来————旧版为__unicode__
-        return u'%s -- %s'%(self.name, self.phone)
+        return u'%s -- %s' % (self.name, self.phone)
 
 
 class UserLoginLog(models.Model):
@@ -58,7 +60,7 @@ class UserLoginLog(models.Model):
         db_table = 'user_login_log'
 
     def __str__(self):
-        return u'%s:%s'%(self.name, self.id)
+        return u'%s:%s' % (self.name, self.id)
 
 
 class DownLoad(models.Model):

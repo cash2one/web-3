@@ -21,7 +21,8 @@
       useTitle        : true,
       onBeforeShow    : null,
       onShow          : null,
-      onHide          : null
+      onHide          : null,
+      stopShow        : false          //添加stopShow参数
     };
 
   function Plugin(element, options) {
@@ -70,13 +71,19 @@
         obj = this,
         $win = $(window);
       if ($.isFunction(obj.settings.onBeforeShow)) {
-        obj.settings.onBeforeShow($(this));
+          obj.settings.onBeforeShow($(this));
       }
       tipso_bubble.css({
         background: obj.settings.background,
         color: obj.settings.color,
         width: obj.settings.width
       }).hide();
+      /**
+       * 添加条件判断，当stopShow参数为true时停止显示
+       */
+      if(obj.settings.stopShow == true){
+        return false;
+      }
       tipso_bubble.find('.tipso_content').html(obj.content());
       reposition(obj);
       $win.resize(function() {

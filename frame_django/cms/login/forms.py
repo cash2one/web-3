@@ -8,61 +8,22 @@ from models import SimpleUser
 
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(
-        widget=forms.TextInput({
-                'class': 'form-control',
-                'id': 'phone',
-                'placeholder': '请输入手机号'
-            }),
+    email = forms.EmailField(
         error_messages={
-            'required': '请填写手机号'
+            'required': '请填写邮箱地址',
+            'invalid': '邮箱格式不正确'
         }
     )
     pwd = forms.CharField(
-        widget=forms.PasswordInput({
-                'class': 'form-control',
-                'id': 'pwd',
-                'placeholder': '请输入6~12位密码'
-            }),
+        min_length=6,
+        max_length=12,
+        widget=forms.PasswordInput(),
         error_messages={
-            'required': '请输入密码'
+            'required': '请填写密码',
+            'min_length': '密码不能小于6位',
+            'max_length': '密码不能超过12位',
         }
     )
-    from_id = forms.CharField(
-        widget=forms.HiddenInput({
-                'id': 'form_id',
-                'value': 'login_form'
-            })
-    )
-
-
-class PhoneRegisterForm(forms.Form):
-    phone = forms.CharField(
-        widget=forms.TextInput({
-                'class': 'form-control',
-                'id': 'phone',
-                'placeholder': '请输入手机号'
-            }),
-        error_messages={
-            'required': '请填写手机号'
-        }
-    )
-    pwd = forms.CharField(
-        widget=forms.PasswordInput({
-                'class': 'form-control',
-                'id': 'pwd',
-                'placeholder': '请输入6~12位密码'
-            }))
-
-    def clean_phone(self):
-        cleaned_data = self.cleaned_data
-        phone = cleaned_data.get("phone")
-        try:
-            u = SimpleUser.objects.get(phone=phone)
-            raise forms.ValidationError('手机号已存在')
-        except Exception, e:
-            print(e)
-            return cleaned_data
 
 
 class EmailRegisterForm(forms.Form):
@@ -98,11 +59,12 @@ class EmailRegisterForm(forms.Form):
         cleaned_data = self.cleaned_data
         email = cleaned_data.get("email")
         try:
-            u = SimpleUser.objects.get(email=email).exclude(is_active=0)
-            raise forms.ValidationError("此邮箱已经被注册")
+            u = SimpleUser.objects.get(email=email)
+            if u.is_active != 0:
+                raise forms.ValidationError("此邮箱已经被注册")
         except Exception, e:
             print(e)
-            return cleaned_data
+        return email
 
     def clean_security_code(self):
         cleaned_data = self.cleaned_data
@@ -115,7 +77,7 @@ class EmailRegisterForm(forms.Form):
         except Exception, e:
             print(e)
             raise forms.ValidationError("验证码不正确")
-        return cleaned_data
+        return security_code
 
     def clean(self):
         cleaned_data = self.cleaned_data
