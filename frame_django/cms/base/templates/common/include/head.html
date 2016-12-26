@@ -9,6 +9,7 @@
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap-theme.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/tipso.css' %}"/>
+<link type="text/css" rel="stylesheet" href="{% static 'common/css/zTreeStyle.css' %}"/>
 
 <script type="text/javascript" src="{% static 'common/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/bootstrap.min.js' %}"></script>
@@ -18,6 +19,12 @@
 <script type="text/javascript" src="{% static 'common/js/validate.add.js' %}"></script>
 
 <script type="text/javascript" src="{% static 'common/js/tipso.js' %}"></script>
+{#    application/javascript————服务器端处理js文件的mime类型#}
+{#    text/javascript————浏览器处理js的mime类型————兼容性更好#}
+{#    ztree#}
+{#    all————core 核心包、excheck 扩展、exedit 扩展#}
+{#    另外exhide 扩展#}
+<script type="text/javascript" src="{% static 'common/js/jquery.ztree.core.js' %}"></script>
 
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/navbar.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/base.css' %}"/>

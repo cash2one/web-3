@@ -6,12 +6,12 @@ from django.db import models
 
 
 class SimpleUser(models.Model):
+    id = models.AutoField(verbose_name="用户id", primary_key=True)
     phone = models.BigIntegerField(verbose_name="电话号码", blank=True, null=True)
     email = models.EmailField(verbose_name="邮箱", max_length=50)
     security_code = models.CharField(verbose_name='验证码', max_length=4)
     is_active = models.SmallIntegerField(verbose_name='是否通过验证', default=0)
     name = models.CharField(verbose_name="用户名", max_length=20)
-    role = models.CharField(verbose_name='角色', max_length=100, help_text="角色码")
     SEX_CHOICE = (
         (0, u'未知'),
         (1, u'男'),
@@ -28,10 +28,50 @@ class SimpleUser(models.Model):
         verbose_name_plural = "用户信息表"
         db_table = 'simple_user'
         unique_together = ('phone', 'email')
-        # default_permissions = ('add', 'change', 'delete')
-        # permissions = ()
         ordering = ["-id"]
-        # managed = True
 
     def __str__(self):
         return u'%s、%s' % (self.name, self.phone)
+
+
+class UserRole(models.Model):
+    id = models.AutoField(verbose_name="id", primary_key=True)
+    user_id = models.IntegerField(verbose_name="用户id")
+    role_id = models.IntegerField(verbose_name="角色id")
+    create_id = models.IntegerField(verbose_name="创建人")
+    create_name = models.CharField(verbose_name="创建人")
+    create_at = models.DateTimeField("创建时间", auto_now_add=True)
+
+
+class Role(models.Model):
+    id = models.AutoField(verbose_name="角色id", primary_key=True)
+    role_name = models.CharField(verbose_name="角色名")
+    role_code = models.CharField(verbose_name="角色码")
+    create_id = models.IntegerField(verbose_name="创建人id")
+    create_name = models.CharField(verbose_name="创建人")
+    create_at = models.DateTimeField("创建时间", auto_now_add=True)
+
+
+class RoleMenu(models.Model):
+    id = models.AutoField(verbose_name="id", primary_key=True)
+    role_id = models.CharField(verbose_name="角色id", primary_key=True)
+    menu_id = models.CharField(verbose_name="菜单id", primary_key=True)
+    create_id = models.CharField(verbose_name="创建人id")
+    create_name = models.CharField(verbose_name="创建人")
+    create_at = models.DateTimeField("创建时间", auto_now_add=True)
+
+
+class Menu(models.Model):
+    id = models.AutoField(verbose_name="菜单ID", primary_key=True)
+    menu_name = models.CharField(verbose_name="名称")
+    TYPE_CHOICE = (
+        (0, u'目录'),
+        (1, u'菜单'),
+        (2, u'功能'),
+    )
+    type = models.CharField(verbose_name="菜单类型", choices=TYPE_CHOICE)
+    url_code = models.CharField(verbose_name="请求路径")
+    code = models.CharField(verbose_name="菜单编码")
+    isvisible = models.CharField(verbose_name="是否可见")
+    parentid = models.CharField(verbose_name="父级菜单id")
+    menu_order = models.CharField(verbose_name="菜单排序")

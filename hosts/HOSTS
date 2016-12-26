@@ -23,4 +23,4 @@
 # hosts文件不支持写端口
 127.0.0.1        mytest.uban.com
 192.168.2.109    vm.test.com
-# 192.168.0.150    vm.test.com
+# 172.16.0.227    vm.test.com

@@ -8,7 +8,7 @@
 
 ###firewall————centos 7默认防火墙
 - 查看防火墙状态————systemctl status firewalld.service
-- 启动firewall————systemctl start firewalld.service
+- 启动firewall————systemctl [start]mask firewalld.service
 - 停止firewall————systemctl stop firewalld.service
 - 禁止firewall开机启动————systemctl disable firewalld.service
 - 改成iptables————systemctl start iptables.service
