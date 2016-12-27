@@ -48,7 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'login.common.interceptor.InterceptorMiddleware'
+    'login.common.interceptor_middlewares.LoginMiddleware',
+    'login.common.interceptor_middlewares.MenuMiddleware',
 ]
 
 ROOT_URLCONF = 'cms.urls'
