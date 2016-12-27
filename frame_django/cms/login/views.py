@@ -4,6 +4,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.shortcuts import render
+from django.views.generic import FormView
+from django.views.generic import ListView
+
 from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
 from login.common.security import create_pwd
@@ -67,3 +70,7 @@ def get_email_code(request):
             print(e)
             return HttpResponse("邮箱地址不正确")
     return HttpResponse("ok")
+
+
+class MenuView(ListView):
+    pass
