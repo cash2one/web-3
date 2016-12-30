@@ -14,27 +14,11 @@
             case when h.house_area <![CDATA[<]]> ${house.orderAreaEnd} then 1 else 0 end as houseareaendquanzhong,
             case when h.price <![CDATA[>]]> ${house.orderPriceBegin} then 1 else 0 end as pricebeginquanzhong,
             case when h.price <![CDATA[<]]> ${house.orderPriceEnd} then 1 else 0 end as priceendquanzhong,
-            case when h.month_price <![CDATA[>]]> ${house.orderPriceMonthBegin} then 1 else 0 end as
-            monthpricebeginquanzhong,
+            case when h.month_price <![CDATA[>]]> ${house.orderPriceMonthBegin} then 1 else 0 end as monthpricebeginquanzhong,
             case when h.month_price <![CDATA[<]]> ${house.orderPriceMonthEnd} then 1 else 0 end as monthpriceendquanzhong,
-            CASE h.canregister
-            WHEN 0 THEN '无'
-            WHEN 1 THEN '是'
-            WHEN 2 THEN '否'
-            ELSE ''
-            END AS canregisterStr,
-            CASE h.howpay
-            WHEN 0 THEN '无'
-            WHEN 1 THEN '押一付一'
-            WHEN 2 THEN '押一付三'
-            WHEN 3 THEN '押一付六'
-            WHEN 4 THEN '押二付三'
-            WHEN 5 THEN '押二付六'
-            ELSE ''
-            END AS howpayStr
-            from house h
-            join office o
-            on h.office_id=o.id
+            CASE h.canregister WHEN 0 THEN '无' WHEN 1 THEN '是' WHEN 2 THEN '否' ELSE '' END AS canregisterStr,
+            CASE h.howpay WHEN 0 THEN '无' WHEN 1 THEN '押一付一' WHEN 2 THEN '押一付三' WHEN 3 THEN '押一付六' WHEN 4 THEN '押二付三' WHEN 5 THEN '押二付六' ELSE '' END AS howpayStr
+        FROM house h JOIN office o ON h.office_id=o.id
         <trim prefix="where" prefixOverrides="and|or">
             h.`invalid_type`=0
             <if test="house.circleId != null">
