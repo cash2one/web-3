@@ -51,3 +51,8 @@ source fileName.txt;建立数据库
 source d:/a1.sql;
 source d:/a2.sql;
 当你运行source命令，就可以在一个source命令里面导入多个sql文件了。
+
+
+1．  内联结：将两个表中存在联结关系的字段符合联结关系的那些记录形成记录集的联结。
+2．  外联结：分为外左联结和外右联结。
+默认的JOIN都是INNER JOIN
