@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Date:   2016-11-28 14:19:26
-# @Last Modified time: 2016-11-29 20:37:07
+# @Date:   2017-01-02 21:55:03
+# @Last Modified time: 2017-01-02 21:56:06
 #
 # 传递额外的参数到视图函数
 # url(r'^foo/$', views.foobar_view, {'template_name': 'template1.html'}),
@@ -20,10 +20,10 @@ urlpatterns = [
         url(r'^getcode', views.login_email_validate)
     ]))
 ]
-########################################
-# 调试模式特例————DEBUG 为 True 时才有效
-# 个人测试————isTest
-########################################
+#######################################
+# 调试模式特例————DEBUG为True时才有效
+# 个人测试————isTest为True时才有效
+#######################################
 isTest = False
 if settings.DEBUG and isTest:
     urlpatterns += [
