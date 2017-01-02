@@ -1,13 +1,5 @@
 文件夹是个独立的django项目
 
-```
-https://docs.djangoproject.com/en/1.10/topics/settings/
-https://docs.djangoproject.com/en/1.10/ref/settings/
-Django默认settings————${django}\conf\global_settings.py
-Django用户settings————项目中的 settings
-用户设置与默认设置冲突时，覆盖掉默认设置
-```
-
 属性访问————var.***（句点查找）————可以多级深度嵌套————可以用来引用对象的方法，可用于访问列表索引（不允许使用负索引）
 
 假如，一个 BankAccount 对象有一个 delete() 方法。如果某个模板中包含了像 {{ account.delete }}这样的标签，其中`account`是BankAccount的一个实例，在这个模板载入时，account对象将被删除。

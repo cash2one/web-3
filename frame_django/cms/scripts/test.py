@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-11 22:27:00
-# @Last Modified time: 2016-12-11 23:01:02
+# @Last Modified time: 2017-01-02 21:44:18
+#
+# django orm脚本测试
 
 import os
 import sys
@@ -14,12 +16,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 # 指定settings————参考manage.py
 # 不在django标准目录里，没有经过manage.py启动的文件，无法自动使用settings.py
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "azure.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cms.settings")
 # 启动django
 django.setup()
 
+'''
 from login.models import DownLoad
 
 d = DownLoad.objects.all()
 for i in d:
     print i.file_name
+'''

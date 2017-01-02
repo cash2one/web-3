@@ -57,10 +57,6 @@ bin/
 
 
 # django project
-frame_django/azure/static/
-migrations/
-frame_django/azure/temp/
-
 frame_django/cms/static/
 migrations/
 frame_django/cms/temp/

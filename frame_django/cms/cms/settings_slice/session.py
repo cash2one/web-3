@@ -1,20 +1,18 @@
 # -*- coding: utf-8 -*-
-# @Date:   2016-12-08 13:10:40
-# @Last Modified time: 2016-12-08 14:07:17
+# @Date:   2017-01-02 19:47:40
+# @Last Modified time: 2017-01-02 19:59:30
 #
 # session————会话
 #
-# https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 # 密码哈希算法种子————一个随机字符串————越长越好
 SECRET_KEY = '6a8w1=^^n-sj0=n$%gsj@=kk%#bg(943vnt1_vq3@ylhofrp%^'
 #
 # 是否每次request请求都保存session的内容，默认为False（需要的时候才送出cookie）
 SESSION_SAVE_EVERY_REQUEST = False
 #
-# False————默认————会话cookie在用户浏览器中保持 SESSION_COOKIE_AGE秒
-# True————当浏览器关闭时，使cookie失效
+# False————默认————使用SESSION_COOKIE_AGE设置
+# True————浏览器关闭时，使cookie失效
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-#
 # session cookie在用户浏览器中保持时间————默认两周
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
 #
@@ -23,18 +21,23 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2
 SESSION_COOKIE_DOMAIN = None
 #
 # 会话中使用的cookie的名字————任意的字符串————客户端用来识别session
-# 就是服务器端session的session_key属性————数据库的django_session表中用它作为主键
+# 服务器端session的session_key属性
+# 数据库django_session表的主键
 SESSION_COOKIE_NAME = "my_session_id"
 #
 # 是否在session中使用安全cookie
 # True————cookie只通过HTTPS来安全传输
 SESSION_COOKIE_SECURE = False
 #
-# session后端存储方式，默认数据库————manage.py migrate会创建保存会话数据的表
+# session后端存储方式
+# 默认使用数据库，manage.py migrate会创建保存会话数据的表
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
-# SESSION_ENGINE ='django.contrib.sessions.backends.cache' # 缓存
-# SESSION_ENGINE ='django.contrib.sessions.backends.cached_db' #数据库、缓存
-# SESSION_ENGINE ='django.contrib.sessions.backends.file' # 文件
+# 缓存
+# SESSION_ENGINE ='django.contrib.sessions.backends.cache'
+# 数据库+缓存
+# SESSION_ENGINE ='django.contrib.sessions.backends.cached_db'
+# 文件
+# SESSION_ENGINE ='django.contrib.sessions.backends.file'
 # 使用基于Cookie的会话————会话数据的存储将使用Django加密签名工具和SECRET_KEY设置
 # SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 #
