@@ -62,9 +62,9 @@ MIDDLEWARE_CLASSES = [
     # 开启国际化的支持（放在Session后）————翻译管理工具
     # 'django.middleware.locale.LocaleMiddleware',
     # 自定义登录拦截器
-    'login.common.interceptor_middlewares.LoginMiddleware',
+    # 'login.common.interceptor_middlewares.LoginMiddleware',
     # 自定义权限验证拦截器
-    'login.common.interceptor_middlewares.MenuMiddleware',
+    # 'login.common.interceptor_middlewares.MenuMiddleware',
 ]
 #
 # 根URLconf
