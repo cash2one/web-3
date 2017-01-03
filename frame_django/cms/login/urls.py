@@ -20,7 +20,6 @@ urlpatterns = [
         url(r'^get_email_code$', views.get_email_code, name='get_email_code'),
     ])),
     url(r'^menu/', include([
-        # 传递额外的参数到视图函数
         url(r'^$', views.MenuView.as_view(), name="menu"),
         url(r'^get_menu$', views.GetMenuView.as_view(), name="get_menu"),
     ]))

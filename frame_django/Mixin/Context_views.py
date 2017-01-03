@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-10-11 11:31:13
-# @Last Modified time: 2016-11-29 18:44:29
+# @Last Modified time: 2017-01-03 18:41:24
 from django.http import HttpResponse, Http404
 from django.template.loader import get_template
 from django.shortcuts import render_to_response
@@ -43,7 +43,3 @@ def login(request):
         raise Http404('Only POSTs are allowed')
     request.session.set_test_cookie()
     return render_to_response('foo/login_form.html')
-
-
-class AboutView(TemplateView):
-    template_name = "publisher_list.html"

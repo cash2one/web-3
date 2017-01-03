@@ -77,19 +77,15 @@ class LoginView(View):
 def get_email_code(request):
     email = request.GET.get('email')
     try:
-        # 查询一条要更新的数据
-        u = SimpleUser.objects.get(email=email)
+        u = SimpleUser.objects.get(email=email)    # 查询一条要更新的数据
         if u.is_active != 0:
             return HttpResponse("此邮箱已经被注册")
         security_code = send_email_code(email)
         """
-        # 赋值给要更新的字段
-        u.is_active = 1
-        # 保存
-        u.save()
+        u.is_active = 1                            # 赋值给要更新的字段
+        u.save()                                   # 保存
         """
-        # 使用update更新
-        u = SimpleUser.objects.filter(
+        u = SimpleUser.objects.filter(             # 使用update更新
             email=email
         ).update(
             security_code=security_code
@@ -111,11 +107,8 @@ def get_email_code(request):
 
 
 class MenuView(TemplateView):
-    template_name = 'menu.html'
+    template_name = 'menu/menuTree.html'
 
 
 class GetMenuView(DetailView):
     pass
-
-
-m = MenuView()
