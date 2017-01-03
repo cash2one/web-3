@@ -8,10 +8,11 @@
 """
 import os
 from settings_slice.database import *
-from settings_slice.email import *
-from settings_slice.files import *
+from settings_slice.manage import *
+from settings_slice.webpage import *
 from settings_slice.local import *
 from settings_slice.security import *
+from settings_slice.session import *
 #
 # os.path.abspath('.')————取决于工作目录，此处不能用
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -38,7 +39,6 @@ INSTALLED_APPS = [
     # 'raven.contrib.django',
     'base',
     'login',
-    # 'forward'
 ]
 #
 # 中间件
@@ -56,13 +56,14 @@ MIDDLEWARE_CLASSES = [
     # 用户登录判断
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 点击劫持的防御————不允许资源加载到（别人的）frame或者iframe中
+    # 点击劫持防御
+    # 不允许资源加载到（别人的）frame或者iframe中
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 开启国际化的支持（放在Session后）————把管理工具翻译你想要的语言
+    # 开启国际化的支持（放在Session后）————翻译管理工具
     # 'django.middleware.locale.LocaleMiddleware',
     # 自定义登录拦截器
-    # 'login.common.interceptor.InterceptorMiddleware'
     'login.common.interceptor_middlewares.LoginMiddleware',
+    # 自定义权限验证拦截器
     'login.common.interceptor_middlewares.MenuMiddleware',
 ]
 #

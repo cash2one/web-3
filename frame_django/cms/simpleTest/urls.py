@@ -5,21 +5,13 @@
 # 传递额外的参数到视图函数
 # url(r'^foo/$', views.foobar_view, {'template_name': 'template1.html'}),
 from django.conf.urls import url, include
-from azure import settings
-from base import tests
-from base.tests import hello
+from cms import settings
+import tests
+from tests import hello
 from django.views.generic import RedirectView
-import views
 
-# 邮箱验证码登录测试
-urlpatterns = [
-    # test必须有/
-    url(r'^test/', include([
-        url(r'^test_form', views.test_form),
-        url(r'^test_login', views.LoginView.as_view()),
-        url(r'^getcode', views.login_email_validate)
-    ]))
-]
+
+urlpatterns = []
 #######################################
 # 调试模式特例————DEBUG为True时才有效
 # 个人测试————isTest为True时才有效
@@ -34,7 +26,7 @@ if settings.DEBUG and isTest:
         # name用于重定向等
         url(r'^new_home', tests.new_home, name='new'),
         url(r'^real_page', tests.real_page),
-        # 在url中重定向
+        # RedirectView————url重定向
         url(r'^surface_page', RedirectView.as_view(url='/real_page')),
         url(r'^short', tests.short),
         url(r'^end', tests.end)

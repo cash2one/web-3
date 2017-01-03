@@ -1,92 +1,27 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-11-29 20:26:06
-# @Last Modified time: 2016-11-29 20:38:11
+# @Last Modified time: 2017-01-03 15:54:21
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 #
 # @method_decorator————给类视图添加装饰器
 from django.utils.decorators import method_decorator
-# @csrf_protect————让表单使用csrf_token
-from django.views.decorators.csrf import csrf_protect
-# @csrf_exempt————不让表单使用csrf_token
-# from django.views.decorators.csrf import csrf_exempt
-# @requires_csrf_token————与csrf_protect类似，但不会拒绝传入的请求
-# from django.views.decorators.csrf import requires_csrf_token
-# 强制视图发送CSRF cookie
-# from django.views.decorators.csrf import ensure_csrf_cookie
 #
-#
-# from django.views.decorators.cache import cache_page
+
 from django.views.generic import ListView, View
 # from django.views.generic import TemplateView
 from login.common.security import create_pwd, create_session
 from login.forms import UserForm
 from login.models import SimpleUser, DownLoad
 from base.common.excelDownload import big_excel_download
-#
-# Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
-# from django.db.models import Q
-
-
-def login(request, param):
-    # 视图函数传递的param————接收url匹配的参数
-    # request.GET————获取url?name=param的参数
-    if request.method == 'GET':
-        fill = {}
-        if param:
-            # 填充{% csrf_token %}
-            fill.update(form=param)
-        fill.update(csrf(request))
-        if request.GET.get('form_name') == "login":
-            us = UserForm(request.GET)
-            if us.is_valid():
-                phone = us.cleaned_data['phone']  # 访问“清洁”的数据
-                passwd = us.cleaned_data['passwd']
-                # 验证获取的数据，并创建session对象
-                if create_session(request, phone, passwd):
-                    return HttpResponseRedirect('/login/download_list')
-            return HttpResponse("用户名或密码错误")
-        return render_to_response('login/login.html', fill)
-
-    elif request.method == 'POST':
-        data = None
-        if request.POST["form_name"] == "new_register":
-            phone = request.POST["phone"]
-            passwd = request.POST["passwd"]
-            passwd1 = request.POST["passwd1"]
-            if not phone or not passwd or not passwd1:
-                data = "用户名、密码不能为空"
-            else:
-                if passwd != passwd1:
-                    data = "两次输入密码不一致"
-                exist = SimpleUser.objects.filter(phone=phone)
-                if exist:
-                    data = "此电话号码已经被注册"
-                if not data:
-                    u = SimpleUser(
-                        phone=phone,
-                        passwd=create_pwd(passwd),
-                    )
-                    u.save()
-                    data = "注册成功"
-                    # return redirect(reverse('/login/download_list'))
-            return HttpResponse(data)
 
 
 class DownloadList(ListView):
-    # 存放数据库搜索结果的变量名，用于模板循环，默认为object_list
-    # context_object_name = "object_list"
 
     template_name = 'login/download_list.html'
 
-    # 一个页面显示的条目
-    paginate_by = 2
-
-    # 定义查询的model
     # model = DownLoad————queryset = DownLoad.objects.all()
-    # queryset = DownLoad.objects.all().filter(file_name='255')
-    # 重写get_queryset，替换model，利用get参数查询
     def get_queryset(self):
         list_d = DownLoad.objects.all()
         create_name = self.request.GET.get('create_name')
@@ -105,7 +40,6 @@ class DownloadList(ListView):
     def dispatch(self, *args, **kwargs):
         return super(DownloadList, self).dispatch(*args, **kwargs)
 
-    # 重新get_context_data方法————添加额外的上下文数据
     def get_context_data(self, **kwargs):
         context = super(DownloadList, self).get_context_data(**kwargs)
         # 在上下文数据中添加file_name集合

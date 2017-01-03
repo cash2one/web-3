@@ -1,5 +1,5 @@
-###自定义验证机制时
-- clean()和clean_<field>&()的最后必须返回验证完毕或修改后的值。
+###自定义验证机制
+- clean()和clean_field()必须返回验证完毕或修改后的值；
 - 所有clean函数————如果验证成功则返回值，否则抛出ValidationError错误。如果有值返回，则放入form的cleaned_data字典中。
 
 #####验证顺序————full_clean()依次调用其它clean函数
@@ -7,10 +7,37 @@
 2. clean_field_name()————自定义field验证函数————full_clean()都通过后调用；
 3. clean()————_clean_form()————最后调用————如果1没有通过，忽略第2步，进行第3步；
     + 如果到这一步没有ValidationError抛出，那么cleaned_data字典就填满了有效数据；
-    + 否则cleaned_data不存在，form的另外一个字典errors填上验证错误；
+    + 否则cleaned_data不存在，form的另外一个字典errors填上验证错误提示信息；
 
-在template中，每个field获取自己错误的方式是：{{ form.username.errors }}。
-如果有错误is_valid()返回False，否则返回True。
+
+```
+{{ form }}                         直接使用form，表单填充默认样式
+{{ form | length }}
+===========================================================================
+{% for field in form %}            循环form内容
+<div class="form-group">
+    {{ field.label_tag }}          label
+    {{ field }}                    input
+    {{ field.errors }}             表单验证时的错误信息提示 
+    ----------------------------------------------------------------------
+    {{ form.as_table }}            以表格的形式渲染在<tr> 标签中
+    {{ form.as_p }}                渲染在<p> 标签中
+    {{ form.as_ul }}               渲染在<li> 标签中
+    ----------------------------------------------------------------------
+    <label for="{{ form.field1.id_for_label }}">Email subject:</label>
+    {{ field.is_hidden }}          是否隐藏字段————True/False
+    {{ field.help_text }}          与该字段关联的帮助文档
+    {{ field.value }}              字段的值
+    {{ field.html_name }}          元素的html标签类型
+    -----------------------------------------------------------------------
+    可以把表单循环封装进一个html里，在其它需要使用的地方引入，实现重用
+    {% include "form_snippet.html" with form=comment_form %}
+    with 参数————起别名，对应传递到模板上下文中的表单对象
+</div>
+{% endfor %}
+===========================================================================
+{{ form.fieldname.errors }}       通过“.”号获取form信息
+```
 
 
 ####绑定数据到表单————接收一个字典————键对应表单类中的属性————us = UserForm(request.GET)

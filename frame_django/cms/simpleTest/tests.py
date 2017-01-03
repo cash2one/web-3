@@ -5,8 +5,6 @@
 from django.test import TestCase
 
 # Create your tests here.
-#
-# test_views
 '''
 每一个视图总是以一个django.http.HttpRequest实例————request，作为第一个参数。
 这是一个触发这个视图、包含当前Web请求信息的对象。
@@ -29,8 +27,7 @@ def hello(request):
 
 def new_home(request):
     # 创建 Template 对象
-    tem = Template(
-        '<h1>My name is {{ name }},I\'m {{ age }} years old.<a href="/surface_page">more?</a></h1>')
+    tem = Template('<h1>My name is {{ name }},I\'m {{ age }} years old.<a href="/surface_page">more?</a></h1>')
     # Context————上下文对象————类字典对象
     c = Context({'name': 'Django', 'age': 10})
     # render————模板渲染
@@ -60,7 +57,9 @@ def short(request):
         #
         # local()————返回一个包含当前作用域里面的所有变量和它们的值的字典
         # 可以替代contextDict以及其它局部变量
+        #
         # local()与context互斥
+        #
         # context_instance=RequestContext(request)————旧版本，支持{% csrf_token %}、{{STATIC_URL}}
         # context=RequestContext(request)————默认使用TEMPLATE_CONTEXT_PROCESSORS
         # 等价于

@@ -37,6 +37,7 @@ function time(e)
 var getEmailCode = function(e) {
     $.ajax({
         url: '/login/get_email_code',
+        // url: "{% url 'url_name' %}",   //只能写在html文件里
         data: {email: $("[name=email]").val()},
         success: function(data) {
             if(data=="ok")
@@ -69,11 +70,43 @@ var tipsoInit = function() {
     $('#tip_security_code').tipso('update', 'offsetX', 100)
 };
 
+/**
+ * submit提交————type=submit默认绑定onclick(form.submit())
+ * method:get/post————默认get
+ * action:url————默认当前页面地址（不写action或action=""）,get不能用url传值
+ * action="./?"————./代表当前目录，?代表查询字符串为空
+ * action="?" ————提交给自己
+ * 表单中每一个input标签都需要有一个name属性
+ */
+
+/**
+ * submitForm({ url:***, dataType:"text", callback:function(data){***} })
+ */
+
+/**
+ * ajax提交————用于实现异步请求局部刷新（可以在回调函数里跳转/刷新页面）
+ * $.get(URL[,data[,function(data,status,xhr)[,dataType]]])
+ * 后台无需在视图函数中定义参数
+ *
+ * load( url[,data[,function(response,status,xhr)]] )————一种简单强大的AJAX 函数
+ * response————包含来自请求的结果数据
+ * status————包含请求的状态（"success"、"notmodified"、"error"、"timeout"、"parsererror"）
+ * xhr————包含 XMLHttpRequest 对象
+ * 自动给调用load的对象填充
+ */
+
+//
+// onclick中使用当前对象需要传递$(this)参数
+
 
 $(function()
 {
     tipsoInit();
+    /**
+     * 使用validate.js验证表单
+     */
     $("#email_register").validate(
+        //debug: true,
         {
             rules: {
                 email: {
@@ -113,6 +146,9 @@ $(function()
                 }
             },
             errorPlacement: function(error, element){
+                //error：错误消息元素
+                //element：验证元素
+                //error.appendTo(element.parent().parent().next());
                 element.parent().attr("data-tipso", error.html());
                 if(error.html().length != 0){
                     element.parent().tipso('update', 'content', error.html());

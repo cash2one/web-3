@@ -2,20 +2,46 @@
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
 from django.http import HttpResponse, HttpResponseRedirect
+from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import render
-from django.views.generic import FormView
-from django.views.generic import ListView
-
+from django.views.generic import DetailView
+from django.views.generic import TemplateView, ListView, FormView
 from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
 from login.common.security import create_pwd
 from models import SimpleUser
+"""
+@csrf_protect————让表单使用csrf_token
+from django.views.decorators.csrf import csrf_protect
+
+@csrf_exempt————不让表单使用csrf_token
+from django.views.decorators.csrf import csrf_exempt
+
+@requires_csrf_token————与csrf_protect类似，但不会拒绝传入的请求
+from django.views.decorators.csrf import requires_csrf_token
+
+@ensure_csrf_cookie————强制视图发送CSRF cookie
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+# from django.views.decorators.cache import cache_page
+
+# from django.db.models import Q
+# Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
+"""
 
 
 class LoginView(View):
+    """
+    method_decorator————传递 *args 和 **kwargs 给类的装饰器
+    如果方法不兼容参数集合，会抛出 TypeError 异常
+    @method_decorator(csrf_protect, login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginView, self).dispatch(*args, **kwargs)
+    """
 
     def get(self, request, form_name):
+        # 用未绑定的form类渲染模板（get、post皆可）
         form = html = None
         if not form_name:
             form = LoginForm()
@@ -23,9 +49,11 @@ class LoginView(View):
         if form_name == "email_register":
             form = EmailRegisterForm()
             html = "login/email_register.html"
+        # “首次访问”时，调用from，生成<label><input>等标签内容
         return render(request, html, {'form': form})
 
     def post(self, request, **kwargs):
+        # form表单绑定接收的数据，进行数据验证（get、post皆可）
         form = html = None
         if request.path == '/login/':
             form = LoginForm(request.POST)
@@ -42,16 +70,25 @@ class LoginView(View):
                     pass_word=create_pwd(form.cleaned_data['pwd'])
                 )
                 return HttpResponseRedirect("/login")
+        # “提交的信息不符合要求”时，调用form，反馈错误提示信息
         return render(request, html, {'form': form})
 
 
 def get_email_code(request):
     email = request.GET.get('email')
     try:
+        # 查询一条要更新的数据
         u = SimpleUser.objects.get(email=email)
         if u.is_active != 0:
             return HttpResponse("此邮箱已经被注册")
         security_code = send_email_code(email)
+        """
+        # 赋值给要更新的字段
+        u.is_active = 1
+        # 保存
+        u.save()
+        """
+        # 使用update更新
         u = SimpleUser.objects.filter(
             email=email
         ).update(
@@ -65,6 +102,7 @@ def get_email_code(request):
                 email=email,
                 security_code=security_code
             )
+            # 保存
             u.save()
         except Exception, e:
             print(e)
@@ -72,5 +110,12 @@ def get_email_code(request):
     return HttpResponse("ok")
 
 
-class MenuView(ListView):
+class MenuView(TemplateView):
+    template_name = 'menu.html'
+
+
+class GetMenuView(DetailView):
     pass
+
+
+m = MenuView()

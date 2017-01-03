@@ -5,24 +5,18 @@
     {% include "common/include/head.html" %}
     {% block addHeader %}{% endblock %}
 </head>
+{% load staticfiles %}
 
 <body class="bg-success">
 
     {% include "common/include/top.html" %}
-    <br/>
-    <br/>
-    <br/>
-{#    <div class="container-fluid">#}
-    <div class="container">
-        <div class="row">
+
+    {% block center %}{% endblock %}
+
 {#            {% include "login/include/sidebar.html" %}#}
-            {% block center %}{% endblock %}
-        </div>
-    </div>
 
     {% include "common/include/foot.html" %}
 
 </body>
 </html>
-{% load staticfiles %}
 <script type="text/javascript" src="{% static 'common/js/base.js' %}"></script>

@@ -21,14 +21,16 @@ class TemplateView(TemplateResponseMixin, ContextMixin, View):
 ```
 ###ListView————用于获取存储在数据库中的某个 Model 的列表
 - template_name————指定需要渲染的模板
-- context_object_name————指定模板中使用的上下文变量名（默认"object_list"）
-- model————指定数据的来源（获取表中所有数据）————context_object_name = model.objects.all()
-- get_queryset
-- get_context_data
+- paginate_by————一个页面显示的条目
+- context_object_name————存放数据库搜索结果的变量名，用于模板循环，默认为object_list
+- 数据查询model = ModelName————queryset = ModelName.objects.all()————et_queryset()
+    + model————指定查询数据的model（获取表中所有数据）
+        * context_object_name = model.objects.all()
+    + queryset————定义更复杂的查询语句
+        * queryset = ModelName.objects.all().filter(filter_name='***')
+    + get_queryset()————重写get_queryset()，替换model，利用GET参数等进行更复杂的查询；
+- get_context_data()————重写get_context_data()————添加额外的上下文数据
 
-取出指定 model 中的所有数据，指定变量名后传递给指定模板。
-
-当需要使用过滤条件或者对数据进行一定的操作时，则需要重写 ListView 中获取数据的方法（get_queryset 方法）。
 
 ```
 def get_queryset(self):
@@ -51,4 +53,4 @@ def get_context_data(self, **kwargs):
 - model
 - get_context_data
 - pk_url_kwarg————定义用来获取对应的单条数据，需要传递主键的值
-- et_object————获取 pk_url_kwarg 中所要查找的对象，类似于 ListView 中的 get_queryset 方法
+- get_object————获取 pk_url_kwarg 中所要查找的对象，类似于 ListView 中的 get_queryset 方法

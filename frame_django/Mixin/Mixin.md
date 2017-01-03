@@ -16,28 +16,54 @@ Django把基本的http请求和响应抽象出来，封装成各自的类。cbv�
 
 在使用过程中只需把各个基类聚合到一起使用, 并按照自己的要求重写自己需要的方法就可以了，这些基类叫Mixin。
 
-#####主要的Mixin
-- View————视图基础类
-- SingleObjectMixin————单对象类
-- MultipleObjectMixin————多对象类
-- TemplateResponseMixin————模板响应类
-- FormMixin————表单类
-- YearMixin, MonthMixin, DayMixin, WeekMixin, DateMixin————基于时间关系的类
+#####Mixin————提供数据、加载模板
+|          类名         |                        功能                        |
+|-----------------------|----------------------------------------------------|
+| TemplateResponseMixin | 模板响应类，加入Template的基本信息（名字）         |
+|                       | 没有context的信息                                  |
+|                       | 只有Template信息是没有用的，因为没有跟View联系起来 |
+|                       | 跟View联系：把render_to_response插进MRO的调用顺序  |
+|                       | 可以借鉴TemplateView                               |
+| ContextMixin          | 就是一个get_context_data，用于返回context数据      |
+| SingleObjectMixin     | 单对象类                                           |
+|                       | 继承自ContextMixin，可以返回上下文数据             |
+|                       | 在上下文数据中加入了object（get_object方法）的信息 |
+|                       | 可以通过model，manager等方法获取数据               |
+|                       | 根据slug_url_kwarg和pk_url_kwarg去检索数据         |
+|                       | 具体的就是一个filter语句                           |
+|                       | SingleObjectMixin目的在于限制context数据的东西     |
+| MultipleObjectMixin   | 多对象类                                           |
+| FormMixin             | 表单类                                             |
+| YearMixin             | 基于时间关系的类                                   |
+| MonthMixin            |                                                    |
+| DayMixin              |                                                    |
+| WeekMixin             |                                                    |
+| DateMixin             |                                                    |
 
-其他的所有内置class-based-view都是把以上几个基础类组合，重写方法以达到预期的结果，比如DetailView这个类就组合了SingleObjectTemplateResponseMixin和BaseDetailView.
+
+其他的所有内置class-based-view都是把以上几个基础类组合，重写方法以达到预期的结果。
+
+#####View————提供模板和渲染
+|        类名        |                        功能                       |
+|--------------------|---------------------------------------------------|
+| View               | 视图基础类，可以在任何时候使用                    |
+|                    | get,post,put,delete,head,options,trace            |
+|                    | View中是没有返回一个response的                    |
+|                    | 只继承View，必须要重写get等，以返回一个response   |
+| RedirectView       | 重新定向到其他URL                                 |
+| TemplateView       | 显示HTML template                                 |
+| ListView           | 显示对象列表                                      |
+| DetailView         | 显示对象详情                                      |
+|                    | SingleObjectTemplateResponseMixin、BaseDetailView |
+| FormView           | From提交                                          |
+| CreateView         | 创建对象                                          |
+| UpdateView         | 更新对象                                          |
+| DeleteView         | 删除对象                                          |
+| Generic date views | 显示一段时间内的对象                              |
+
 
 子类化一个类视图时，可以在子类中重写一些属性（比如template_name）或者方法（比如get_context_data）来提供一些新的属性或者方法。
 
-Mixin和View的职能区分为：Mixin提供数据，View提供模板和渲染。所以一般get_context_data在Mixin中，get(),post(),head()在View中。Mixin和View不是能随意组合的，必须要注意他们之间的方法的解析顺序，也就是MRO(method resolution order)。
+Mixin和View不能随意组合，必须要注意他们之间的方法的解析顺序，也就是MRO(method resolution order)。
 
 Django中Mixin和View把原来的视图函数中的三个东西分开了，模板（TemplateResponseMixin），上下文数据（ContextMixin），负责将这些联系起来的一个东西（胶水View）。
-
-ContextMixin：就是一个get_context_data，用于返回context数据。
-
-View：会调用所有的get、post方法['get', 'post', 'put', 'delete', 'head', 'options', 'trace']，View中是没有返回一个response的，所以光继承View的话，必须要重写get等，以返回一个response。
-
-TemplateResponseMixin：故名思议，这个Mixin会加入Template的基本信息，也就是template的名字。
-但是光有Template信息是没有用的，因为她没有跟View联系起来，如果想要跟View联系起来的话必须想办法把render_to_response插进MRO的调用顺序，而且TemplateResponseMixin是没有context的信息的。有一个可以借鉴的方法就是TemplateView的做法：
-
-
-SingleObjectMixin继承自ContextMixin，也就是说他存在返回上下文数据这个东西了，然后对其进行稍微的包装，也就是说，在上下文数据中加入了object的信息。如何获取这些信息呢，当然可以通过model，manager等等方法。如何加入object的信息呢，这里使用的是get_object方法。然后根据slug_url_kwarg和pk_url_kwarg去检索数据。具体的过程可以去参考django的官方文档，我这里是直接从源代码的角度去看的。具体的就是一个filter语句。这个SingleObjectMixin目的在于限制context数据的东西。

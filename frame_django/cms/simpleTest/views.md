@@ -1,4 +1,4 @@
-####HttpRequest对象————包含当前请求URL的一些信息
+###HttpRequest对象————包含当前请求URL的一些信息
 
 |         属性/方法         |                         说明/举例                          |
 |---------------------------|------------------------------------------------------------|
@@ -30,72 +30,57 @@
 |                           | 可以使用它读取任何浏览器发送给视图（view）的cookies        |
 |---------------------------|------------------------------------------------------------|
 | request.session           | 类字典对象————启用SessionMiddleware后，每个HttpRequest都有 |
+|                           | 创建或修改session————request.session[key] = value          |
+|                           | request.session['foo']['bar'] = 'baz'                      |
+|                           | request.session['foo'] = {}                                |
+|                           | 获取session————request.session.get(key,default=None)       |
+|                           | 删除session（不存在时报错）————del request.session[key]    |
 
 simplejson.loads(request.raw_post_data)
 json.loads(request.body)
 
+###简单的函数视图
 ```
-def show_color(request):
-    if "favorite_color" in request.COOKIES:
-        fav_color = request.session["fav_color"]
+def login(request, param):
+    # 视图函数传递的param————接收url匹配的参数
+    # request.GET————获取url?name=param的参数
+    if request.method == 'GET':
+        try:
+            ua = request.META['HTTP_USER_AGENT']
+        except KeyError:
+            ua = 'unknown'
+        # 使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
+        # ua = request.META.get('HTTP_USER_AGENT', 'unknown')
+    elif request.method == 'POST':
         ...
-写cookies，需要使用 HttpResponse对象的 set_cookie()方法。
-response.set_cookie(
-    "favorite_color",
-    request.GET["favorite_color"]
-    )
-request.session['foo'] = 'bar'
-del request.session['foo']
-request.session['foo'] = {}
-request.session['foo']['bar'] = 'baz'
 ```
 
-#####使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
-```
-def ua_display_good1(request):
-    try:
-        ua = request.META['HTTP_USER_AGENT']
-    except KeyError:
-        ua = 'unknown'
-    # ua = request.META.get('HTTP_USER_AGENT', 'unknown')
-    return HttpResponse("Your browser is %s" % ua)
-```
+###HttpResponse对象
+
+| 属性/方法                       | 说明/举例 |
+| response.set_cookie(key, value) | 写cookie  |
 
 ###类字典对象————行为像Python标准字典对象，但在技术底层上不是标准字典对象
 - 都有get()、keys()和values()方法；
 - 可以用 for key in request.GET获取所有的键；
 - 同时request.GET和request.POST拥有一些普通的字典对象所没有的方法；
 
-####类文件对象————有一些基本文件操作方法，如read()，用来做真正的Python文件对象的代用品
+###类文件对象————有一些基本文件操作方法，如read()，用来做真正的Python文件对象的代用品
 
-###EmailMessage
-- django.core.mail.send_mail()————EmailMessage类的一个发送e-mail的函数；
-    + 服务器需要配置成能够对外发送邮件，并且在Django中设置出站服务器地址；
-- 更高级的方法，比如附件，多部分邮件，以及对于邮件头部的完整控制；
-
+####POST请求重定向
 若用户刷新一个包含POST表单的页面，那么请求将会重新发送造成重复。这通常会造成非期望的结果，比如说重复的数据库记录、发送两封同样的邮件等。 如果用户在POST表单之后被重定向至另外的页面，就不会造成重复的请求了。
 我们应每次都给成功的POST请求做重定向。
 
-若数据验证失败后，将原来的提交数据返回给模板，并且编辑HTML里的各字段来填充原来的值。以便用户查看哪里出现错误（用户也不需再次填写正确的字段值）。  
-
-    return render_to_response(  
-    　　'contact_form.html', {  
-    　　　　'errors': errors,  
-    　　　　'subject': request.POST.get('subject', ''),  
-    　　　　'message': request.POST.get('message', ''),  
-    　　　　'email': request.POST.get('email', ''),  
-    　　}  
-    )  
-
-    <form action="/contact/" method="post">  
-    　　<p>  
-    　　Subject: <input type="text" name="subject" value="{{ subject }}" />
-    　　</p>  
-    　　<p>  
-    　　Your e-mail (optional): <input type="text" name="email" value="{{ email }}" />  
-    　　</p>  
-    　　<p>  
-    　　Message: <textarea name="message" rows="10" cols="50">{{ message }}</textarea>  
-    　　<p>
-    　　<input type="submit" value="Submit">
-    </form>
+####自定义表单填充信息
+若数据验证失败后，将原来的提交数据返回给模板，并且编辑HTML里的各字段来填充原来的值。以便用户查看哪里出现错误（用户也不需再次填写正确的字段值）。
+```
+return render_to_response(
+　　'contact_form.html', {
+　　　　'errors': errors,
+　　　　'subject': request.POST.get('subject', ''),
+　　　　'message': request.POST.get('message', ''),
+　　　　'email': request.POST.get('email', ''),
+　　}
+)
+<input type="text" name="subject" value="{{ subject }}" />
+```

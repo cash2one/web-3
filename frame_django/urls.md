@@ -17,7 +17,8 @@ urlpatterns = patterns('',
 # views.py
 def object_list(request, model):
     obj_list = model.objects.all()
-    template_name = 'mysite/%s_list.html' % model.__name__.lower()#每个Python的类都有一个 __name__ 属性返回类名。 
+    #每个Python的类都有一个 __name__ 属性返回类名。
+    template_name = 'mysite/%s_list.html' % model.__name__.lower()
     return render_to_response(template_name, {'object_list': obj_list})
 
 

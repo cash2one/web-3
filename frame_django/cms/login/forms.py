@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:41:59
 # @Last Modified time: 2016-12-21 17:48:32
+#
+"""
+创建表单类————可便捷地创建表单、进行后台数据验证和html限定
+pip install -U django
+django1.10默认会在后台验证之前在前台进行必填字段验证，弹出悬浮提示标签
+"""
 from django import forms
 # from django.utils import timezone
 from models import SimpleUser
@@ -9,7 +15,15 @@ from models import SimpleUser
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
-        error_messages={
+        # widget=forms.TextInput(
+        #     # attrs=可以省略
+        #     attrs={
+        #         'class': 'form-control',
+        #         'id': 'email',
+        #         'placeholder': '请输入邮箱地址'
+        #     }),
+        # required=True,                   # 默认必填
+        error_messages={                   # error_messages————自定义错误信息
             'required': '请填写邮箱地址',
             'invalid': '邮箱格式不正确'
         }
@@ -17,7 +31,7 @@ class LoginForm(forms.Form):
     pwd = forms.CharField(
         min_length=6,
         max_length=12,
-        widget=forms.PasswordInput(),
+        widget=forms.PasswordInput(),      # 显示成密码输入框
         error_messages={
             'required': '请填写密码',
             'min_length': '密码不能小于6位',
@@ -56,6 +70,8 @@ class EmailRegisterForm(forms.Form):
     )
 
     def clean_email(self):
+        # cleaned_data————在数据合法的情况下，包含干净的提交数据的字典
+        # 可以在forms、views里调用
         cleaned_data = self.cleaned_data
         email = cleaned_data.get("email")
         try:

@@ -1,4 +1,4 @@
-{% extends "login/base_login.html" %}
+{% extends "common/base.html" %}
 {% block addHeader %}
     <title>邮箱登录</title>
     <style type="text/css">
@@ -12,43 +12,68 @@
 {% endblock %}
 {% block center %}
     {% load staticfiles %}
+    {% comment %}
+    md————笔记本
+    sm————平板
+    xs————手机
+    {% endcomment %}
 
-    <div class="panel panel-success col-md-4 col-sm-6 col-xs-12 col-md-offset-1 bg-grey" id="login">
-        <form role="form" class="panel-body form-horizontal text-center" id="email_login" method="get">
-            {% csrf_token %}
-
-            <div class="input-group">
-                <label class="input-group-addon">
-                    <span class="glyphicon glyphicon-envelope text-primary"></span>
-                </label>
-                <span id="tip_email" name="tip"
-                      data-tipso="{% if form.email.errors.0 %} {{ form.email.errors.0 }} {% else %} 请填写邮箱地址 {% endif %}">
-                    <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱地址"
-                           value="{% if form.email.value %}{{ form.email.value }}{% endif %}"/>
-                </span>
-            </div>
-            <br/>
-            <div class="input-group">
-                <label class="input-group-addon">
-                    <span class="glyphicon glyphicon-lock text-primary"></span>
-                </label>
-                <span id="tip_pwd" name="tip"
-                      data-tipso="{% if form.pwd.errors.0 %} {{ form.pwd.errors.0 }} {% else %} 请填写密码 {% endif %}">
-                    <input type="password" class="form-control" id="pwd" name="pwd" placeholder="请输入6~12位密码"
-                           value="{% if form.pwd.value %}{{ form.pwd.value }}{% endif %}"/>
-                </span>
+{#    <br/>#}
+{#    <br/>#}
+{#    <br/>#}
+{#    <div class="container-fluid">#}
+    <div class="container vertical-center">
+        <div class="row" id="login-row">
+            <div class="col-md-7 col-sm-6">
+                <img src="{% static 'login/images/login.jpg' %}" class="img-responsive img-circle img-width" alt="login img">
             </div>
 
-            <div class="form-group form-inline" style="padding-left:80px;padding-right:80px;">
-{#                <a class="pull-left" href="{% url 'login' 'change_secret' %}" id="secret">忘记密码</a>#}
-                <a class="pull-right" href="{% url 'login' 'email_register' %}" id="register">免费注册</a>
-            </div>
+            <div class="panel panel-success col-md-4 col-sm-6 col-xs-12 col-md-offset-1 bg-grey" id="login">
+                <form role="form" class="panel-body form-horizontal text-center" id="email_login" method="get">
+                    {% csrf_token %}
 
-            <div class="form-group form-inline" style="padding-left:20px">
-                <input type="submit" class="btn btn-success" value="登录" style="width:55%">
+                    <div class="input-group">
+                        <label class="input-group-addon">
+                            <span class="glyphicon glyphicon-envelope text-primary"></span>
+                        </label>
+                        <span id="tip_email" name="tip"
+                              data-tipso="{% if form.email.errors.0 %} {{ form.email.errors.0 }} {% else %} 请填写邮箱地址 {% endif %}">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱地址"
+                                   value="{% if form.email.value %}{{ form.email.value }}{% endif %}"/>
+                        </span>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <label class="input-group-addon">
+                            <span class="glyphicon glyphicon-lock text-primary"></span>
+                        </label>
+                        <span id="tip_pwd" name="tip"
+                              data-tipso="{% if form.pwd.errors.0 %} {{ form.pwd.errors.0 }} {% else %} 请填写密码 {% endif %}">
+                            <input type="password" class="form-control" id="pwd" name="pwd" placeholder="请输入6~12位密码"
+                                   value="{% if form.pwd.value %}{{ form.pwd.value }}{% endif %}"/>
+                        </span>
+                    </div>
+
+                    <div class="form-group form-inline" style="padding-left:80px;padding-right:80px;">
+                        {% comment %}
+                        django会把href路径中?后面的部分去掉并添加/结尾
+                        {% url %}————返回一个绝对路径的引用(不包含域名的URL)
+                        传递的参数需要在url捕获和在views参数里接收
+                        {% endcomment %}
+        {#                <a class="pull-left" href="{% url 'login' 'change_secret' %}" id="secret">忘记密码</a>#}
+                        <a class="pull-right" href="{% url 'login' 'email_register' %}" id="register">免费注册</a>
+                    </div>
+
+                    <div class="form-group form-inline" style="padding-left:20px">
+                        <input type="submit" class="btn btn-success" value="登录" style="width:55%">
+                        {% comment %}
+                        form提交————只要有type="submit"属性即可
+                        <button type="submit" class="btn btn-info">登录</button>
+                        {% endcomment %}
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
-
     <script type="text/javascript" src="{% static 'login/js/email_login.js' %}"></script>
 {% endblock %}

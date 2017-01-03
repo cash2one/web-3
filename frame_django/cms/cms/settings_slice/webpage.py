@@ -24,7 +24,7 @@ STATICFILES_FINDERS = [
 ]
 # 不属于任何一个特定应用的静态文件
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "cms/static"),
+    # os.path.join(BASE_DIR, "cms/static"),
 ]
 # python manage.py collectstatic————自动收集static文件并复制到STATIC_ROOT
 # 用于部署的绝对路径————默认None
@@ -47,8 +47,12 @@ TEMPLATES = [
         # 模板引擎
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # 'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        #
         # 为filesystem.Loader添加查找目录，按搜索顺序排列
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, "simpleTest/test"),
+        ],
+        #
         # 是否在已安装app内查找模板源文件
         # 当loaders存在，APP_DIRS不要设置
         # 'APP_DIRS': True,
@@ -64,8 +68,8 @@ TEMPLATES = [
             'context_processors': [
                 #
                 # debug————True
-                # sql_queries————[{'sql': ..., 'time':
-                # ...},...]————请求期间到目前为止每个SQL 查询及花费的时间————按查询的顺序排序
+                # sql_queries————[{'sql': ..., 'time': ...},...]
+                # 请求期间到目前为止每个SQL 查询及花费的时间————按查询的顺序排序
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 #

@@ -1,6 +1,21 @@
 <div class="panel-default text-center">
 
+{% if page_obj.paginator.num_pages > 0 %}
     <ul class="pagination">
+        {% comment %}
+        page_obj————分页对像实例，ListView默认生成
+
+        page_obj.paginator.page_range————所有分页number的list
+        page_obj.paginator.num_pages————总分页数
+
+        page_obj.number——————当前分页的页码
+
+        page_obj.has_previous——————是否有上一页
+        page_obj.previous_page_number————上一页的number
+
+        page_obj.has_next————是否有下一页
+        page_obj.next_page_number————下一页的number
+        {% endcomment %}
         {% if page_obj.has_previous %}
             <li>
                 <a href="{{ request.path }}?&page=1">首页</a>
@@ -41,6 +56,7 @@
             </li>
         {% endif %}
     </ul>
+{% endif %}
 </div>
 
 
