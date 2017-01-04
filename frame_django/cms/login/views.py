@@ -100,7 +100,7 @@ class MenuView(TemplateView):
 
     def get_context_data(self, **kwargs):
         json_str = to_json(Menu.objects.order_by('parentid', 'menu_order', 'id'))
-        return json_str
+        return {'menu_list': json_str}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)

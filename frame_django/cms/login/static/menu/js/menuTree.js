@@ -44,8 +44,8 @@ var setting = {
          */
         simpleData: {
             enable: true,                //数据是否采用简单Array格式，默认false
-            idKey: "id",                 //当前节点唯一标识的属性名称
-            pIdKey: "pId",               //当前节点的父节点唯一标识的属性名称
+            idKey: "id",                 //当前节点唯一标识属性名
+            pIdKey: "pId",               //当前节点父节点唯一标识属性名
             rootPId: null                //用于修正根节点父节点数据，即 pIdKey 指定的属性值
         },
         key: {
@@ -113,18 +113,19 @@ var reload_ztree = function(){
     //     complete: function (XMLHttpRequest, textStatus) {}
     // });
     var node;
+    var diy = "/static/common/css/zTreeStyle/img/diy/";
     for(i in menu_list){
         node = {
-            id       : i.id,
-            pId      : i.parentid,
-            name     : i.menuName+"(" + i.code + ")",
-            type     : i.type,
-            icon     : i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
-            iconOpen : i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
-            iconClose: i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_close.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m2.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+            pId      : menu_list[i].parentid,
+            id       : menu_list[i].id,
+            name     : menu_list[i].menu_name+"(" + menu_list[i].code + ")",
+            type     : menu_list[i].type,
+            icon     : menu_list[i].type == 0 ? diy + "1_open.png" : (menu_list[i].type == 1 ? diy + "m1.png": diy + "3.png"),
+            iconOpen : menu_list[i].type == 0 ? diy + "1_open.png" : (menu_list[i].type == 1 ? diy + "m1.png": diy + "3.png"),
+            iconClose: menu_list[i].type == 0 ? diy + "1_close.png" : (menu_list[i].type == 1 ? diy + "m2.png": diy + "3.png")
         };
+        treeNodes.push(node);
     }
-    treeNodes.push(node);
     $.fn.zTree.init($("#tree"), setting, treeNodes);
 };
 

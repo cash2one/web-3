@@ -51,6 +51,9 @@ class UserRole(models.Model):
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
 
+    class Meta:
+        db_table = "user_role"
+
 
 class Role(models.Model):
     id = models.AutoField(verbose_name="角色id", primary_key=True)
@@ -62,6 +65,9 @@ class Role(models.Model):
     # menu = models.ForeignKey(Menu, related_name='menu_role')              # 一对多（外键）
     # menu = models.ManyToManyField(Menu)                                   # 多对多
 
+    class Meta:
+        db_table = "role"
+
 
 class RoleMenu(models.Model):
     id = models.AutoField(verbose_name="id", primary_key=True)
@@ -70,6 +76,9 @@ class RoleMenu(models.Model):
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
+
+    class Meta:
+        db_table = "role_menu"
 
 
 class Menu(models.Model):
@@ -86,6 +95,18 @@ class Menu(models.Model):
     isvisible = models.CharField(verbose_name="是否可见", max_length=2)
     parentid = models.CharField(verbose_name="父级菜单id", max_length=10)
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)
+
+    def toDict(self):
+        return {
+            'id': self.id,
+            'menu_name': self.menu_name,
+            'type': self.type,
+            'url_code': self.url_code,
+            'code': self.code,
+            'isvisible': self.isvisible,
+            'parentid': self.parentid,
+            'menu_order': self.menu_order,
+        }
 
     class Meta:
         db_table = "menu"
