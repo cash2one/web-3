@@ -44,22 +44,23 @@ Django把基本的http请求和响应抽象出来，封装成各自的类。cbv�
 其他的所有内置class-based-view都是把以上几个基础类组合，重写方法以达到预期的结果。
 
 #####View————提供模板和渲染
-|        类名        |                        功能                       |
-|--------------------|---------------------------------------------------|
-| View               | 视图基础类，可以在任何时候使用                    |
-|                    | get,post,put,delete,head,options,trace            |
-|                    | View中是没有返回一个response的                    |
-|                    | 只继承View，必须要重写get等，以返回一个response   |
-| RedirectView       | 重新定向到其他URL                                 |
-| TemplateView       | 显示HTML template                                 |
-| ListView           | 显示对象列表                                      |
-| DetailView         | 显示对象详情                                      |
-|                    | SingleObjectTemplateResponseMixin、BaseDetailView |
-| FormView           | From提交                                          |
-| CreateView         | 创建对象                                          |
-| UpdateView         | 更新对象                                          |
-| DeleteView         | 删除对象                                          |
-| Generic date views | 显示一段时间内的对象                              |
+|        类名        |                          功能                         |
+|--------------------|-------------------------------------------------------|
+| View               | 视图基础类，可以在任何时候使用                        |
+|                    | get,post,put,delete,head,options,trace                |
+|                    | View中是没有返回一个response的                        |
+|                    | 只继承View，必须要重写get等，以返回一个response       |
+| RedirectView       | 重新定向到其他URL                                     |
+| TemplateView       | 显示HTML template                                     |
+|                    | 继承TemplateResponseMixin，ContextMixin、View         |
+| ListView           | 显示对象列表                                          |
+| DetailView         | 显示对象详情                                          |
+|                    | 继承SingleObjectTemplateResponseMixin、BaseDetailView |
+| FormView           | From提交                                              |
+| CreateView         | 创建对象                                              |
+| UpdateView         | 更新对象                                              |
+| DeleteView         | 删除对象                                              |
+| Generic date views | 显示一段时间内的对象                                  |
 
 
 子类化一个类视图时，可以在子类中重写一些属性（比如template_name）或者方法（比如get_context_data）来提供一些新的属性或者方法。

@@ -23,6 +23,10 @@
             </div>
         </div>
      </div>
+    <script>
+{#        eval()————计算某个字符串，并执行其中的的 JavaScript 代码    #}
+        var menu_list = eval('{{ menu_list }}');
+    </script>
 {#    ?0002————清缓存（每次变动js，修改?后的值）    #}
     <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0002"></script>
 {% endblock %}

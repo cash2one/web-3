@@ -77,32 +77,54 @@ var setting = {
  */
 var treeNodes = [];
 
+/*
 treeNodes = [
     {"id":1, "pId":0, "name":"test1"},
     {"id":11, "pId":1, "name":"test11"},
     {"id":12, "pId":1, "name":"test12"},
     {"id":111, "pId":11, "name":"test111"}
 ];
+*/
 
 var reload_ztree = function(){
-    /*
-    $.ajax({
-        async      : false,
-        traditional: true,              //false，深度序列化参数对象
-        cache      : false,
-        type       : 'GET',
-        dataType   : "json",
-        data       : {},
-        url        : "/menu/get_menu",   //请求路径
-        error: function () {       //请求失败处理函数
-            alert('数据请求失败');
-        },
-        success : function (data) {    //请求成功处理函数
-            alert(data);
-            treeNodes = data;         //把后台封装好的简单Json格式赋给treeNodes
-        }
-    });
-    */
+    // $.ajax({
+    //     async      : false,              //false，同步执行；默认true，异步执行，请求未完成就执行回调函数
+    //     traditional: true,               //false，深度序列化参数对象；true，传统方式序列化参数对象
+    //     cache      : false,
+    //     type       : 'GET',
+    //     dataType   : "json",
+    //     data       : {},
+    //     url        : "/menu/get_menu",   //请求路径
+    //     /**
+    //      * 请求失败处理函数
+    //      */
+    //     error: function () {
+    //         alert('数据请求失败');
+    //     },
+    //     /**
+    //      * 请求成功处理函数
+    //      * 把后台封装好的简单Json格式赋给treeNodes
+    //      * @param data
+    //      */
+    //     success : function (data) {
+    //         alert(data);
+    //         treeNodes = data;
+    //     }
+    //     complete: function (XMLHttpRequest, textStatus) {}
+    // });
+    var node;
+    for(i in menu_list){
+        node = {
+            id       : i.id,
+            pId      : i.parentid,
+            name     : i.menuName+"(" + i.code + ")",
+            type     : i.type,
+            icon     : i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+            iconOpen : i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+            iconClose: i.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_close.png" : (i.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m2.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+        };
+    }
+    treeNodes.push(node);
     $.fn.zTree.init($("#tree"), setting, treeNodes);
 };
 

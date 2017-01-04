@@ -32,7 +32,7 @@ class SimpleUser(models.Model):
         verbose_name_plural = "用户信息表"                 # 别名复数，默认'别名s'
         db_table = 'simple_user'                           # 自定义数据库表名————默认'库名_模块名'
         unique_together = ('phone', 'email')               # 联合主键————不重复的字段组合————一维或多维元组
-        ordering = ["-id"]                                 # 根据哪些字段排序，"-"表示倒序，"?"表示随机
+        # ordering = ["-id"]                                # 缺省排序字段，"-"表示倒序，"?"表示随机
         # managed = True                                    # 由manage.py命令管理生命周期，设为False，关联表也不接受管理
         # default_permissions = ('add', 'change', 'delete') # 减少默认权限
         # permissions = ()                                  # 添加额外权限————一维或多维元组
@@ -65,8 +65,8 @@ class Role(models.Model):
 
 class RoleMenu(models.Model):
     id = models.AutoField(verbose_name="id", primary_key=True)
-    role_id = models.IntegerField(verbose_name="角色id", primary_key=True)
-    menu_id = models.IntegerField(verbose_name="菜单id", primary_key=True)
+    role_id = models.IntegerField(verbose_name="角色id")
+    menu_id = models.IntegerField(verbose_name="菜单id")
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
@@ -86,6 +86,9 @@ class Menu(models.Model):
     isvisible = models.CharField(verbose_name="是否可见", max_length=2)
     parentid = models.CharField(verbose_name="父级菜单id", max_length=10)
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)
+
+    class Meta:
+        db_table = "menu"
 
 
 class UserLoginLog(models.Model):

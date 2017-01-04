@@ -25,6 +25,7 @@ IntegerField会忽略max_length
 ALTER TABLE tab_name ALTER COLUMN column_name DROP NOT NULL;
 
 ###内部类（class Meta）
+
 |                   属性                  |                     含义                     |
 |-----------------------------------------|----------------------------------------------|
 | index_together = [["...", "..."],]      | 设置带有索引的字段组合，列表可以一维         |

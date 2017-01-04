@@ -36,20 +36,21 @@
 |                           | 获取session————request.session.get(key,default=None)       |
 |                           | 删除session（不存在时报错）————del request.session[key]    |
 
-simplejson.loads(request.raw_post_data)
-json.loads(request.body)
-
 ###简单的函数视图
 ```
 def login(request, param):
-    # 视图函数传递的param————接收url匹配的参数
-    # request.GET————获取url?name=param的参数
+    """
+    视图函数传递的param————接收url匹配的参数
+    request.GET————获取url?name=param的参数
+    """
     if request.method == 'GET':
         try:
             ua = request.META['HTTP_USER_AGENT']
         except KeyError:
             ua = 'unknown'
-        # 使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
+        """
+        使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
+        """
         # ua = request.META.get('HTTP_USER_AGENT', 'unknown')
     elif request.method == 'POST':
         ...

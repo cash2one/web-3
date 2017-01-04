@@ -54,6 +54,7 @@ def short(request):
     return render_to_response(
         'test/short.html',
         {"key": "中文"},  # 可选
+        # processors=[***],
         #
         # local()————返回一个包含当前作用域里面的所有变量和它们的值的字典
         # 可以替代contextDict以及其它局部变量
