@@ -10,7 +10,7 @@ from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
 from login.common.security import create_pwd
 from models import SimpleUser, Menu
-from base.common.json_change import to_json
+from base.common.json_change import to_list, to_json_str
 """
 @csrf_protect————让表单使用csrf_token
 @csrf_exempt————不让表单使用csrf_token
@@ -99,9 +99,10 @@ class MenuView(TemplateView):
     template_name = 'menu/menuTree.html'
 
     def get_context_data(self, **kwargs):
-        json_str = to_json(Menu.objects.order_by('parentid', 'menu_order', 'id'))
+        json_str = to_json_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
         return {'menu_list': json_str}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        # 直接在视图中渲染数据内容，和网页其它部分一起发送到html文件上（一次性地渲染，还是同一次请求）
         return self.render_to_response(context)

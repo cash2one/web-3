@@ -17,8 +17,16 @@ python_dict = json.loads(json_str)
 '''
 
 
-# 接收一个model对象 -> [dict, dict, ...] -> 返回一个json字符串
-def to_json(objs):
+# 接收一个model对象 -> [dict, dict, ...]
+def to_list(objs):
+    obj_list = []
+    for o in objs:
+        obj_list.append(o.toDict())
+    return obj_list
+
+
+# 接收一个model对象 -> [dict, dict, ...] -> json字符串
+def to_json_str(objs):
     obj_list = []
     for o in objs:
         obj_list.append(o.toDict())

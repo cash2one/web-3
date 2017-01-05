@@ -91,7 +91,7 @@ class Menu(models.Model):
     )
     type = models.SmallIntegerField(verbose_name="菜单类型", choices=TYPE_CHOICE, db_index=0)
     url_code = models.CharField(verbose_name="请求路径", max_length=100)
-    code = models.IntegerField(verbose_name="菜单编码")
+    code = models.CharField(verbose_name="菜单编码", max_length=10, help_text='0，目录；1，菜单；2，功能')
     isvisible = models.CharField(verbose_name="是否可见", max_length=2)
     parentid = models.CharField(verbose_name="父级菜单id", max_length=10)
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)

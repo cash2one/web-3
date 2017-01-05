@@ -23,13 +23,22 @@
             </div>
         </div>
      </div>
-    {% comment %}
-    replace(/&quot;/g,'"')————把&quot;转义回来
-    eval()————计算某个字符串，并执行其中的的 JavaScript 代码
-    ?0002————清缓存（每次变动js，修改?后的值）
-    {% endcomment %}
     <script>
+        {% comment %}
+        /**
+         * replace(/&quot;/g,'"')————把&quot;转义回来
+         * eval()————计算某个字符串，并执行其中的的 JavaScript 代码
+         */
         var menu_list = eval('{{ menu_list }}'.replace(/&quot;/g,'"'));
+        /**
+         * safe过滤器————为单独的变量关闭自动转意
+         */
+        var menu_list = eval({{ menu_list | safe }});
+        {% endcomment %}
+        var menu_list = eval({{ menu_list | safe }});
     </script>
+    <!--
+    ?0002————清缓存（每次变动js，修改?后的值）
+    -->
     <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0002"></script>
 {% endblock %}

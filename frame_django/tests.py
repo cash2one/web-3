@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-07-12 13:06:06
-# @Last Modified time: 2017-01-04 17:53:58
+# @Last Modified time: 2017-01-05 09:57:35
 #
 # 为了给所有的Publisher建立一个列表页，我们将按照这样的方式来配置URLconf:
 from django.conf.urls import patterns, url
@@ -73,3 +73,4 @@ from biziapp_blog as a left join biziapp_blogfavor as b on  a.id=b.blog_id
  rawqueryset中至少要有 select a.id（主键）
 分页 paginator = Paginator(list(posts_list),8)
 '''
+# {{ List|safe }}

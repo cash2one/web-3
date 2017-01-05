@@ -39,21 +39,24 @@ var setting = {
     },
     data: {
         /**
-         * 标准的JSON数据————嵌套表示节点的父子包含关系
-         * 简单的JSON数据————使用id/pId表示节点的父子包含关系
+         * 标准JSON数据————嵌套表示节点的父子包含关系
+         * zTreeNodes = [{name: "***", children: [ {name: "***"}, ...]}]
+         *
+         * 简单JSON数据————使用id/pId表示节点的父子包含关系
+         * zTreeNodes = [{"id":'***', "pId":'***', "name":"***"}, ...]
          */
-        simpleData: {
-            enable: true,                //数据是否采用简单Array格式，默认false
-            idKey: "id",                 //当前节点唯一标识属性名
-            pIdKey: "pId",               //当前节点父节点唯一标识属性名
-            rootPId: null                //用于修正根节点父节点数据，即 pIdKey 指定的属性值
-        },
         key: {
-            children: "children",        //子节点名称
-            name: "name",                //当前节点名称
+            children: "children",        //子节点键名
+            name: "name",                //当前节点键名
             title: "",                   //节点提示信息属性名称
             url: "url",                  //节点链接的目标 URL 的属性名称
             icon: "icon"
+        },
+        simpleData: {
+            enable: true,                //数据采用简单JSON格式，默认false
+            idKey: "id",                 //当前节点唯一标识属性名
+            pIdKey: "pId",               //当前节点父节点唯一标识属性名
+            rootPId: null                //用于修正根节点父节点数据，即 pIdKey 指定的属性值
         }
     },
     check: {
@@ -72,19 +75,9 @@ var setting = {
 
 /**
  * zTreeNodes————zTree的全部节点数据集合————JSON数组
- * $.fn.zTree.init(jQueryObj, setting, treeNodes)————v3.0
- * jQueryObj.zTree(setting, zTreeNodes)————v2.6
  */
 var treeNodes = [];
 
-/*
-treeNodes = [
-    {"id":1, "pId":0, "name":"test1"},
-    {"id":11, "pId":1, "name":"test11"},
-    {"id":12, "pId":1, "name":"test12"},
-    {"id":111, "pId":11, "name":"test111"}
-];
-*/
 
 var reload_ztree = function(){
     // $.ajax({
@@ -94,27 +87,19 @@ var reload_ztree = function(){
     //     type       : 'GET',
     //     dataType   : "json",
     //     data       : {},
-    //     url        : "/menu/get_menu",   //请求路径
-    //     /**
-    //      * 请求失败处理函数
-    //      */
-    //     error: function () {
-    //         alert('数据请求失败');
-    //     },
-    //     /**
-    //      * 请求成功处理函数
-    //      * 把后台封装好的简单Json格式赋给treeNodes
-    //      * @param data
-    //      */
-    //     success : function (data) {
-    //         alert(data);
-    //         treeNodes = data;
-    //     }
-    //     complete: function (XMLHttpRequest, textStatus) {}
+    //     url        : "/menu/get_menu",                               //请求路径
+    //     error: function () { alert('数据请求失败'); },                //请求失败处理函数
+    //     success : function (data) { alert(data); treeNodes = data; } //请求成功处理函数，把后台封装好的简单Json格式赋给treeNodes
+    //     complete: function (XMLHttpRequest, textStatus) {...}
     // });
     var node;
     var diy = "/static/common/css/zTreeStyle/img/diy/";
+    debugger;
     for(i in menu_list){
+        /**
+         * 生成一个节点
+         * @type {{pId: *, id, name: string, type, icon: string, iconOpen: string, iconClose: string}}
+         */
         node = {
             pId      : menu_list[i].parentid,
             id       : menu_list[i].id,
@@ -126,6 +111,10 @@ var reload_ztree = function(){
         };
         treeNodes.push(node);
     }
+    /**
+     * $.fn.zTree.init(jQueryObj, setting, treeNodes)————v3.0
+     * jQueryObj.zTree(setting, zTreeNodes)————v2.6
+     */
     $.fn.zTree.init($("#tree"), setting, treeNodes);
 };
 
