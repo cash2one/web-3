@@ -21,7 +21,10 @@ var setting = {
      * 回调函数
      */
      callback: {
-         //onRightClick : onRightClick   //右键事件
+         //onRightClick : onRightClick,   //右键事件
+        onClick: onClick,                 //节点被点击的事件
+        // beforeDrop: beforeDrop,        //节点拖拽操作结束之前的事件
+        // onDrop: onDrop                 //节点拖拽操作结束的事件
      },
     view: {
         addDiyDom: null,
@@ -89,7 +92,7 @@ var reload_ztree = function(){
     //     data       : {},
     //     url        : "/menu/get_menu",                               //请求路径
     //     error: function () { alert('数据请求失败'); },                //请求失败处理函数
-    //     success : function (data) { alert(data); treeNodes = data; } //请求成功处理函数，把后台封装好的简单Json格式赋给treeNodes
+    //     success : function (data) { alert(data); treeNodes = data; } //请求成功处理函数，把后台封装好的简单Json赋给treeNodes
     //     complete: function (XMLHttpRequest, textStatus) {...}
     // });
     var node;
@@ -98,7 +101,10 @@ var reload_ztree = function(){
     for(i in menu_list){
         /**
          * 生成一个节点
-         * @type {{pId: *, id, name: string, type, icon: string, iconOpen: string, iconClose: string}}
+         * 嵌套的三元运算符————条件1 ? 结果1: (条件2: ? 结果2: 结果3)
+         * icon————节点自定义图标
+         * iconOpen————父节点自定义展开时图标
+         * iconClose————父节点自定义折叠时图标
          */
         node = {
             pId      : menu_list[i].parentid,
@@ -121,3 +127,33 @@ var reload_ztree = function(){
 $(function() {
     reload_ztree();
 });
+
+
+/**
+ * 点击节点
+ * @param event
+ * @param treeId
+ * @param treeNode
+ * @param clickFlag
+ */
+function onClick(event, treeId, treeNode, clickFlag) {
+    document.getElementById("menu").reset();
+    $.getJSON(base + '/system/menu/search', {"id": treeNode.id}, function (md) {
+        $(menu).find("#parentid").val(md.parentid);
+        $(menu).find("#parentMenuName").text(md.parentName ? md.parentName + "(" + md.parentUrlCode + ")" : '');
+        $(menu).find("#curId").val(md.id);
+        $(menu).find("#oldName").val(md.menuName);
+        $(menu).find("#menuName").val(md.menuName);
+        $(menu).find("#type").val(md.type).prop('disabled', true).css("cursor", "not-allowed");
+        $(menu).find("#urlCode").val(md.urlCode);
+        $(menu).find("#code").val(md.code);
+        $(menu).find("#isOldSystem").val(md.isOldSystem);
+        $(menu).find("#isOldSystem").prop("checked", md.isOldSystem == 1 ? true : false);
+        $(menu).find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
+        $(menu).find("#menuOrder").val(md.menuOrder);
+        $(menu).find("#userNum").html("<a style='color:blue' href="+base+"/system/user.html?menuId="+treeNode.id+">" + md.userNum + "</a>");
+        $(menu).find("#roles").html(md.roles);
+
+        $("#save_menu").attr("type", "edit");
+    });
+}
