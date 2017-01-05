@@ -27,7 +27,7 @@ var setting = {
         // onDrop: onDrop                 //节点拖拽操作结束的事件
      },
     view: {
-        addDiyDom: null,
+        addDiyDom: addDiyDom,            //在节点上固定显示用户自定义控件
         autoCancelSelected: true,
         dblClickExpand: true,
         expandSpeed: "fast",             //节点展开、折叠时的动画速度("slow", "normal", "fast"或毫秒数值，如：1000)
@@ -97,7 +97,6 @@ var reload_ztree = function(){
     // });
     var node;
     var diy = "/static/common/css/zTreeStyle/img/diy/";
-    debugger;
     for(i in menu_list){
         /**
          * 生成一个节点
@@ -129,16 +128,101 @@ $(function() {
 });
 
 
+var IDMark_A = "_a";
 /**
- * 点击节点
- * @param event
+ * 添加编辑图标
  * @param treeId
  * @param treeNode
- * @param clickFlag
+ */
+function addDiyDom(treeId, treeNode) {
+    debugger;
+    /**
+     * treeId————节点id
+     * treeNode————节点对象
+     */
+    var aObj = $("#" + treeNode.tId + IDMark_A);
+    if (treeNode.id != 1) {
+        var delStr = "<span class='suffixIcon' title='删除[" + treeNode.name + "]' onfocus='this.blur();'><span class='button del' data-treeId='" + treeNode.id + "'></span></span>";
+        aObj.append(delStr);
+    }
+    if (treeNode.type < 2) { // 权限
+        var addStr = "<span class='suffixIcon' title='新增子[" + (treeNode.type == 0 ? "目录/菜单" : "操作") + "]' onfocus='this.blur();'><span class='button add' data-treeId='" + treeNode.id + "'></span></span>";
+        aObj.append(addStr);
+    }
+}
+
+
+var menu = $("#menu");
+$(".suffixIcon").on("click", function (e) {
+    var target = e.target;
+    var treeId = $(target).attr("data-treeId");
+    var targetNode = zTree.getNodesByParam("id", treeId)[0];
+    zTree.selectNode(targetNode);
+
+    if ($(target).hasClass("add")) { // 新增
+        menu[0].reset();
+        $("#save_menu").attr("type", "add");
+        $.getJSON(base + "/system/menu/search", {"id": treeId}, function (menu) {
+            $("#menu").find("#parentMenuName").text(menu.menuName + "(" + menu.urlCode + ")");
+            $("#menu").find("#parentid").val(menu.id);
+            if (menu.type == 0) {
+                $("#menu").find("#type").removeAttr("disabled").css("cursor", "default");
+                $("#menu").find("#type option").eq(2).prop('disabled', true).siblings().removeAttr('disabled');
+            } else if (menu.type == 1) {
+                $("#menu").find("#type").removeAttr("disabled").css("cursor", "default").val(2);
+                $("#menu").find("#type option").eq(2).removeAttr('disabled').siblings().prop('disabled', true);
+            }
+        })
+    } else if ($(target).hasClass("del")) {
+        BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_WARNING,
+            title: '权限控制',
+            message: '确定要删除【' + targetNode.name + '】吗?',
+            buttons: [{
+                label: '取消',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }, {
+                label: '确定',
+                cssClass: 'btn-warning',
+                action: function (dialog) {
+                    dialog.close();
+                    $.ajax({
+                        url: base + '/system/menu/delete',
+                        data: {"id": targetNode.id},
+                        type: 'post',
+                        dataType: "json",
+                        success: function (result) {
+                            BootstrapDialog.show({
+                                title: '删除结果', message: result.msg,
+                                buttons: [{
+                                    label: 'OK',
+                                    action: function (dialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                            if (result.code == 0) {
+                                zTree.removeNode(targetNode);
+                            }
+                        }
+                    });
+                }
+            }]
+        });
+    }
+    e.stopPropagation();
+});
+
+
+/**
+ * 点击节点
+ * @param event,treeId,treeNode,clickFlag
  */
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();
-    $.getJSON(base + '/system/menu/search', {"id": treeNode.id}, function (md) {
+    $.getJSON('/system/menu/search', {"id": treeNode.id}, function (md) {
         $(menu).find("#parentid").val(md.parentid);
         $(menu).find("#parentMenuName").text(md.parentName ? md.parentName + "(" + md.parentUrlCode + ")" : '');
         $(menu).find("#curId").val(md.id);
