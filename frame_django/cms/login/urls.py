@@ -21,6 +21,6 @@ urlpatterns = [
     ])),
     url(r'^menu/', include([
         url(r'^$', views.MenuView.as_view(), name="menu"),
-        # url(r'^get_menu$', views.GetMenuView.as_view(), name="get_menu"),
+        url(r'^get_menu$', views.get_menu, name="get_menu"),
     ]))
 ]

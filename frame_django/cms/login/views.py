@@ -106,3 +106,8 @@ class MenuView(TemplateView):
         context = self.get_context_data(**kwargs)
         # 直接在视图中渲染数据内容，和网页其它部分一起发送到html文件上（一次性地渲染，还是同一次请求）
         return self.render_to_response(context)
+
+
+# 返回单个权限信息，json类型
+def get_menu():
+    pass

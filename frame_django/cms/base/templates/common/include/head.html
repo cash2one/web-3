@@ -2,7 +2,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="description" content="">
 <meta name="keywords" content="">
-
+{% comment %}
+application/javascript————服务器端处理js文件的mime类型
+text/javascript————浏览器处理js的mime类型————兼容性更好
+{% endcomment %}
 {% load static from staticfiles %}
 <link rel="shortcut icon" href="{% static 'common/images/logo.ico' %}" type="image/x-icon" />
 
@@ -13,23 +16,31 @@
 
 <script type="text/javascript" src="{% static 'common/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/bootstrap.min.js' %}"></script>
-
+{% comment %}
+validate————表单验证插件
+{% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/jquery.validate.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/messages_zh.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/validate.add.js' %}"></script>
-
+{% comment %}
+tipso————提示框插件
+{% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/tipso.js' %}"></script>
 {% comment %}
-application/javascript————服务器端处理js文件的mime类型
-text/javascript————浏览器处理js的mime类型————兼容性更好
-{% endcomment %}
-
-{% comment %}
-ztree
+ztree————文档树插件
 all————core 核心包、excheck 扩展包、exedit 扩展包
 另外exhide 扩展
 {% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/jquery.ztree.all.js' %}"></script>
+{% comment %}
+mustache————基于JavaScript的Logic-less（无逻辑或轻逻辑）模板
+* {{default_tags}}
+{{=<% %>=}}
+* <% erb_style_tags %>
+<%={{ }}=%>
+* {{ default_tags_again }}
+{% endcomment %}
+{#<script type="text/javascript" src="{% static 'common/js/mustache.js' %}"></script>#}
 
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/navbar.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/base.css' %}"/>

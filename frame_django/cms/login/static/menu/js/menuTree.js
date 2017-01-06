@@ -145,7 +145,8 @@ function addDiyDom(treeId, treeNode) {
         var delStr = "<span class='suffixIcon' title='删除[" + treeNode.name + "]' onfocus='this.blur();'><span class='button del' data-treeId='" + treeNode.id + "'></span></span>";
         aObj.append(delStr);
     }
-    if (treeNode.type < 2) { // 权限
+    // 权限
+    if (treeNode.type < 2) {
         var addStr = "<span class='suffixIcon' title='新增子[" + (treeNode.type == 0 ? "目录/菜单" : "操作") + "]' onfocus='this.blur();'><span class='button add' data-treeId='" + treeNode.id + "'></span></span>";
         aObj.append(addStr);
     }
@@ -158,11 +159,13 @@ $(".suffixIcon").on("click", function (e) {
     var treeId = $(target).attr("data-treeId");
     var targetNode = zTree.getNodesByParam("id", treeId)[0];
     zTree.selectNode(targetNode);
-
-    if ($(target).hasClass("add")) { // 新增
+    /**
+     * 新增
+     */
+    if ($(target).hasClass("add")) {
         menu[0].reset();
         $("#save_menu").attr("type", "add");
-        $.getJSON(base + "/system/menu/search", {"id": treeId}, function (menu) {
+        $.getJSON(base + "/menu/get_menu$", {"id": treeId}, function (menu) {
             $("#menu").find("#parentMenuName").text(menu.menuName + "(" + menu.urlCode + ")");
             $("#menu").find("#parentid").val(menu.id);
             if (menu.type == 0) {
