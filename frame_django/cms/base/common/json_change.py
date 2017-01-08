@@ -17,7 +17,7 @@ python_dict = json.loads(json_str)
 '''
 
 
-# 接收一个model对象 -> [dict, dict, ...]
+# 接收一个QuerySet/RawQuerySet对象 -> [dict, dict, ...]
 def to_list(objs):
     obj_list = []
     for o in objs:
@@ -25,12 +25,18 @@ def to_list(objs):
     return obj_list
 
 
-# 接收一个model对象 -> [dict, dict, ...] -> json字符串
-def to_json_str(objs):
+# 接收一个QuerySet/RawQuerySet对象 -> [dict, dict, ...] -> json字符串
+def to_json_list_str(objs):
     obj_list = []
     for o in objs:
         obj_list.append(o.toDict())
-    json_str = json.dumps(obj_list, ensure_ascii=False)
+    json_list_str = json.dumps(obj_list, ensure_ascii=False)
+    return json_list_str
+
+
+# 接收一个QuerySet/RawQuerySet对象 -> dict -> json字符串
+def to_json_str(obj):
+    json_str = json.dumps(obj[0].toDict())
     return json_str
 
 

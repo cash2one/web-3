@@ -10,7 +10,7 @@ from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
 from login.common.security import create_pwd
 from models import SimpleUser, Menu
-from base.common.json_change import to_list, to_json_str
+from base.common.json_change import to_list, to_json_str, to_json_list_str
 """
 @csrf_protect————让表单使用csrf_token
 @csrf_exempt————不让表单使用csrf_token
@@ -99,8 +99,8 @@ class MenuView(TemplateView):
     template_name = 'menu/menuTree.html'
 
     def get_context_data(self, **kwargs):
-        json_str = to_json_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
-        return {'menu_list': json_str}
+        json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
+        return {'menu_list': json_list_str}
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
@@ -109,5 +109,26 @@ class MenuView(TemplateView):
 
 
 # 返回单个权限信息，json类型
-def get_menu():
-    pass
+def get_menu(request):
+    id = int(request.GET.get("id"))
+    if id == 1:
+        m = Menu.objects.filter(id=id)
+    else:
+        '''
+        使用用原生SQL————RawQueryset————RawQuerySet中必须包含id（主键）
+        '''
+        m = Menu.objects.raw("""
+        SELECT
+            id, menu_name, type, code, url_code, isvisible, parentid, menu_order,
+            parent_name, parent_url_code
+        FROM
+            menu m,
+            (SELECT
+                menu_name parent_name, url_code parent_url_code
+            FROM menu
+            WHERE id = (SELECT parentid FROM menu WHERE id = %d)
+            ) t
+        WHERE id = %d
+        """ % (id, id))
+    return HttpResponse(to_json_str(m))
+

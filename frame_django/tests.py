@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-07-12 13:06:06
-# @Last Modified time: 2017-01-05 09:57:35
+# @Last Modified time: 2017-01-08 18:53:38
 #
 # 为了给所有的Publisher建立一个列表页，我们将按照这样的方式来配置URLconf:
 from django.conf.urls import patterns, url
@@ -63,14 +63,10 @@ prefetch_related的sql语句有2条，第二条会使用到where in，但是不�
 用原生SQL
 from django.db import connection
 cursor=connection.cursor()
-cursor.execute(sql)#这里的SQL就是标准SQL语句
+cursor.execute("""SQL语句""")
 
 
-posts_list = Blog.objects.raw('select a.*,b.blog_id,count(*) as count
-from biziapp_blog as a left join biziapp_blogfavor as b on  a.id=b.blog_id
-  left join biziapp_comment as c on a.id=c.blog_id group by c.blog_id order
- by a.date')
- rawqueryset中至少要有 select a.id（主键）
+posts_list = Blog.objects.raw("""SQL语句""")
 分页 paginator = Paginator(list(posts_list),8)
 '''
 # {{ List|safe }}

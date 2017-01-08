@@ -49,7 +49,7 @@
                             <label class="col-lg-2 control-label" for="menuName">权限名称<span class="required">*</span></label>
                             <div class="col-lg-8">
                                 <input type="hidden" id="curId" name="id">
-                                <input type="text" id="oldName" style="display: none">
+{#                                <input type="text" id="oldName" style="display: none">#}
                                 <input class="form-control" id="menuName" name="menuName" type="text">
                             </div>
                         </div>
@@ -130,5 +130,5 @@
     <!--
     ?0002————清缓存（每次变动js，修改?后的值）
     -->
-    <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0002"></script>
+    <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0003"></script>
 {% endblock %}

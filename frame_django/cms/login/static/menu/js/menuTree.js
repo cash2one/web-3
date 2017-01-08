@@ -135,7 +135,6 @@ var IDMark_A = "_a";
  * @param treeNode
  */
 function addDiyDom(treeId, treeNode) {
-    debugger;
     /**
      * treeId————节点id
      * treeNode————节点对象
@@ -154,18 +153,18 @@ function addDiyDom(treeId, treeNode) {
 
 
 var menu = $("#menu");
+/**
+ * 节点的新增、删除图标
+ */
 $(".suffixIcon").on("click", function (e) {
     var target = e.target;
     var treeId = $(target).attr("data-treeId");
     var targetNode = zTree.getNodesByParam("id", treeId)[0];
     zTree.selectNode(targetNode);
-    /**
-     * 新增
-     */
     if ($(target).hasClass("add")) {
         menu[0].reset();
         $("#save_menu").attr("type", "add");
-        $.getJSON(base + "/menu/get_menu$", {"id": treeId}, function (menu) {
+        $.getJSON("/menu/get_menu$", {"id": treeId}, function (menu) {
             $("#menu").find("#parentMenuName").text(menu.menuName + "(" + menu.urlCode + ")");
             $("#menu").find("#parentid").val(menu.id);
             if (menu.type == 0) {
@@ -220,27 +219,23 @@ $(".suffixIcon").on("click", function (e) {
 
 
 /**
- * 点击节点
- * @param event,treeId,treeNode,clickFlag
+ * 点击节点，填充menu表单
  */
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();
-    $.getJSON('/system/menu/search', {"id": treeNode.id}, function (md) {
-        $(menu).find("#parentid").val(md.parentid);
-        $(menu).find("#parentMenuName").text(md.parentName ? md.parentName + "(" + md.parentUrlCode + ")" : '');
-        $(menu).find("#curId").val(md.id);
-        $(menu).find("#oldName").val(md.menuName);
-        $(menu).find("#menuName").val(md.menuName);
-        $(menu).find("#type").val(md.type).prop('disabled', true).css("cursor", "not-allowed");
-        $(menu).find("#urlCode").val(md.urlCode);
-        $(menu).find("#code").val(md.code);
-        $(menu).find("#isOldSystem").val(md.isOldSystem);
-        $(menu).find("#isOldSystem").prop("checked", md.isOldSystem == 1 ? true : false);
-        $(menu).find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
-        $(menu).find("#menuOrder").val(md.menuOrder);
-        $(menu).find("#userNum").html("<a style='color:blue' href="+base+"/system/user.html?menuId="+treeNode.id+">" + md.userNum + "</a>");
-        $(menu).find("#roles").html(md.roles);
-
-        $("#save_menu").attr("type", "edit");
+    $.getJSON('/menu/get_menu', {"id": treeNode.id}, function (md) {
+        debugger;
+        $("#menu").find("#parentid")       .val(md.parentid);
+        $("#menu").find("#parentMenuName").text(md.parent_name ? md.parent_name + "(" + md.parent_url_code + ")" : '');
+        $("#menu").find("#curId")          .val(md.id);
+        $("#menu").find("#menuName")       .val(md.menu_name);
+        $("#menu").find("#type")           .val(md.type).prop('disabled', true).css("cursor", "not-allowed");
+        $("#menu").find("#urlCode")        .val(md.url_code);
+        $("#menu").find("#code")           .val(md.code);
+        $("#menu").find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
+        $("#menu").find("#menuOrder")      .val(md.menu_order);
+        $("#menu").find("#userNum").html("<a style='color:blue' href=\"/system/user.html?menuId="+treeNode.id+"\">" + md.user_num + "</a>");
+        $("#menu").find("#roles")         .html(md.roles);
+        $("#menu").find("#save_menu").attr("type", "edit");
     });
 }

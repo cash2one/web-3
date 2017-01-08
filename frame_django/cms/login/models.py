@@ -97,6 +97,9 @@ class Menu(models.Model):
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)
 
     def toDict(self):
+        # python类三元表达式
+        self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None
+        self.parent_url_code = self.parent_url_code if hasattr(self, 'parent_url_code') else None
         return {
             'id': self.id,
             'menu_name': self.menu_name,
@@ -106,6 +109,9 @@ class Menu(models.Model):
             'isvisible': self.isvisible,
             'parentid': self.parentid,
             'menu_order': self.menu_order,
+            # 动态生成的字段
+            'parent_name': self.parent_name,
+            'parent_url_code': self.parent_url_code
         }
 
     class Meta:
