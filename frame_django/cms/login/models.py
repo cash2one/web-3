@@ -3,8 +3,6 @@
 # @Last Modified time: 2016-12-22 12:10:53
 from __future__ import unicode_literals
 from django.db import models
-
-# unique————唯一、非空，不能设默认值
 from django.utils import timezone
 
 
@@ -28,10 +26,10 @@ class SimpleUser(models.Model):
     remarks = models.CharField(verbose_name="备注", max_length=50)
 
     class Meta:
-        verbose_name = "用户信息表"                        # 别名
-        verbose_name_plural = "用户信息表"                 # 别名复数，默认'别名s'
-        db_table = 'simple_user'                           # 自定义数据库表名————默认'库名_模块名'
-        unique_together = ('phone', 'email')               # 联合主键————不重复的字段组合————一维或多维元组
+        verbose_name = "用户信息表"                         # 别名
+        verbose_name_plural = "用户信息表"                  # 别名复数，默认'别名s'
+        db_table = 'simple_user'                            # 自定义数据库表名————默认'库名_模块名'
+        unique_together = ('phone', 'email')                # 联合主键————不重复的字段组合————一维或多维元组
         # ordering = ["-id"]                                # 缺省排序字段，"-"表示倒序，"?"表示随机
         # managed = True                                    # 由manage.py命令管理生命周期，设为False，关联表也不接受管理
         # default_permissions = ('add', 'change', 'delete') # 减少默认权限
@@ -72,7 +70,7 @@ class Role(models.Model):
 class RoleMenu(models.Model):
     id = models.AutoField(verbose_name="id", primary_key=True)
     role_id = models.IntegerField(verbose_name="角色id")
-    menu_id = models.IntegerField(verbose_name="菜单id")
+    menu_id = models.IntegerField(verbose_name="菜单id", unique=True)       # unique————唯一、非空，不能设默认值
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
@@ -100,6 +98,7 @@ class Menu(models.Model):
         # python类三元表达式
         self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None
         self.parent_url_code = self.parent_url_code if hasattr(self, 'parent_url_code') else None
+        self.user_num = self.user_num if hasattr(self, 'user_num') else None
         return {
             'id': self.id,
             'menu_name': self.menu_name,
@@ -111,7 +110,8 @@ class Menu(models.Model):
             'menu_order': self.menu_order,
             # 动态生成的字段
             'parent_name': self.parent_name,
-            'parent_url_code': self.parent_url_code
+            'parent_url_code': self.parent_url_code,
+            'user_num': self.user_num,
         }
 
     class Meta:

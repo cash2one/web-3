@@ -43,3 +43,5 @@ delete_one_line = MODEL.objects.get(name='zd').delete()
 然后，你就可以看到局部变量和程序语句了。
 Django 出错信息仅在 debug 模式下才会显现。
 '''
+
+filter表示=，exclude表示!=

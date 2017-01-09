@@ -9,8 +9,9 @@ from django.views.generic import TemplateView, ListView, FormView
 from forms import LoginForm, EmailRegisterForm
 from login.common.validate_code import send_email_code
 from login.common.security import create_pwd
-from models import SimpleUser, Menu
-from base.common.json_change import to_list, to_json_str, to_json_list_str
+from models import SimpleUser, Menu, RoleMenu, UserRole
+from base.common.json_change import to_list, to_json_str, to_json_list_str, values_to_json_list_str
+import json
 """
 @csrf_protect————让表单使用csrf_token
 @csrf_exempt————不让表单使用csrf_token
@@ -99,7 +100,11 @@ class MenuView(TemplateView):
     template_name = 'menu/menuTree.html'
 
     def get_context_data(self, **kwargs):
-        json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
+        # json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
+        """
+        ValuesQuerySet————QuerySet的子集————返回[dict, dict, ...]
+        """
+        json_list_str = values_to_json_list_str(Menu.objects.values())
         return {'menu_list': json_list_str}
 
     def get(self, request, *args, **kwargs):
@@ -111,6 +116,20 @@ class MenuView(TemplateView):
 # 返回单个权限信息，json类型
 def get_menu(request):
     id = int(request.GET.get("id"))
+    user_num = UserRole.objects.raw("""
+    SELECT
+        ur.id,
+        count(ur.id)
+    FROM
+        role_menu rm,
+        user_role ur,
+        simple_user u
+    WHERE
+        ur.user_id=u.id
+        AND ur.role_id=rm.role_id
+        AND rm.menu_id=%d
+    GROUP BY rm.menu_id
+    """%id)
     if id == 1:
         m = Menu.objects.filter(id=id)
     else:
@@ -130,5 +149,11 @@ def get_menu(request):
             ) t
         WHERE id = %d
         """ % (id, id))
-    return HttpResponse(to_json_str(m))
+        menu = m[0].toDict()
+        try:
+            menu['user_num'] = user_num[0].toDict()['user_num']
+        except Exception, e:
+            print e
+            menu['user_num'] = 0
+    return HttpResponse(json.dumps(menu))
 

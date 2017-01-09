@@ -34,6 +34,13 @@ def to_json_list_str(objs):
     return json_list_str
 
 
+# 接收一个ValuesQuerySet对象 -> [dict, dict, ...] -> json字符串
+def values_to_json_list_str(objs):
+    obj_list = list(objs)
+    json_list_str = json.dumps(obj_list, ensure_ascii=False)
+    return json_list_str
+
+
 # 接收一个QuerySet/RawQuerySet对象 -> dict -> json字符串
 def to_json_str(obj):
     json_str = json.dumps(obj[0].toDict())

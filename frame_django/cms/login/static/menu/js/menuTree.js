@@ -80,7 +80,7 @@ var setting = {
  * zTreeNodes————zTree的全部节点数据集合————JSON数组
  */
 var treeNodes = [];
-
+var menu = $("#menu");
 
 var reload_ztree = function(){
     // $.ajax({
@@ -119,13 +119,96 @@ var reload_ztree = function(){
     /**
      * $.fn.zTree.init(jQueryObj, setting, treeNodes)————v3.0
      * jQueryObj.zTree(setting, zTreeNodes)————v2.6
+     * .expandAll(true)————可选函数，是否展开全部节点（默认false）
      */
-    $.fn.zTree.init($("#tree"), setting, treeNodes);
+    $.fn.zTree.init($("#tree"), setting, treeNodes).expandAll(true);
 };
 
 $(function() {
     reload_ztree();
+    var zTree = $.fn.zTree.getZTreeObj("tree");
+    /**
+     * 添加、删除节点
+     *
+     * html页面文档加载时会对所有js/jq方法进行初始化
+     * $(function() {})是在html文档加载中最后执行的
+     * .suffixIcon是在$(function() {})中动态生成的html元素
+     * on()函数如果放在$(function() {})外，文档初始化时将找不到.suffixIcon元素
+     * 如果给html标签绑定onclick=fun(...)，fun()定义位置无限制
+     *
+     * $(selector).on(event[,childSelector[,data[,function[,map]]]])
+     * event————一个或多个（有效的）事件或命名空间，由空格分隔多个事件值
+     * childSelector————指定子元素触发事件，默认为null（此时相当于bind()函数）
+     * data————传递到函数的额外数据
+     * function————事件触发的函数（false也可以作为一个函数简写，返回false）
+     * map————事件映射 ({event:function, event:function, ...})
+     */
+    $(".suffixIcon").on("click", function (e) {
+        var target = e.target;
+        var treeId = $(target).attr("data-treeId");
+        var targetNode = zTree.getNodesByParam("id", treeId)[0];
+        zTree.selectNode(targetNode);
+        debugger;
+        if ($(target).hasClass("add")) {
+            menu[0].reset();
+            $("#save_menu").attr("type", "add");
+            $.getJSON("/menu/get_menu", {"id": treeId}, function (menu) {
+                $("#menu").find("#parentMenuName").text(menu.menu_name + "(" + menu.url_code + ")");
+                $("#menu").find("#parentid").val(menu.id);
+                if (menu.type == 0) {
+                    $("#menu").find("#type").removeAttr("disabled").css("cursor", "default");
+                    $("#menu").find("#type option").eq(2).prop('disabled', true).siblings().removeAttr('disabled');
+                } else if (menu.type == 1) {
+                    $("#menu").find("#type").removeAttr("disabled").css("cursor", "default").val(2);
+                    $("#menu").find("#type option").eq(2).removeAttr('disabled').siblings().prop('disabled', true);
+                }
+            })
+        } else if ($(target).hasClass("del")) {
+            BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_WARNING,
+                title: '权限控制',
+                message: '确定要删除【' + targetNode.name + '】吗?',
+                buttons: [{
+                    label: '取消',
+                    action: function (dialog) {
+                        dialog.close();
+                    }
+                }, {
+                    label: '确定',
+                    cssClass: 'btn-warning',
+                    action: function (dialog) {
+                        dialog.close();
+                        $.ajax({
+                            url: base + '/system/menu/delete',
+                            data: {"id": targetNode.id},
+                            type: 'post',
+                            dataType: "json",
+                            success: function (result) {
+                                BootstrapDialog.show({
+                                    title: '删除结果', message: result.msg,
+                                    buttons: [{
+                                        label: 'OK',
+                                        action: function (dialog) {
+                                            dialog.close();
+                                        }
+                                    }]
+                                });
+                                if (result.code == 0) {
+                                    zTree.removeNode(targetNode);
+                                }
+                            }
+                        });
+                    }
+                }]
+            });
+        }
+        /**
+         * 阻止点击事件向上冒泡————.suffixIcon在节点li内，点击时会触发onClick函数
+         */
+        e.stopPropagation();
+    });
 });
+
 
 
 var IDMark_A = "_a";
@@ -152,79 +235,12 @@ function addDiyDom(treeId, treeNode) {
 }
 
 
-var menu = $("#menu");
-/**
- * 节点的新增、删除图标
- */
-$(".suffixIcon").on("click", function (e) {
-    var target = e.target;
-    var treeId = $(target).attr("data-treeId");
-    var targetNode = zTree.getNodesByParam("id", treeId)[0];
-    zTree.selectNode(targetNode);
-    if ($(target).hasClass("add")) {
-        menu[0].reset();
-        $("#save_menu").attr("type", "add");
-        $.getJSON("/menu/get_menu$", {"id": treeId}, function (menu) {
-            $("#menu").find("#parentMenuName").text(menu.menuName + "(" + menu.urlCode + ")");
-            $("#menu").find("#parentid").val(menu.id);
-            if (menu.type == 0) {
-                $("#menu").find("#type").removeAttr("disabled").css("cursor", "default");
-                $("#menu").find("#type option").eq(2).prop('disabled', true).siblings().removeAttr('disabled');
-            } else if (menu.type == 1) {
-                $("#menu").find("#type").removeAttr("disabled").css("cursor", "default").val(2);
-                $("#menu").find("#type option").eq(2).removeAttr('disabled').siblings().prop('disabled', true);
-            }
-        })
-    } else if ($(target).hasClass("del")) {
-        BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_WARNING,
-            title: '权限控制',
-            message: '确定要删除【' + targetNode.name + '】吗?',
-            buttons: [{
-                label: '取消',
-                action: function (dialog) {
-                    dialog.close();
-                }
-            }, {
-                label: '确定',
-                cssClass: 'btn-warning',
-                action: function (dialog) {
-                    dialog.close();
-                    $.ajax({
-                        url: base + '/system/menu/delete',
-                        data: {"id": targetNode.id},
-                        type: 'post',
-                        dataType: "json",
-                        success: function (result) {
-                            BootstrapDialog.show({
-                                title: '删除结果', message: result.msg,
-                                buttons: [{
-                                    label: 'OK',
-                                    action: function (dialog) {
-                                        dialog.close();
-                                    }
-                                }]
-                            });
-                            if (result.code == 0) {
-                                zTree.removeNode(targetNode);
-                            }
-                        }
-                    });
-                }
-            }]
-        });
-    }
-    e.stopPropagation();
-});
-
-
 /**
  * 点击节点，填充menu表单
  */
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();
     $.getJSON('/menu/get_menu', {"id": treeNode.id}, function (md) {
-        debugger;
         $("#menu").find("#parentid")       .val(md.parentid);
         $("#menu").find("#parentMenuName").text(md.parent_name ? md.parent_name + "(" + md.parent_url_code + ")" : '');
         $("#menu").find("#curId")          .val(md.id);
