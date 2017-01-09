@@ -2,7 +2,7 @@
 # @Date:   2016-12-21 17:28:37
 # @Last Modified time: 2017-01-03 16:37:52
 from django.conf.urls import url, include
-from login import views
+from system import views
 
 
 urlpatterns = [

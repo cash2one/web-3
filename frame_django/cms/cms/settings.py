@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     # 如果项目和sentry位于不同服务器，可能需要安装raven
     # 'raven.contrib.django',
     'base',
-    'login',
+    'system',
 ]
 #
 # 中间件

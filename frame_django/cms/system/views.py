@@ -7,8 +7,8 @@ from django.shortcuts import render
 from django.views.generic import DetailView
 from django.views.generic import TemplateView, ListView, FormView
 from forms import LoginForm, EmailRegisterForm
-from login.common.validate_code import send_email_code
-from login.common.security import create_pwd
+from system.common.validate_code import send_email_code
+from system.common.security import create_pwd
 from models import SimpleUser, Menu, RoleMenu, UserRole
 from base.common.json_change import to_list, to_json_str, to_json_list_str, values_to_json_list_str
 import json

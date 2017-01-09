@@ -12,7 +12,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
-from login import urls as login_urls
+from system import urls as login_urls
 
 urlpatterns = [
     # django默认的后台管理————默认会重定向多次，变成一个长地址

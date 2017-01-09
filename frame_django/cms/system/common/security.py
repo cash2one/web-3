@@ -2,7 +2,7 @@
 # @Date:   2016-12-21 17:45:51
 # @Last Modified time: 2017-01-03 16:38:28
 from django.contrib.auth.hashers import *
-from login.models import *
+from system.models import *
 
 
 def create_pwd(ps):
