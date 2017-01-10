@@ -47,9 +47,9 @@ DATABASES = {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         }
     },
-    'login': {
+    'system': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'login',
+        'NAME': 'system',
         'USER': 'root',
         'PASSWORD': 'zdd12315',
         'HOST': host,
@@ -59,7 +59,7 @@ DATABASES = {
         }
     },
     # 从数据库
-    # 'login_slave': {
+    # 'system_slave': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'forward_slave',
     #     'USER': 'root',

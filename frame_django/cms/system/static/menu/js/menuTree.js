@@ -19,6 +19,7 @@ var setting = {
     },
     /**
      * 回调函数
+     * 默认参数————event, treeId, treeNode
      */
      callback: {
          //onRightClick : onRightClick,   //右键事件
@@ -124,11 +125,12 @@ var reload_ztree = function(){
     $.fn.zTree.init($("#tree"), setting, treeNodes).expandAll(true);
 };
 
+
 $(function() {
     reload_ztree();
     var zTree = $.fn.zTree.getZTreeObj("tree");
     /**
-     * 添加、删除节点
+     * 添加、删除权限节点
      *
      * html页面文档加载时会对所有js/jq方法进行初始化
      * $(function() {})是在html文档加载中最后执行的
@@ -144,15 +146,15 @@ $(function() {
      * map————事件映射 ({event:function, event:function, ...})
      */
     $(".suffixIcon").on("click", function (e) {
+        debugger;
         var target = e.target;
         var treeId = $(target).attr("data-treeId");
         var targetNode = zTree.getNodesByParam("id", treeId)[0];
         zTree.selectNode(targetNode);
-        debugger;
         if ($(target).hasClass("add")) {
             menu[0].reset();
             $("#save_menu").attr("type", "add");
-            $.getJSON("/menu/get_menu", {"id": treeId}, function (menu) {
+            $.getJSON("/system/menu/get_menu", {"id": treeId}, function (menu) {
                 $("#menu").find("#parentMenuName").text(menu.menu_name + "(" + menu.url_code + ")");
                 $("#menu").find("#parentid").val(menu.id);
                 if (menu.type == 0) {
@@ -164,43 +166,12 @@ $(function() {
                 }
             })
         } else if ($(target).hasClass("del")) {
-            BootstrapDialog.show({
-                type: BootstrapDialog.TYPE_WARNING,
-                title: '权限控制',
-                message: '确定要删除【' + targetNode.name + '】吗?',
-                buttons: [{
-                    label: '取消',
-                    action: function (dialog) {
-                        dialog.close();
-                    }
-                }, {
-                    label: '确定',
-                    cssClass: 'btn-warning',
-                    action: function (dialog) {
-                        dialog.close();
-                        $.ajax({
-                            url: base + '/system/menu/delete',
-                            data: {"id": targetNode.id},
-                            type: 'post',
-                            dataType: "json",
-                            success: function (result) {
-                                BootstrapDialog.show({
-                                    title: '删除结果', message: result.msg,
-                                    buttons: [{
-                                        label: 'OK',
-                                        action: function (dialog) {
-                                            dialog.close();
-                                        }
-                                    }]
-                                });
-                                if (result.code == 0) {
-                                    zTree.removeNode(targetNode);
-                                }
-                            }
-                        });
-                    }
-                }]
-            });
+            var data = {nodeName: targetNode.name};
+            var template = '<p>确定要删除【{{nodeName}}】吗?</p>';
+            var view = Mustache.render(template, data);
+            $("#del_body").html(view);
+            $("#nodeId").val(targetNode.id);
+            $("#delModel").modal('show');
         }
         /**
          * 阻止点击事件向上冒泡————.suffixIcon在节点li内，点击时会触发onClick函数
@@ -236,11 +207,11 @@ function addDiyDom(treeId, treeNode) {
 
 
 /**
- * 点击节点，填充menu表单
+ * 编辑权限节点
  */
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();
-    $.getJSON('/menu/get_menu', {"id": treeNode.id}, function (md) {
+    $.getJSON('/system/menu/get_menu', {"id": treeNode.id}, function (md) {
         $("#menu").find("#parentid")       .val(md.parentid);
         $("#menu").find("#parentMenuName").text(md.parent_name ? md.parent_name + "(" + md.parent_url_code + ")" : '');
         $("#menu").find("#curId")          .val(md.id);
@@ -255,3 +226,65 @@ function onClick(event, treeId, treeNode, clickFlag) {
         $("#menu").find("#save_menu").attr("type", "edit");
     });
 }
+
+
+/**
+ * 确认删除节点
+ * @returns {boolean}
+ */
+function delNode() {
+    /**
+     * 获取zTree树对象
+     */
+    var zTree = $.fn.zTree.getZTreeObj("tree");
+    var targetNode = zTree.getNodesByParam("id", $("#nodeId").val())[0];
+    $.ajax({
+        url: '/system/menu/delete',
+        data: {"id": $("#nodeId").val()},
+        type: 'post',
+        dataType: "json",
+        success: function (result) {
+            $("#del_body").html(result.msg);
+            $("#resultModal").modal('show');
+            if (result.code == 0) {
+                zTree.removeNode(targetNode);
+            }
+        }
+    });
+}
+
+
+menu.validate({
+    errorElement: 'span',
+    errorClass: 'help-inline',
+    focusInvalid: false,
+    rules: {
+        menu_name: {
+            minlength: 2,
+            required: true
+        },
+        url_code: {
+            minlength: 1,
+            required: true
+        },
+        menu_order: {
+            integer: 0,
+            required: true
+        }
+    },
+    highlight: function (element) {
+        $(element).closest('.help-inline').removeClass('ok');
+        $(element).closest('.control-group').removeClass('success').addClass('error');
+    },
+
+    unhighlight: function (element) {
+        $(element).closest('.control-group').removeClass('error');
+    },
+    success: function (label) {
+        label.addClass('valid').addClass('help-inline ok')
+            .closest('.control-group').removeClass('error').addClass('success');
+    },
+    submitHandler: function (form) {
+        // TODO 验证通过执行的方法
+    }
+});

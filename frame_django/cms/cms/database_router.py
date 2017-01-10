@@ -4,7 +4,7 @@
 #
 DATABASE_APPS_MAPPING = {
     'default': 'manage',
-    'login': 'login',
+    'system': 'system',
 }
 
 '''

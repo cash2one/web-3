@@ -4,8 +4,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.shortcuts import render
-from django.views.generic import DetailView
-from django.views.generic import TemplateView, ListView, FormView
+from django.views.generic import TemplateView, ListView, FormView, DetailView
 from forms import LoginForm, EmailRegisterForm
 from system.common.validate_code import send_email_code
 from system.common.security import create_pwd
@@ -149,11 +148,23 @@ def get_menu(request):
             ) t
         WHERE id = %d
         """ % (id, id))
-        menu = m[0].toDict()
-        try:
-            menu['user_num'] = user_num[0].toDict()['user_num']
-        except Exception, e:
-            print e
-            menu['user_num'] = 0
+    menu = m[0].toDict()
+    try:
+        menu['user_num'] = user_num[0].toDict()['user_num']
+    except Exception, e:
+        print e
+        menu['user_num'] = 0
     return HttpResponse(json.dumps(menu))
 
+
+def delete_menu(request):
+    if request.method == 'POST':                                        # 仅处理POST（GET）请求
+        id = int(request.POST.get("id"))
+        try:
+            # Menu.objects.filter(id=id).delete()                       # 删除数据（一或多条）
+            Menu.objects.get(id=id).delete()                            # 删除数据（一条）
+            result = {'code': 0, 'msg': 'success'}
+        except Exception, e:
+            print e
+            result = {'code': 1, 'msg': 'failure'}
+        return HttpResponse(result)

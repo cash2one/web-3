@@ -2,7 +2,9 @@
  * Created by ZDD on 2016/12/5.
  */
 
- //自定义validate表单验证规则
+/**
+ * validate自定义validate表单验证规则
+ */
 $.validator.addMethod(
     "phone",
     function (value, element) {
@@ -21,7 +23,10 @@ $.validator.addMethod(
 );
 
 
-// 自定义提示信息，用来覆盖默认的，参照messages_zh.js
+/**
+ * validator自定义提示信息(覆盖默认的)参照messages_zh.js
+ */
 //$.extend($.validator.messages, {
 //    required: "必选字段",
 //});
+

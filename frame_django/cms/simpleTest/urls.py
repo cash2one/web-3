@@ -16,20 +16,21 @@ urlpatterns = []
 # 调试模式特例————DEBUG为True时才有效
 # 个人测试————isTest为True时才有效
 #######################################
-isTest = False
+isTest = True
 if settings.DEBUG and isTest:
     urlpatterns += [
-        # 根目录的URL————"^$"，代表一个空字符串
-        url(r'^$', hello),
-        # 在views中重定向
-        url(r'^old_home', tests.redirect_new),
-        # name用于重定向等
-        url(r'^new_home', tests.new_home, name='new'),
-        url(r'^real_page', tests.real_page),
-        # RedirectView————url重定向
-        url(r'^surface_page', RedirectView.as_view(url='/real_page')),
-        url(r'^short', tests.short),
-        url(r'^end', tests.end)
-    ]
+        url(r'^test/', include([
+            # 根目录的URL————"^$"，代表一个空字符串
+            url(r'^$', hello),
+            # 在views中重定向
+            url(r'^old_home', tests.redirect_new),
+            # name用于重定向等
+            url(r'^new_home', tests.new_home, name='new'),
+            url(r'^real_page', tests.real_page),
+            # RedirectView————url重定向
+            url(r'^surface_page', RedirectView.as_view(url='/test/real_page')),
+            url(r'^short', tests.short),
+            url(r'^end', tests.end)
+        ]))]
 # from django.conf.urls import patterns
 # urlpatterns += patterns(***)————旧版本

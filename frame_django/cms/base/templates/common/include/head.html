@@ -21,7 +21,6 @@ validate————表单验证插件
 {% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/jquery.validate.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/messages_zh.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'common/js/validate.add.js' %}"></script>
 {% comment %}
 tipso————提示框插件
 {% endcomment %}
@@ -34,13 +33,23 @@ all————core 核心包、excheck 扩展包、exedit 扩展包
 <script type="text/javascript" src="{% static 'common/js/jquery.ztree.all.js' %}"></script>
 {% comment %}
 mustache————基于JavaScript的Logic-less（无逻辑或轻逻辑）模板
-* {{default_tags}}
-{{=<% %>=}}
-* <% erb_style_tags %>
-<%={{ }}=%>
-* {{ default_tags_again }}
+https://github.com/janl/mustache.js
+{{key}}————显示value或''
+{{{...}}}/{{&...}}————不转义html标签
+{{=<% %>=}}<% %>————修改默认标签————使用<% %>替换{{}}
+{{#keyParent}}{{key}}...{{/keyParent}}————渲染多层json数据
+{{^keyParent}}{{key}}...{{/keyParent}}————同上，反义（当keyParent值为null,undefined,false时显示）
+{{.}}————数组枚举
+{{!...}}————!注释，注释后不会渲染
+{{>partials_key}}————父模板里加载子模块————var html = Mustache.render(tpl, data（父）, partials（子）);
 {% endcomment %}
-{#<script type="text/javascript" src="{% static 'common/js/mustache.js' %}"></script>#}
+<script type="text/javascript" src="{% static 'common/js/mustache.js' %}"></script>
+
+{% comment %}
+修改jquery插件的默认行为
+修改validate插件————添加自定义验证方式、提示信息
+{% endcomment %}
+<script type="text/javascript" src="{% static 'common/js/jquery.add.js' %}"></script>
 
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/navbar.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/base.css' %}"/>

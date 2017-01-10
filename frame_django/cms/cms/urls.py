@@ -12,7 +12,7 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.generic import RedirectView
-from system import urls as login_urls
+from system import urls as system_urls
 
 urlpatterns = [
     # django默认的后台管理————默认会重定向多次，变成一个长地址
@@ -20,11 +20,11 @@ urlpatterns = [
     # url(r'^admin/', include(admin.site.urls)),
     #
     # 此处为站点根目录重定向，由于有了拦截器重定向，可以不写
-    url(r'^$', RedirectView.as_view(url='/login')),
+    url(r'^$', RedirectView.as_view(url='/system/login')),
     #
     # include————包含其它URLconf，此处r'^'不应有$
-    url(r'^', include(login_urls)),
+    url(r'^system/', include(system_urls)),
     #
     # 测试
-    url(r'^test', include('simpleTest.urls')),
+    url(r'^', include('simpleTest.urls')),
 ]

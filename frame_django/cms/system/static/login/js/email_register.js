@@ -35,10 +35,15 @@ function time(e)
 }
 
 var getEmailCode = function(e) {
+    var email = $("[name=email]").val();
+    if(email=='' || email==null){
+        alert("请填写邮箱地址！");
+        return false;
+    }
     $.ajax({
-        url: '/login/get_email_code',
+        url: '/system/login/get_email_code',
         // url: "{% url 'url_name' %}",   //只能写在html文件里
-        data: {email: $("[name=email]").val()},
+        data: {email: email},
         success: function(data) {
             if(data=="ok")
             {
