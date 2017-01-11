@@ -169,6 +169,7 @@
         var menu_list = eval('{{ menu_list }}'.replace(/&quot;/g,'"'));
         /**
          * safe过滤器————为单独的变量关闭自动转意
+         * {% autoescape off %}...{% endautoescape %}————关闭自动转义————相当于jinja2的{% row %}...{% endrow %}
          */
         var menu_list = eval({{ menu_list | safe }});
         {% endcomment %}
