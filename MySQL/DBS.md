@@ -26,7 +26,7 @@
 3. Navicat for MySQL
 4. MySQL GUI Tools
 5. MySQL ODBC Connector
-6. SQLyog
+6. SQLyog————可以导出sql语句
 
 连接localhost或者127.0.0.1，端口3306，用户名、密码等
 

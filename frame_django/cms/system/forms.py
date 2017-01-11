@@ -15,6 +15,7 @@ from models import SimpleUser
 
 class LoginForm(forms.Form):
     email = forms.EmailField(
+        # label="",
         # widget=forms.TextInput(
         #     # attrs=可以省略
         #     attrs={

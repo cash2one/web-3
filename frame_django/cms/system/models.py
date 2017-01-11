@@ -53,6 +53,38 @@ class UserRole(models.Model):
         db_table = "user_role"
 
 
+"""关联表————可以分别建立多个关联"""
+"""
+col = OneToOneField("table"[, default=***[, to_field='field']])————一对一————用于某张表的补充（在子表中定义）
+to_field————默认关联母表的id，生成col_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+
+CREATE TABLE `role` (
+    ...
+    UNIQUE KEY `menu_id` (`menu_id`),
+    CONSTRAINT `role_menu_id_25fd2e17_fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
+)
+"""
+"""
+col = models.ManyToManyField("table")————多对多
+默认关联母表的id，生成table_col字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+related_name————定义抽象model (abstract models) 时，必须显式指定反向名称
+
+CREATE TABLE `role_menu` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `role_id` int(11) NOT NULL,
+    `menu_id` int(11) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `role_menu_role_id_c692b7c4_uniq` (`role_id`,`menu_id`),
+    KEY `role_menu_menu_id_b54bc904_fk_menu_id` (`menu_id`),
+    CONSTRAINT `role_menu_menu_id_b54bc904_fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`),
+    CONSTRAINT `role_menu_role_id_8f901c2d_fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
+)
+"""
+"""
+# menu = models.ForeignKey(Menu, related_name='menu_role')  # 一对多（外键）
+"""
+
+
 class Role(models.Model):
     id = models.AutoField(verbose_name="角色id", primary_key=True)
     role_name = models.CharField(verbose_name="角色名", max_length=50)
@@ -60,28 +92,31 @@ class Role(models.Model):
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
-    # menu = models.ForeignKey(Menu, related_name='menu_role')              # 一对多（外键）
-    # menu = models.ManyToManyField(Menu)                                   # 多对多
+
+    menu = models.ManyToManyField('Menu')
+    # friends = models.ManyToManyField("self")
 
     class Meta:
         db_table = "role"
 
 
-class RoleMenu(models.Model):
-    id = models.AutoField(verbose_name="id", primary_key=True)
-    role_id = models.IntegerField(verbose_name="角色id")
-    menu_id = models.IntegerField(verbose_name="菜单id", unique=True)       # unique————唯一、非空，不能设默认值
-    create_id = models.IntegerField(verbose_name="创建人id")
-    create_name = models.CharField(verbose_name="创建人", max_length=50)
-    create_at = models.DateTimeField("创建时间", auto_now_add=True)
+c = Role()
 
-    class Meta:
-        db_table = "role_menu"
+
+# class RoleMenu(models.Model):
+#     id = models.AutoField(verbose_name="id", primary_key=True)
+#     role_id = models.IntegerField(verbose_name="角色id")
+#     create_id = models.IntegerField(verbose_name="创建人id")
+#     create_name = models.CharField(verbose_name="创建人", max_length=50)
+#     create_at = models.DateTimeField("创建时间", auto_now_add=True)
+#
+#     class Meta:
+#         db_table = "role_menu"
 
 
 class Menu(models.Model):
     id = models.AutoField(verbose_name="菜单ID", primary_key=True)
-    menu_name = models.CharField(verbose_name="名称", max_length=50)
+    menu_name = models.CharField(verbose_name="名称", max_length=50, unique=True)
     TYPE_CHOICE = (
         (0, u'目录'),
         (1, u'菜单'),
@@ -98,7 +133,7 @@ class Menu(models.Model):
         # python类三元表达式
         self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None
         self.parent_url_code = self.parent_url_code if hasattr(self, 'parent_url_code') else None
-        self.user_num = self.user_num if hasattr(self, 'user_num') else None
+        # self.user_num = self.user_num if hasattr(self, 'user_num') else None
         return {
             'id': self.id,
             'menu_name': self.menu_name,
@@ -111,7 +146,7 @@ class Menu(models.Model):
             # 动态生成的字段
             'parent_name': self.parent_name,
             'parent_url_code': self.parent_url_code,
-            'user_num': self.user_num,
+            # 'user_num': self.user_num,
         }
 
     class Meta:

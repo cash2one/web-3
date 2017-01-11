@@ -208,6 +208,7 @@ function addDiyDom(treeId, treeNode) {
 
 /**
  * 编辑权限节点
+ * 参数见API文档————http://www.treejs.cn/v3/api.php
  */
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();

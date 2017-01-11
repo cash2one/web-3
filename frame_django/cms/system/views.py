@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 from forms import LoginForm, EmailRegisterForm
 from system.common.validate_code import send_email_code
 from system.common.security import create_pwd
-from models import SimpleUser, Menu, RoleMenu, UserRole
+from models import SimpleUser, Menu, UserRole
 from base.common.json_change import to_list, to_json_str, to_json_list_str, values_to_json_list_str
 import json
 """
@@ -20,10 +20,13 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csrf_token, ensure_csrf_cookie
 
 # from django.views.decorators.cache import cache_page
-
-# from django.db.models import Q
-# Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
 """
+"""
+用,号分隔————代表AND逻辑；
+用Q函数————代表OR逻辑
+Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
+"""
+from django.db.models import Q
 
 
 class LoginView(View):
@@ -84,7 +87,7 @@ def get_email_code(request):
         print(e)
         try:
             security_code = send_email_code(email)
-            u = SimpleUser(
+            u = SimpleUser(                        # 创建一条新数据————SimpleUser.objects.create(...)
                 email=email,
                 security_code=security_code
             )
@@ -102,6 +105,8 @@ class MenuView(TemplateView):
         # json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
         """
         ValuesQuerySet————QuerySet的子集————返回[dict, dict, ...]
+        vlaues()单条/多条记录————<class 'dict'>/<class 'django.db.models.query.QuerySet'>
+        vlaues_list()单条/多条记录————<class 'tuple'>/<class 'django.db.models.query.QuerySet'>
         """
         json_list_str = values_to_json_list_str(Menu.objects.values())
         return {'menu_list': json_list_str}
@@ -115,27 +120,13 @@ class MenuView(TemplateView):
 # 返回单个权限信息，json类型
 def get_menu(request):
     id = int(request.GET.get("id"))
-    user_num = UserRole.objects.raw("""
-    SELECT
-        ur.id,
-        count(ur.id)
-    FROM
-        role_menu rm,
-        user_role ur,
-        simple_user u
-    WHERE
-        ur.user_id=u.id
-        AND ur.role_id=rm.role_id
-        AND rm.menu_id=%d
-    GROUP BY rm.menu_id
-    """%id)
+
     if id == 1:
         m = Menu.objects.filter(id=id)
     else:
-        '''
-        使用用原生SQL————RawQueryset————RawQuerySet中必须包含id（主键）
-        '''
-        m = Menu.objects.raw("""
+        """
+        # 使用用原生SQL————RawQueryset————RawQuerySet中必须包含id（主键）
+        m = Menu.objects.raw('''
         SELECT
             id, menu_name, type, code, url_code, isvisible, parentid, menu_order,
             parent_name, parent_url_code
@@ -147,22 +138,44 @@ def get_menu(request):
             WHERE id = (SELECT parentid FROM menu WHERE id = %d)
             ) t
         WHERE id = %d
-        """ % (id, id))
+        ''' % (id, id))
+        """
+        m = Menu.objects.filter()
     menu = m[0].toDict()
+
+    """
+    user_num = UserRole.objects.raw('''
+    SELECT
+        ur.id,
+        count(ur.id)        -- 使用raw直接查询出count
+    FROM
+        role_menu rm,
+        user_role ur,
+        simple_user u
+    WHERE
+        ur.user_id=u.id
+        AND ur.role_id=rm.role_id
+        AND rm.menu_id=%d
+    GROUP BY rm.menu_id
+    '''%id)
     try:
         menu['user_num'] = user_num[0].toDict()['user_num']
     except Exception, e:
         print e
         menu['user_num'] = 0
-    return HttpResponse(json.dumps(menu))
+    """
+    # values_list('id')
+    user_num = UserRole.objects.values()
+    # menu['user_num'] = users.count()
+    # return HttpResponse(json.dumps(menu))
 
 
 def delete_menu(request):
-    if request.method == 'POST':                                        # 仅处理POST（GET）请求
+    if request.method == 'POST':                    # 仅处理POST（GET）请求
         id = int(request.POST.get("id"))
         try:
-            # Menu.objects.filter(id=id).delete()                       # 删除数据（一或多条）
-            Menu.objects.get(id=id).delete()                            # 删除数据（一条）
+            # Menu.objects.filter(id=id).delete()   # 删除数据（一或多条）
+            Menu.objects.get(id=id).delete()        # 删除数据（一条）
             result = {'code': 0, 'msg': 'success'}
         except Exception, e:
             print e
