@@ -126,7 +126,15 @@
                             </button>
                         </div>
                         <input type="hidden" id="nodeId" value=""/>
-                        <div class="modal-body" id="del_body"></div>
+                        <script id="tabletemplate" type="x-tmpl-mustache">
+                        {% comment %}
+                        {% autoescape off %}...{% endautoescape %}————关闭模板转义
+                        {% endcomment %}
+                            <p>确定要删除【{{nodeName}}】吗?</p>
+                        </script>
+                        <div class="modal-body" id="del_body">
+
+                        </div>
                         <div class="modal-footer">
                             <div class="col-md-8 col-md-push-2">
                                 <div class="pull-left">

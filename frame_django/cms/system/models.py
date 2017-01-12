@@ -65,10 +65,9 @@ CREATE TABLE `role` (
 )
 """
 """
-col = models.ManyToManyField("table")————多对多
-默认关联母表的id，生成table_col字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+col = models.ManyToManyField("table")————多对多————默认关联母表的id，生成id、table_id、self_id字段
+through='mid_table_model'————指定中间表对应的model————默认生成self_table表作为中间表
 related_name————定义抽象model (abstract models) 时，必须显式指定反向名称
-
 CREATE TABLE `role_menu` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `role_id` int(11) NOT NULL,
@@ -81,7 +80,7 @@ CREATE TABLE `role_menu` (
 )
 """
 """
-# menu = models.ForeignKey(Menu, related_name='menu_role')  # 一对多（外键）
+col = models.ForeignKey(Menu, related_name='menu_role')————一对多（外键）
 """
 
 
@@ -93,8 +92,9 @@ class Role(models.Model):
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
 
-    menu = models.ManyToManyField('Menu')
-    # friends = models.ManyToManyField("self")
+    # menu = models.ManyToManyField('Menu', through="RoleMenu")
+    # self = models.ManyToManyField("self")
+    menu = models.ForeignKey('Menu')
 
     class Meta:
         db_table = "role"
@@ -103,15 +103,15 @@ class Role(models.Model):
 c = Role()
 
 
-# class RoleMenu(models.Model):
-#     id = models.AutoField(verbose_name="id", primary_key=True)
-#     role_id = models.IntegerField(verbose_name="角色id")
-#     create_id = models.IntegerField(verbose_name="创建人id")
-#     create_name = models.CharField(verbose_name="创建人", max_length=50)
-#     create_at = models.DateTimeField("创建时间", auto_now_add=True)
-#
-#     class Meta:
-#         db_table = "role_menu"
+class RoleMenu(models.Model):
+    id = models.AutoField(verbose_name="id", primary_key=True)
+    role_id = models.IntegerField(verbose_name="角色id")
+    create_id = models.IntegerField(verbose_name="创建人id")
+    create_name = models.CharField(verbose_name="创建人", max_length=50)
+    create_at = models.DateTimeField("创建时间", auto_now_add=True)
+
+    class Meta:
+        db_table = "role_menu"
 
 
 class Menu(models.Model):

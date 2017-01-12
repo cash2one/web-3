@@ -136,7 +136,9 @@ $(function() {
      * $(function() {})是在html文档加载中最后执行的
      * .suffixIcon是在$(function() {})中动态生成的html元素
      * on()函数如果放在$(function() {})外，文档初始化时将找不到.suffixIcon元素
+     *
      * 如果给html标签绑定onclick=fun(...)，fun()定义位置无限制
+     * 浏览器console是实时的，与文档加载无关
      *
      * $(selector).on(event[,childSelector[,data[,function[,map]]]])
      * event————一个或多个（有效的）事件或命名空间，由空格分隔多个事件值
