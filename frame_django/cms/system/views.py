@@ -146,7 +146,8 @@ def get_menu(request):
         # QuerySet = chain(QuerySet1， QuerySet2)————合并不同model
         m1 = Menu.objects.filter(id=id)
         parentid = Menu.objects.filter(id=id).values('parentid')
-        m2 = Menu.objects.filter(id=parentid).values('menu_name', 'url_code')
+        # extra(select={...})————extra实现别名
+        m2 = Menu.objects.filter(id=parentid).values('menu_name', 'url_code').extra(select={'parent_name': 'menu_name', 'parent_url_code': 'url_code'})
         m = chain(m1, m2)
     menu = m[0].toDict()
 
