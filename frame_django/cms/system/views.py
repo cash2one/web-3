@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
+from itertools import chain
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.shortcuts import render
@@ -105,7 +107,7 @@ class MenuView(TemplateView):
         # json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
         """
         ValuesQuerySet————QuerySet的子集————返回[dict, dict, ...]
-        vlaues()单条/多条记录————<class 'dict'>/<class 'django.db.models.query.QuerySet'>
+        vlaues()单条/多条记录     ————<class 'dict'> /<class 'django.db.models.query.QuerySet'>
         vlaues_list()单条/多条记录————<class 'tuple'>/<class 'django.db.models.query.QuerySet'>
         """
         json_list_str = values_to_json_list_str(Menu.objects.values())
@@ -140,7 +142,12 @@ def get_menu(request):
         WHERE id = %d
         ''' % (id, id))
         """
-        m = Menu.objects.filter(id=id)
+        # QuerySet = QuerySet1 | QuerySet2————合并同一model
+        # QuerySet = chain(QuerySet1， QuerySet2)————合并不同model
+        m1 = Menu.objects.filter(id=id)
+        parentid = Menu.objects.filter(id=id).values('parentid')
+        m2 = Menu.objects.filter(id=parentid).values('menu_name', 'url_code')
+        m = chain(m1, m2)
     menu = m[0].toDict()
 
     """
@@ -165,7 +172,7 @@ def get_menu(request):
         menu['user_num'] = 0
     """
     role_menu = RoleMenu.objects.filter(menu=id)
-    user_role = UserRole.objects.filter(role_in=role_menu.values('role'))  # field_in————in查询
+    user_role = UserRole.objects.filter(role__in=role_menu.values('role'))  # field_in————in查询
     user_num = user_role.values('id').count()                              # count()————count查询
     menu['user_num'] = user_num
     return HttpResponse(json.dumps(menu))
