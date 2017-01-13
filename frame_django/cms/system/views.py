@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 from forms import LoginForm, EmailRegisterForm
 from system.common.validate_code import send_email_code
 from system.common.security import create_pwd
-from models import SimpleUser, Menu, UserRole
+from models import SimpleUser, Menu, UserRole, RoleMenu
 from base.common.json_change import to_list, to_json_str, to_json_list_str, values_to_json_list_str
 import json
 """
@@ -140,7 +140,7 @@ def get_menu(request):
         WHERE id = %d
         ''' % (id, id))
         """
-        m = Menu.objects.filter()
+        m = Menu.objects.filter(id=id)
     menu = m[0].toDict()
 
     """
@@ -164,10 +164,11 @@ def get_menu(request):
         print e
         menu['user_num'] = 0
     """
-    # values_list('id')
-    user_num = UserRole.objects.values()
-    # menu['user_num'] = users.count()
-    # return HttpResponse(json.dumps(menu))
+    role_menu = RoleMenu.objects.filter(menu=id)
+    user_role = UserRole.objects.filter(role_in=role_menu.values('role'))  # field_in————in查询
+    user_num = user_role.values('id').count()                              # count()————count查询
+    menu['user_num'] = user_num
+    return HttpResponse(json.dumps(menu))
 
 
 def delete_menu(request):

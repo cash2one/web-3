@@ -24,6 +24,7 @@ class SimpleUser(models.Model):
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
     modify_at = models.DateTimeField("最后修改时间", auto_now=True)
     remarks = models.CharField(verbose_name="备注", max_length=50)
+    role = models.ManyToManyField('Role', through='UserRole')
 
     class Meta:
         verbose_name = "用户信息表"                         # 别名
@@ -43,8 +44,8 @@ class SimpleUser(models.Model):
 
 class UserRole(models.Model):
     id = models.AutoField(verbose_name="id", primary_key=True)
-    user_id = models.IntegerField(verbose_name="用户id")
-    role_id = models.IntegerField(verbose_name="角色id")
+    user = models.ForeignKey('SimpleUser', verbose_name="用户ID外键")
+    role = models.ForeignKey('Role', verbose_name="角色ID外键")
     create_id = models.IntegerField(verbose_name="创建人")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
@@ -65,9 +66,12 @@ CREATE TABLE `role` (
 )
 """
 """
-col = models.ManyToManyField("table")————多对多————默认关联母表的id，生成id、table_id、self_id字段
-through='mid_table_model'————指定中间表对应的model————默认生成self_table表作为中间表
+col = models.ManyToManyField("table")————多对多————默认关联母表的id
+through————指定中间表对应的model
+through_fields————明确指定（中间表中）哪些外键作为两表的关联字段————接收一个二元组，默认是table_id、self_id字段
 related_name————定义抽象model (abstract models) 时，必须显式指定反向名称
+db_table————指定生成的中间表表名————默认生成self_table表作为中间表
+
 CREATE TABLE `role_menu` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `role_id` int(11) NOT NULL,
@@ -78,40 +82,56 @@ CREATE TABLE `role_menu` (
     CONSTRAINT `role_menu_menu_id_b54bc904_fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`),
     CONSTRAINT `role_menu_role_id_8f901c2d_fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 )
+self = models.ManyToManyField("self")————针对自身建立多对多关系
 """
 """
-col = models.ForeignKey(Menu, related_name='menu_role')————一对多（外键）
+col = models.ForeignKey(Menu)————一对多（外键）————默认生成col_id字段
+to_field————默认关联母表的id，生成col_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+db_constraint————默认为True，在数据库上建立外键约束
+related_name————让关联的对象反查到源对象，设为 '+' 或者以'+' 结尾，不让Django 创建反向关联
+null=True————允许NULL值，分配None来删除对应的关联性
+
+CREATE TABLE `role` (
+    ...
+    `menu_id` int(11) NOT NULL,
+    KEY `role_menu_id_25fd2e17_fk_menu_id` (`menu_id`),
+    CONSTRAINT `role_menu_id_25fd2e17_fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
+)
 """
 
 
 class Role(models.Model):
-    id = models.AutoField(verbose_name="角色id", primary_key=True)
+    id = models.AutoField(verbose_name="角色ID", primary_key=True)
     role_name = models.CharField(verbose_name="角色名", max_length=50)
     role_code = models.IntegerField(verbose_name="角色码")
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
-
-    # menu = models.ManyToManyField('Menu', through="RoleMenu")
-    # self = models.ManyToManyField("self")
-    menu = models.ForeignKey('Menu')
+    menu = models.ManyToManyField('Menu', through="RoleMenu")
 
     class Meta:
         db_table = "role"
 
 
-c = Role()
-
-
 class RoleMenu(models.Model):
     id = models.AutoField(verbose_name="id", primary_key=True)
-    role_id = models.IntegerField(verbose_name="角色id")
+    role = models.ForeignKey("Role", verbose_name="角色ID外键")
+    menu = models.ForeignKey("Menu", verbose_name="菜单ID外键")
     create_id = models.IntegerField(verbose_name="创建人id")
     create_name = models.CharField(verbose_name="创建人", max_length=50)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
 
     class Meta:
         db_table = "role_menu"
+
+
+"""
+insert into `menu`
+(`menu_name`, `type`, `url_code`, `code`, `isvisible`, `parentid`, `menu_order`)
+values
+('personal space','0','/root','0','1','0','0'),
+('系统管理','0','#','01','1','1','0');
+"""
 
 
 class Menu(models.Model):
