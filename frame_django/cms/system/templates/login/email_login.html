@@ -13,9 +13,9 @@
 {% block center %}
     {% load staticfiles %}
     {% comment %}
-    md————笔记本
-    sm————平板
-    xs————手机
+        md————笔记本
+        sm————平板
+        xs————手机
     {% endcomment %}
 
 {#    <br/>#}
@@ -56,13 +56,12 @@
 
                     <div class="form-group form-inline" style="padding-left:80px;padding-right:80px;">
                         {% comment %}
-                        django会把href路径中?后面的部分去掉并添加/结尾
-                        {% url %}————返回一个绝对路径的引用(不包含域名的URL)
-                        传递的参数需要在url捕获和在views参数里接收
+                            django会把href路径中?后面的部分去掉并添加/结尾
+                            {% url %}————返回一个绝对路径的引用(不包含域名的URL)
+                            传递的参数需要在url捕获和在views参数里接收
 
-                        <a href="http://***" title="***">***</a>————window.location.href="http://***";         //在当前窗口打开
-                        <a href="http://***" title="***" target="_blank">***</a>————window.open("http://***"); //在新窗口中打开
-
+                            <a href="http://***" title="***">***</a>————window.location.href="http://***";         //在当前窗口打开
+                            <a href="http://***" title="***" target="_blank">***</a>————window.open("http://***"); //在新窗口中打开
                         {% endcomment %}
         {#                <a class="pull-left" href="{% url 'login' 'change_secret' %}" id="secret">忘记密码</a>#}
                         <a class="pull-right" href="{% url 'login' 'email_register' %}" id="register">免费注册</a>
@@ -71,8 +70,8 @@
                     <div class="form-group form-inline" style="padding-left:20px">
                         <input type="submit" class="btn btn-success" value="登录" style="width:55%">
                         {% comment %}
-                        form提交————只要有type="submit"属性即可
-                        <button type="submit" class="btn btn-info">登录</button>
+                            form提交————只要有type="submit"属性即可
+                            <button type="submit" class="btn btn-info">登录</button>
                         {% endcomment %}
                     </div>
                 </form>

@@ -149,6 +149,7 @@ class Menu(models.Model):
     parentid = models.CharField(verbose_name="父级菜单id", max_length=10)
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)
 
+    # toDict————把QuerySet对象转化为字典对象（类似于django内置values()函数）
     def toDict(self):
         # python类三元表达式
         self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None

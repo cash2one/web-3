@@ -44,4 +44,28 @@ delete_one_line = MODEL.objects.get(name='zd').delete()
 Django 出错信息仅在 debug 模式下才会显现。
 '''
 
-filter表示=，exclude表示!=
+
+filter 表示 =
+exclude 表示 !=
+querySet.distinct() 去重复
+
+|       查询参数      |                        含义                        |
+|---------------------|----------------------------------------------------|
+| __exact             | 精确匹配                                           |
+| __iexact            | 忽略大小写匹配                                     |
+| __contains          | like '%aaa%'                                       |
+| __icontains         | 忽略大小写 like '%aaa%'。对于sqlite等同于icontains |
+| __gt                | >                                                  |
+| __gte               | >=                                                 |
+| __lt                | <                                                  |
+| __lte               | <=                                                 |
+| __in                | in(list范围)                                       |
+| __startswith        | 以...开头                                          |
+| __istartswith       | 以...开头，忽略大小写                              |
+| __endswith          | 以...结尾                                          |
+| __iendswith         | 以...结尾，忽略大小写                              |
+| __range             | 在...范围内                                        |
+| __year              | 日期字段年份                                       |
+| __month             | 日期字段月份                                       |
+| __day               | 日期字段的日                                       |
+| __isnull=True/False |                                                    |

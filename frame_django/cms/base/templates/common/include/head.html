@@ -3,51 +3,67 @@
 <meta name="description" content="">
 <meta name="keywords" content="">
 {% comment %}
-application/javascript————服务器端处理js文件的mime类型
-text/javascript————浏览器处理js的mime类型————兼容性更好
+    application/javascript————服务器端处理js文件的mime类型
+    text/javascript————浏览器处理js的mime类型————兼容性更好
 {% endcomment %}
 {% load static from staticfiles %}
 <link rel="shortcut icon" href="{% static 'common/images/logo.ico' %}" type="image/x-icon" />
 
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap.css' %}"/>
 <link type="text/css" rel="stylesheet" href="{% static 'common/css/bootstrap-theme.css' %}"/>
-<link type="text/css" rel="stylesheet" href="{% static 'common/css/tipso.css' %}"/>
-<link type="text/css" rel="stylesheet" href="{% static 'common/css/zTreeStyle/zTreeStyle.css' %}"/>
 
 <script type="text/javascript" src="{% static 'common/js/jquery.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/bootstrap.min.js' %}"></script>
 {% comment %}
-validate————表单验证插件
+    validate————表单验证插件
+    highlight(element, errorClass)————高亮显示，默认是添加errorClass
+    unhighlight(element, errorClass)————反高亮显示
+    errorClass————验证出错时使用的css class
+    groups————定义一个组（json格式），把几个地方的出错信息统一放在一个地方
+    errorPlacement(error, element)————自定义错误信息显示位置；error————错误消息元素；element————验证元素
+    success————自定义验证成功时的动作————如果值是字符串，会当做一个css类；如果是一个函数，则执行该函数
 {% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/jquery.validate.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'common/js/messages_zh.min.js' %}"></script>
 {% comment %}
-tipso————提示框插件
+    tipso————提示框插件
 {% endcomment %}
+<link type="text/css" rel="stylesheet" href="{% static 'common/css/tipso.css' %}"/>
 <script type="text/javascript" src="{% static 'common/js/tipso.js' %}"></script>
 {% comment %}
-ztree————文档树插件
-all————core 核心包、excheck 扩展包、exedit 扩展包
-另外exhide 扩展
+    ztree————文档树插件
+    all————core 核心包、excheck 扩展包、exedit 扩展包
+    另外exhide 扩展
 {% endcomment %}
+<link type="text/css" rel="stylesheet" href="{% static 'common/css/zTreeStyle/zTreeStyle.css' %}"/>
 <script type="text/javascript" src="{% static 'common/js/jquery.ztree.all.js' %}"></script>
 {% comment %}
-mustache————基于JavaScript的Logic-less（无逻辑或轻逻辑）模板
-https://github.com/janl/mustache.js
-{{key}}————显示value或''
-{{{...}}}/{{&...}}————不转义html标签
-{{=<% %>=}}<% %>————修改默认标签————使用<% %>替换{{}}
-{{#keyParent}}{{key}}...{{/keyParent}}————渲染多层json数据
-{{^keyParent}}{{key}}...{{/keyParent}}————同上，反义（当keyParent值为null,undefined,false时显示）
-{{.}}————数组枚举
-{{!...}}————!注释，注释后不会渲染
-{{>partials_key}}————父模板里加载子模块————var html = Mustache.render(tpl, data（父）, partials（子）);
+    mustache————基于JavaScript的Logic-less（无逻辑或轻逻辑）模板
+    https://github.com/janl/mustache.js
+    {{key}}————显示value或''
+    {{{...}}}/{{&...}}————不转义html标签
+    {{=<% %>=}}<% %>————修改默认标签————使用<% %>替换{{}}
+    {{#keyParent}}{{key}}...{{/keyParent}}————渲染多层json数据
+    {{^keyParent}}{{key}}...{{/keyParent}}————同上，反义（当keyParent值为null,undefined,false时显示）
+    {{.}}————数组枚举
+    {{!...}}————!注释，注释后不会渲染
+    {{>partials_key}}————父模板里加载子模块————var html = Mustache.render(tpl, data（父）, partials（子）);
 {% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/mustache.js' %}"></script>
 
 {% comment %}
-修改jquery插件的默认行为
-修改validate插件————添加自定义验证方式、提示信息
+    easyform————表单验证插件————http://thesmallcar.github.io/jQuery.easyform/
+    支持input[text，radio，checkbox]，textarea，$(document).ready(function(){$("#menu").easyform()});
+    data-easyform="length:1 50;char-normal;"
+    data-message="请填写排序"
+    data-easytip="position:top;class:easy-blue;"
+{% endcomment %}
+<link type="text/css" rel="stylesheet" href="{% static 'common/css/easyform.css' %}"/>
+<script type="text/javascript" src="{% static 'common/js/easyform.js' %}"></script>
+
+{% comment %}
+    修改jquery插件的默认行为
+    修改validate插件————添加自定义验证方式、提示信息
 {% endcomment %}
 <script type="text/javascript" src="{% static 'common/js/jquery.add.js' %}"></script>
 

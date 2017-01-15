@@ -107,9 +107,6 @@ var tipsoInit = function() {
 $(function()
 {
     tipsoInit();
-    /**
-     * 使用validate.js验证表单
-     */
     $("#email_register").validate(
         //debug: true,
         {
@@ -151,8 +148,6 @@ $(function()
                 }
             },
             errorPlacement: function(error, element){
-                //error：错误消息元素
-                //element：验证元素
                 //error.appendTo(element.parent().parent().next());
                 element.parent().attr("data-tipso", error.html());
                 if(error.html().length != 0){

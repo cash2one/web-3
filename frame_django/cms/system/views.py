@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
-from itertools import chain
-
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views import View
 from django.shortcuts import render
@@ -24,11 +22,16 @@ from django.views.decorators.csrf import csrf_protect, csrf_exempt, requires_csr
 # from django.views.decorators.cache import cache_page
 """
 """
+from django.db.models import Q
+from itertools import chain
+
+QuerySet1 | QuerySet2————合并同一model————返回QuerySet
+chain(QuerySet1， QuerySet2)————合并多个python list或django QuerySet（不同model）————返回[QuerySet1+QuerySet2]
+
 用,号分隔————代表AND逻辑；
 用Q函数————代表OR逻辑
 Q(x=xxx)|Q(y=yyy)————x=xxx or y=yyy
 """
-from django.db.models import Q
 
 
 class LoginView(View):
@@ -115,8 +118,7 @@ class MenuView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        # 直接在视图中渲染数据内容，和网页其它部分一起发送到html文件上（一次性地渲染，还是同一次请求）
-        return self.render_to_response(context)
+        return self.render_to_response(context)               # 在视图中渲染数据内容，和网页其它部分一起发送到html文件上
 
 
 # 返回单个权限信息，json类型
@@ -142,15 +144,13 @@ def get_menu(request):
         WHERE id = %d
         ''' % (id, id))
         """
-        # QuerySet = QuerySet1 | QuerySet2————合并同一model
-        # QuerySet = chain(QuerySet1， QuerySet2)————合并不同model
-        m1 = Menu.objects.filter(id=id)
+        m1 = Menu.objects.filter(id=id).values()
         parentid = Menu.objects.filter(id=id).values('parentid')
         # extra(select={...})————extra实现别名
-        m2 = Menu.objects.filter(id=parentid).values('menu_name', 'url_code').extra(select={'parent_name': 'menu_name', 'parent_url_code': 'url_code'})
-        m = chain(m1, m2)
-    menu = m[0].toDict()
-
+        m2 = Menu.objects.filter(id=parentid).extra(select={'parent_name': 'menu_name', 'parent_url_code': 'url_code'}).values('parent_name', 'parent_url_code')
+    # menu = m[0].toDict()
+    menu = m1[0]
+    menu.update(m2[0])
     """
     user_num = UserRole.objects.raw('''
     SELECT
@@ -174,7 +174,7 @@ def get_menu(request):
     """
     role_menu = RoleMenu.objects.filter(menu=id)
     user_role = UserRole.objects.filter(role__in=role_menu.values('role'))  # field_in————in查询
-    user_num = user_role.values('id').count()                              # count()————count查询
+    user_num = user_role.values('id').count()                               # count()————count查询
     menu['user_num'] = user_num
     return HttpResponse(json.dumps(menu))
 

@@ -148,7 +148,6 @@ $(function() {
      * map————事件映射 ({event:function, event:function, ...})
      */
     $(".suffixIcon").on("click", function (e) {
-        debugger;
         var target = e.target;
         var treeId = $(target).attr("data-treeId");
         var targetNode = zTree.getNodesByParam("id", treeId)[0];
@@ -169,7 +168,8 @@ $(function() {
             })
         } else if ($(target).hasClass("del")) {
             var data = {nodeName: targetNode.name};
-            var template = '<p>确定要删除【{{nodeName}}】吗?</p>';
+            //var template = '<p>确定要删除【{{nodeName}}】吗?</p>';
+            var template = $("#ptemplate").html();
             var view = Mustache.render(template, data);
             $("#del_body").html(view);
             $("#nodeId").val(targetNode.id);
@@ -257,37 +257,76 @@ function delNode() {
 }
 
 
-menu.validate({
-    errorElement: 'span',
-    errorClass: 'help-inline',
-    focusInvalid: false,
-    rules: {
-        menu_name: {
-            minlength: 2,
-            required: true
-        },
-        url_code: {
-            minlength: 1,
-            required: true
-        },
-        menu_order: {
-            integer: 0,
-            required: true
-        }
-    },
-    highlight: function (element) {
-        $(element).closest('.help-inline').removeClass('ok');
-        $(element).closest('.control-group').removeClass('success').addClass('error');
-    },
-
-    unhighlight: function (element) {
-        $(element).closest('.control-group').removeClass('error');
-    },
-    success: function (label) {
-        label.addClass('valid').addClass('help-inline ok')
-            .closest('.control-group').removeClass('error').addClass('success');
-    },
-    submitHandler: function (form) {
-        // TODO 验证通过执行的方法
-    }
-});
+// 保存
+//$("#save_menu").on("click", function () {
+//    var curId = $("#curId").val();
+//    if (curId == 1) {
+//        alert("不允许修改根节点");
+//        return false;
+//    }
+//
+//    var type = $(this).attr("type");
+//    if (type == "add") {
+//        $("#curId").val('');
+//    }
+//
+//    if (menu.valid()) {
+//        BootstrapDialog.show({
+//            title: '权限控制',
+//            message: '确定要' + (type == 'add' ? '新增权限【' + $('#menuName').val() : '修改权限【' + $('#oldName').val()) + '】吗？',
+//            buttons: [{
+//                label: '取消',
+//                action: function (dialog) {
+//                    dialog.close();
+//                }
+//            }, {
+//                label: '确定',
+//                action: function (dialog) {
+//                    dialog.close();
+//                    $.ajax({
+//                        url: base + '/system/menu/save',
+//                        type: 'post',
+//                        data: $(menu).serialize(),
+//                        dataType: "json",
+//                        success: function (result) {
+//                            BootstrapDialog.show({
+//                                title: '修改结果', message: result.msg,
+//                                buttons: [{
+//                                    label: 'OK',
+//                                    action: function (dialog) {
+//                                        dialog.close();
+//                                    }
+//                                }]
+//                            });
+//                            if (result.code == 0) {
+//                                // 新增-异步添加节点，修改-刷新节点
+//                                var menu = result.menu;
+//
+//                                if (type == "add") {
+//                                    var parentNode = zTree.getNodesByParam("id", $("#parentid").val(), null);
+//                                    var newNode = {
+//                                        id: menu.id,
+//                                        pId: menu.parentid,
+//                                        name: menu.menuName,
+//                                        type: menu.type,
+//                                        icon: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" :
+//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+//                                        iconOpen: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" :
+//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+//                                        iconClose: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_close.png" :
+//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m2.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
+//                                    };
+//                                    zTree.addNodes(parentNode[0], newNode);
+//                                } else {
+//                                    var targetNode = zTree.getNodesByParam("id", menu.id, null)[0];
+//                                    targetNode.name = menu.menuName;
+//                                    zTree.updateNode(targetNode);
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+//            }]
+//        });
+//    }
+//});
