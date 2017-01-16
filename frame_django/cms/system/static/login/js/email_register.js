@@ -85,6 +85,12 @@ var tipsoInit = function() {
  */
 
 /**
+ * 阻止submit自动提交
+ * $("#save_menu").unbind(); ————解绑所有事件
+ * $("#save_menu").unbind('click', submit());
+ */
+
+/**
  * submitForm({ url:***, dataType:"text", callback:function(data){***} })
  */
 

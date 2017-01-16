@@ -82,6 +82,19 @@ var setting = {
  */
 var treeNodes = [];
 var menu = $("#menu");
+var diy = "/static/common/css/zTreeStyle/img/diy/";
+var createNode = function (menu_obj) {
+    return node = {
+        pId      : menu_obj.parentid,
+        id       : menu_obj.id,
+        name     : menu_obj.menu_name+"(" + menu_obj.code + ")",
+        type     : menu_obj.type,
+        icon     : menu_obj.type == 0 ? diy + "1_open.png" : (menu_obj.type == 1 ? diy + "m1.png": diy + "3.png"),
+        iconOpen : menu_obj.type == 0 ? diy + "1_open.png" : (menu_obj.type == 1 ? diy + "m1.png": diy + "3.png"),
+        iconClose: menu_obj.type == 0 ? diy + "1_close.png" : (menu_obj.type == 1 ? diy + "m2.png": diy + "3.png")
+    };
+};
+
 
 var reload_ztree = function(){
     // $.ajax({
@@ -89,7 +102,7 @@ var reload_ztree = function(){
     //     traditional: true,               //false，深度序列化参数对象；true，传统方式序列化参数对象
     //     cache      : false,
     //     type       : 'GET',
-    //     dataType   : "json",
+    //     dataType   : "json",             //服务器预期返回的数据类型
     //     data       : {},
     //     url        : "/menu/get_menu",                               //请求路径
     //     error: function () { alert('数据请求失败'); },                //请求失败处理函数
@@ -97,7 +110,6 @@ var reload_ztree = function(){
     //     complete: function (XMLHttpRequest, textStatus) {...}
     // });
     var node;
-    var diy = "/static/common/css/zTreeStyle/img/diy/";
     for(i in menu_list){
         /**
          * 生成一个节点
@@ -106,15 +118,7 @@ var reload_ztree = function(){
          * iconOpen————父节点自定义展开时图标
          * iconClose————父节点自定义折叠时图标
          */
-        node = {
-            pId      : menu_list[i].parentid,
-            id       : menu_list[i].id,
-            name     : menu_list[i].menu_name+"(" + menu_list[i].code + ")",
-            type     : menu_list[i].type,
-            icon     : menu_list[i].type == 0 ? diy + "1_open.png" : (menu_list[i].type == 1 ? diy + "m1.png": diy + "3.png"),
-            iconOpen : menu_list[i].type == 0 ? diy + "1_open.png" : (menu_list[i].type == 1 ? diy + "m1.png": diy + "3.png"),
-            iconClose: menu_list[i].type == 0 ? diy + "1_close.png" : (menu_list[i].type == 1 ? diy + "m2.png": diy + "3.png")
-        };
+        node = createNode(menu_list[i]);
         treeNodes.push(node);
     }
     /**
@@ -130,7 +134,7 @@ $(function() {
     reload_ztree();
     var zTree = $.fn.zTree.getZTreeObj("tree");
     /**
-     * 添加、删除权限节点
+     * 添加、删除节点
      *
      * html页面文档加载时会对所有js/jq方法进行初始化
      * $(function() {})是在html文档加载中最后执行的
@@ -154,7 +158,7 @@ $(function() {
         zTree.selectNode(targetNode);
         if ($(target).hasClass("add")) {
             menu[0].reset();
-            $("#save_menu").attr("type", "add");
+            $("#save_menu").attr("change_type", "add");
             $.getJSON("/system/menu/get_menu", {"id": treeId}, function (menu) {
                 $("#menu").find("#parentMenuName").text(menu.menu_name + "(" + menu.url_code + ")");
                 $("#menu").find("#parentid").val(menu.id);
@@ -187,14 +191,10 @@ $(function() {
 var IDMark_A = "_a";
 /**
  * 添加编辑图标
- * @param treeId
- * @param treeNode
+ * @param treeId————节点id
+ * @param treeNode————节点对象
  */
 function addDiyDom(treeId, treeNode) {
-    /**
-     * treeId————节点id
-     * treeNode————节点对象
-     */
     var aObj = $("#" + treeNode.tId + IDMark_A);
     if (treeNode.id != 1) {
         var delStr = "<span class='suffixIcon' title='删除[" + treeNode.name + "]' onfocus='this.blur();'><span class='button del' data-treeId='" + treeNode.id + "'></span></span>";
@@ -215,18 +215,19 @@ function addDiyDom(treeId, treeNode) {
 function onClick(event, treeId, treeNode, clickFlag) {
     document.getElementById("menu").reset();
     $.getJSON('/system/menu/get_menu', {"id": treeNode.id}, function (md) {
-        $("#menu").find("#parentid")       .val(md.parentid);
-        $("#menu").find("#parentMenuName").text(md.parent_name ? md.parent_name + "(" + md.parent_url_code + ")" : '');
-        $("#menu").find("#curId")          .val(md.id);
-        $("#menu").find("#menuName")       .val(md.menu_name);
-        $("#menu").find("#type")           .val(md.type).prop('disabled', true).css("cursor", "not-allowed");
-        $("#menu").find("#urlCode")        .val(md.url_code);
-        $("#menu").find("#code")           .val(md.code);
-        $("#menu").find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
-        $("#menu").find("#menuOrder")      .val(md.menu_order);
-        $("#menu").find("#userNum").html("<a style='color:blue' href=\"/system/user.html?menuId="+treeNode.id+"\">" + md.user_num + "</a>");
-        $("#menu").find("#roles")         .html(md.roles);
-        $("#menu").find("#save_menu").attr("type", "edit");
+        menu.find("#parentid")       .val(md.parentid);
+        menu.find("#parentMenuName").text(md.parent_name ? md.parent_name + "(" + md.parent_url_code + ")" : '');
+        menu.find("#curId")          .val(md.id);
+        menu.find("#oldName")        .val(md.menu_name);
+        menu.find("#menuName")       .val(md.menu_name);
+        menu.find("#type")           .val(md.type).prop('disabled', true).css("cursor", "not-allowed");
+        menu.find("#urlCode")        .val(md.url_code);
+        menu.find("#code")           .val(md.code);
+        menu.find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
+        menu.find("#menuOrder")      .val(md.menu_order);
+        menu.find("#userNum").html("<a style='color:blue' href=\"/system/user.html?menuId="+treeNode.id+"\">" + md.user_num + "</a>");
+        menu.find("#roles")         .html(md.roles);
+        menu.find("#save_menu").attr("type", "edit");
     });
 }
 
@@ -236,18 +237,14 @@ function onClick(event, treeId, treeNode, clickFlag) {
  * @returns {boolean}
  */
 function delNode() {
-    /**
-     * 获取zTree树对象
-     */
-    var zTree = $.fn.zTree.getZTreeObj("tree");
     var targetNode = zTree.getNodesByParam("id", $("#nodeId").val())[0];
     $.ajax({
-        url: '/system/menu/delete',
+        url: '/system/menu/delete_menu',
         data: {"id": $("#nodeId").val()},
         type: 'post',
         dataType: "json",
         success: function (result) {
-            $("#del_body").html(result.msg);
+            $("#result_body").html(result.msg);
             $("#resultModal").modal('show');
             if (result.code == 0) {
                 zTree.removeNode(targetNode);
@@ -256,77 +253,75 @@ function delNode() {
     });
 }
 
+/**
+ * 使用easyform————表单验证插件————http://thesmallcar.github.io/jQuery.easyform/
+ */
+$(document).ready(
+    function(){
+        var ef = menu.easyform();
+        // ef.is_submit = false;
+        ef.success = function(ef){
+            save(ef);
+        }
+    });
 
-// 保存
-//$("#save_menu").on("click", function () {
-//    var curId = $("#curId").val();
-//    if (curId == 1) {
-//        alert("不允许修改根节点");
-//        return false;
-//    }
-//
-//    var type = $(this).attr("type");
-//    if (type == "add") {
-//        $("#curId").val('');
-//    }
-//
-//    if (menu.valid()) {
-//        BootstrapDialog.show({
-//            title: '权限控制',
-//            message: '确定要' + (type == 'add' ? '新增权限【' + $('#menuName').val() : '修改权限【' + $('#oldName').val()) + '】吗？',
-//            buttons: [{
-//                label: '取消',
-//                action: function (dialog) {
-//                    dialog.close();
-//                }
-//            }, {
-//                label: '确定',
-//                action: function (dialog) {
-//                    dialog.close();
-//                    $.ajax({
-//                        url: base + '/system/menu/save',
-//                        type: 'post',
-//                        data: $(menu).serialize(),
-//                        dataType: "json",
-//                        success: function (result) {
-//                            BootstrapDialog.show({
-//                                title: '修改结果', message: result.msg,
-//                                buttons: [{
-//                                    label: 'OK',
-//                                    action: function (dialog) {
-//                                        dialog.close();
-//                                    }
-//                                }]
-//                            });
-//                            if (result.code == 0) {
-//                                // 新增-异步添加节点，修改-刷新节点
-//                                var menu = result.menu;
-//
-//                                if (type == "add") {
-//                                    var parentNode = zTree.getNodesByParam("id", $("#parentid").val(), null);
-//                                    var newNode = {
-//                                        id: menu.id,
-//                                        pId: menu.parentid,
-//                                        name: menu.menuName,
-//                                        type: menu.type,
-//                                        icon: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" :
-//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
-//                                        iconOpen: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_open.png" :
-//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m1.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
-//                                        iconClose: menu.type == 0 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/1_close.png" :
-//                                            (menu.type == 1 ? jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/m2.png" : jspath + "/resources/vendors/ztree/css/zTreeStyle/img/diy/3.png"),
-//                                    };
-//                                    zTree.addNodes(parentNode[0], newNode);
-//                                } else {
-//                                    var targetNode = zTree.getNodesByParam("id", menu.id, null)[0];
-//                                    targetNode.name = menu.menuName;
-//                                    zTree.updateNode(targetNode);
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-//            }]
-//        });
-//    }
-//});
+
+/**
+ * 保存
+ */
+function save(ef) {
+    var type = $("#save_menu").attr("change_type");
+    if (type == "add") {
+        $("#curId").val('');
+    }
+
+    if (type != 'add') {
+        var curId = $("#curId").val();
+        if (curId == 1) {
+            alert("不允许修改根节点");
+            return false;
+        }
+    }
+
+    var data = {
+        menuName: $('#menuName').val(),
+        oldName: $('#oldName').val()
+    };
+    var template = '<p>确定要' + (type == 'add' ? '新增权限【{{menuName}}' : '修改权限【{{oldName}}') + '】吗？</p>';
+    var view = Mustache.render(template, data);
+    $("#add_body").html(view);
+    $("#addModal").modal('show');
+    ef.is_submit = false;
+}
+
+function addNode() {
+    /**
+     * 获取zTree树对象
+     */
+    var zTree = $.fn.zTree.getZTreeObj("tree");
+    var type = $("#save_menu").attr("change_type");
+    $.ajax({
+        url: '/system/menu/save_menu',
+        type: 'post',
+        data: $(menu).serialize(),
+        dataType: "json",
+        success: function (result) {
+            $("#ret_body").html(result['msg']);
+            $("#retModal").modal('show');
+            if (result.code == 0) {
+                // 新增-异步添加节点，修改-刷新节点
+                var menu_obj = result['menu_obj'];
+
+                if (type == "add") {
+                    var parentNode = zTree.getNodesByParam("id", $("#parentid").val(), null);
+                    var newNode = createNode(menu_obj);
+                    zTree.addNodes(parentNode[0], newNode);
+                } else {
+                    var targetNode = zTree.getNodesByParam("id", menu.id, null)[0];
+                    targetNode.name = menu.menuName;
+                    zTree.updateNode(targetNode);
+                }
+            }
+        }
+   });
+}

@@ -2,6 +2,7 @@
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template.context_processors import csrf
 from django.views import View
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView, FormView, DetailView
@@ -118,6 +119,7 @@ class MenuView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
+        context.update(csrf(request))                         # 给上下文添加csrf_token变量
         return self.render_to_response(context)               # 在视图中渲染数据内容，和网页其它部分一起发送到html文件上
 
 
@@ -190,3 +192,62 @@ def delete_menu(request):
             print e
             result = {'code': 1, 'msg': 'failure'}
         return HttpResponse(result)
+
+
+def save_menu(request):
+    if request.method == 'POST':
+        id = request.POST.get('id')
+        menu_name = request.POST.get('menuName')
+        type = request.POST.get('type')
+        url_code = request.POST.get('urlCode')
+        code = request.POST.get('code')
+        isvisible = request.POST.get('isvisible')
+        parentid = request.POST.get('parentid')
+        menu_order = request.POST.get('menuOrder')
+        try:
+            if not id:
+                add = Menu(                                             # 插入数据
+                    menu_name=menu_name,
+                    type=type,
+                    url_code=url_code,
+                    code=code,
+                    isvisible=isvisible,
+                    parentid=parentid,
+                    menu_order=menu_order
+                )
+                add.save()
+                id = add.id
+            else:
+                id = int(id)                                            # 更新数据
+                #
+                # menu = Menu.objects.get(id=id)                        # 查询一条数据
+                # menu.menu_name = menu_name                            # 给字段赋值
+                # menu.save()                                           # 保存
+                #
+                Menu.objects.get(id=id).update(                         # 更新一个或多个字段
+                    menu_name=menu_name,
+                    type=type,
+                    url_code=url_code,
+                    code=code,
+                    isvisible=isvisible,
+                    parentid=parentid,
+                    menu_order=menu_order
+                )
+                #
+                # Menu.objects.all().update(menu_name=menu_name)        # 更新一条或多条数据
+        except Exception, e:
+            print e
+            result = {'code': 1, 'msg': 'failure'}
+            return HttpResponse(json.dumps(result, ensure_ascii=False))
+        menu_obj = {
+            'id': id,
+            'menu_name': menu_name,
+            'type': type,
+            'url_code': url_code,
+            'code': code,
+            'isvisible': isvisible,
+            'parentid': parentid,
+            'menu_order': menu_order
+        }
+        result = {'code': 0, 'msg': 'success', 'menu_obj': menu_obj}
+        return HttpResponse(json.dumps(result, ensure_ascii=False))

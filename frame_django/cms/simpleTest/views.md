@@ -13,7 +13,7 @@
 |                           | 用户所发送的Header信息                                     |
 |                           | 服务器端设置的Header信息                                   |
 |                           | header信息————用户浏览器提交的、不应该信任的`额外`数据     |
-|                           | 用try/except语句或者字典的get()方法来处理                  |
+|                           |                                                            |
 |                           | HTTP_REFERER————进站前链接网页                             |
 |                           | HTTP_USER_AGENT————用户浏览器的user-agent字符串            |
 |                           | REMOTE_ADDR————客户端IP                                    |
@@ -23,8 +23,10 @@
 |                           | 数据可能来自 form 提交                                     |
 |                           | 也可能是URL中的查询字符串(the query string)                |
 | request.POST              | 用户post提交的信息————类字典对象————数据来自form提交       |
+| request.body              | 获取请求体                                                 |
 | request.raw_data          | 获取 post提交的xml原始数据                                 |
 | request.POST.getlist(key) | 获取{'key':[...]}                                          |
+| request.raw_post_data     | simplejson.loads(request.raw_post_data)————接收json数据    |
 |---------------------------|------------------------------------------------------------|
 | request.COOKIES           | 类字典对象————每一个HttpRequest对象都有                    |
 |                           | 可以使用它读取任何浏览器发送给视图（view）的cookies        |
@@ -36,21 +38,21 @@
 |                           | 获取session————request.session.get(key,default=None)       |
 |                           | 删除session（不存在时报错）————del request.session[key]    |
 
-###简单的函数视图
+###简单函数视图
 ```
 def login(request, param):
     """
-    视图函数传递的param————接收url匹配的参数
-    request.GET————获取url?name=param的参数
+    param————url匹配的参数
+    request.GET/POST————获取url?name=param的参数
+    # 处理字典、类字典对象（尽量避免使用dict['key']取值）
+    使用try/except语句
+    使用dict.get('key')取值，找不到返回None，不报错
     """
     if request.method == 'GET':
         try:
             ua = request.META['HTTP_USER_AGENT']
         except KeyError:
             ua = 'unknown'
-        """
-        使用dict.get('key')取值，找不到返回None，不报错，尽量避免使用dict['key']取值
-        """
         # ua = request.META.get('HTTP_USER_AGENT', 'unknown')
     elif request.method == 'POST':
         ...
@@ -69,18 +71,16 @@ def login(request, param):
 ###类文件对象————有一些基本文件操作方法，如read()，用来做真正的Python文件对象的代用品
 
 ####POST请求重定向
-若用户刷新一个包含POST表单的页面，那么请求将会重新发送造成重复。这通常会造成非期望的结果，比如说重复的数据库记录、发送两封同样的邮件等。 如果用户在POST表单之后被重定向至另外的页面，就不会造成重复的请求了。
-我们应每次都给成功的POST请求做重定向。
+若用户刷新一个包含POST表单的页面，那么请求将会重新发送造成重复。通常会造成重复的数据库记录、发送两封同样的邮件等。
+如果用户在POST表单之后被重定向至另外的页面，就不会造成重复的请求了。我们应每次都给成功的POST请求做重定向。
 
-####自定义表单填充信息
+####自定义表单填充信息（类似form验证）
 若数据验证失败后，将原来的提交数据返回给模板，并且编辑HTML里的各字段来填充原来的值。以便用户查看哪里出现错误（用户也不需再次填写正确的字段值）。
 ```
 return render_to_response(
-　　'contact_form.html', {
-　　　　'errors': errors,
+　　'***.html', {
 　　　　'subject': request.POST.get('subject', ''),
-　　　　'message': request.POST.get('message', ''),
-　　　　'email': request.POST.get('email', ''),
+　　　　...
 　　}
 )
 <input type="text" name="subject" value="{{ subject }}" />

@@ -38,6 +38,7 @@
                     </div>
                     <br/>
                     <form class="form-horizontal" id="menu" name="menu" action="#" novalidate autocomplete="off">
+                        {% csrf_token %}
                         <div class="form-group">
                             <label class="col-lg-2 control-label">父级权限</label>
                             <div class="col-lg-8">
@@ -45,18 +46,17 @@
                                 <span id="parentMenuName" class="form-control"></span>
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="menuName">权限名称<span class="required">*</span></label>
                             <div class="col-lg-8">
                                 <input type="hidden" id="curId" name="id">
+                                <input type="text" id="oldName" style="display: none">
                                 <input class="form-control" id="menuName" name="menuName" type="text"
-                                       data-easyform="length:2 16;"
-                                       data-message="权限名称必须为2—16位"
+                                       data-easyform="length:2 50;"
+                                       data-message="权限名称必须为2~50位"
                                        data-easytip="class:easy-blue;position:top;">
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="type">权限类型<span class="required">*</span></label>
                             <div class="col-lg-8">
@@ -67,25 +67,22 @@
                                 </select>
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="code">权限编码<span class="required">*</span></label>
                             <div class="col-lg-8">
                                 <input class="form-control" id="code" name="code" type="text"
-                                data-easytip="position:top;class:easy-blue;">
+                                       data-easyform="null;">
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="urlCode">请求路径<span class="required">*</span></label>
                             <div class="col-lg-8">
                                 <input class="form-control" id="urlCode" name="urlCode" type="text"
-                                       data-easyform="length:1 50;char-normal;"
-                                       data-message="请求路径必须为1—50位英文字母或数字"
+                                       data-easyform="length:1 50;regex:^/([\w]|[ .,?!$/:+-])+$;"
+                                       data-message="请求路径必须为1~50字符"
                                        data-easytip="position:top;class:easy-blue;">
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="isvisible">状态<span class="required">*</span></label>
                             <div class="col-lg-8">
@@ -93,13 +90,12 @@
                                     <div class="checker" id="uniform-optionsCheckbox">
                                         <span class="">
                                             <input class="uniform_on" type="checkbox" name="isvisible" id="isvisible" value="1"
-                                            data-easytip="position:top;class:easy-blue;">有效
+                                                   data-easyform="null;">有效
                                         </span>
                                     </div>
                                 </label>
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label" for="menuOrder">排序<span class="required">*</span></label>
                             <div class="col-lg-2">
@@ -109,23 +105,20 @@
                                        data-easytip="position:top;class:easy-blue;">
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">权限人数</label>
                             <div class="col-lg-2">
                                 <span id="userNum" class="col-lg-2 control-label"></span>
                             </div>
                         </div>
-                        <br/>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">所属角色</label>
                             <div class="col-lg-2">
                                 <span id="roles" class="control-label"></span>
                             </div>
                         </div>
-                        <br/>
                         <div class="text-center">
-                            <input type="submit" id="save_menu" class="btn btn-primary" value="保存">
+                            <input type="submit" id="save_menu" change_type="" class="btn btn-primary" value="保存">
                             <input type="button" id="reset_menu" class="btn btn-default" value="重置">
                         </div>
                     </form>
@@ -194,6 +187,48 @@
                             </button>
                         </div>
                         <div class="modal-body" id="result_body"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="modal fade in" id="addModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>权限控制</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="modal-body" id="add_body"></div>
+                        <div class="modal-footer">
+                            <div class="col-md-8 col-md-push-2">
+                                <div class="pull-left">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-warning" onclick="addNode()" data-dismiss="modal">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade in" id="retModal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>修改结果</span>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="modal-body" id="ret_body"></div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
                         </div>
