@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template.context_processors import csrf
 from django.views import View
 from django.shortcuts import render
@@ -109,11 +109,6 @@ class MenuView(TemplateView):
 
     def get_context_data(self, **kwargs):
         # json_list_str = to_json_list_str(Menu.objects.order_by('parentid', 'menu_order', 'id'))
-        """
-        ValuesQuerySet————QuerySet的子集————返回[dict, dict, ...]
-        vlaues()单条/多条记录     ————<class 'dict'> /<class 'django.db.models.query.QuerySet'>
-        vlaues_list()单条/多条记录————<class 'tuple'>/<class 'django.db.models.query.QuerySet'>
-        """
         json_list_str = values_to_json_list_str(Menu.objects.values())
         return {'menu_list': json_list_str}
 
@@ -126,13 +121,13 @@ class MenuView(TemplateView):
 # 返回单个权限信息，json类型
 def get_menu(request):
     id = int(request.GET.get("id"))
-
     if id == 1:
         m = Menu.objects.filter(id=id)
+        menu = m[0].toDict()
     else:
         """
-        # 使用用原生SQL————RawQueryset————RawQuerySet中必须包含id（主键）
-        m = Menu.objects.raw('''
+        m = Menu.objects.raw(                                        # 使用用原生SQL————RawQueryset中必须包含id（主键）
+        '''
         SELECT
             id, menu_name, type, code, url_code, isvisible, parentid, menu_order,
             parent_name, parent_url_code
@@ -147,25 +142,24 @@ def get_menu(request):
         ''' % (id, id))
         """
         m1 = Menu.objects.filter(id=id).values()
-        parentid = Menu.objects.filter(id=id).values('parentid')
-        # extra(select={...})————extra实现别名
-        m2 = Menu.objects.filter(id=parentid).extra(select={'parent_name': 'menu_name', 'parent_url_code': 'url_code'}).values('parent_name', 'parent_url_code')
-    # menu = m[0].toDict()
-    menu = m1[0]
-    menu.update(m2[0])
+        m2 = Menu.objects.filter(
+            id=Menu.objects.filter(id=id).values('parentid')
+        ).extra(select={                                               # extra(select={...})————extra实现别名
+            'parent_name': 'menu_name', 'parent_url_code': 'url_code'
+        }).defer(                                                      # defer————排除掉原来的name（可以不写）
+            'menu_name', 'url_code'
+        ).values('parent_name', 'parent_url_code')
+        menu = m1[0]
+        menu.update(m2[0])
     """
-    user_num = UserRole.objects.raw('''
+    user_num = UserRole.objects.raw(                                   # 使用raw直接查询出count
+    '''
     SELECT
-        ur.id,
-        count(ur.id)        -- 使用raw直接查询出count
+        ur.id, count(ur.id)
     FROM
-        role_menu rm,
-        user_role ur,
-        simple_user u
+        role_menu rm, user_role ur, simple_user u
     WHERE
-        ur.user_id=u.id
-        AND ur.role_id=rm.role_id
-        AND rm.menu_id=%d
+        ur.user_id=u.id AND ur.role_id=rm.role_id AND rm.menu_id=%d
     GROUP BY rm.menu_id
     '''%id)
     try:
@@ -191,7 +185,8 @@ def delete_menu(request):
         except Exception, e:
             print e
             result = {'code': 1, 'msg': 'failure'}
-        return HttpResponse(result)
+        # return HttpResponse(json.dumps(result, ensure_ascii=False)) # 使用json模块返回dict json数据
+        return JsonResponse(result)                                   # 使用JsonResponse返回dict json数据
 
 
 def save_menu(request):
@@ -224,9 +219,8 @@ def save_menu(request):
                 # menu.menu_name = menu_name                            # 给字段赋值
                 # menu.save()                                           # 保存
                 #
-                Menu.objects.get(id=id).update(                         # 更新一个或多个字段
+                Menu.objects.filter(id=id).update(                      # 更新一个或多个字段
                     menu_name=menu_name,
-                    type=type,
                     url_code=url_code,
                     code=code,
                     isvisible=isvisible,

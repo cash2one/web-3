@@ -4,7 +4,7 @@
     <title>权限管理</title>
     <style type="text/css">
         {% comment %}
-        添加编辑图标
+            添加编辑图标
         {% endcomment %}
         .ztree li span.suffixIcon{padding:0 0 10px;}
         .ztree li span.button.del{margin:0; background: url({% static 'common/css/zTreeStyle/img/diy/del.png' %}) no-repeat scroll 0 0 transparent; vertical-align:top; *vertical-align:middle}
@@ -126,12 +126,12 @@
                 </div>
             </div>
             {% comment %}
-            form表单的input组件都有对应的label，当input组件获取到焦点时，屏幕阅读器会读出相应label里的文本
-            aria-label————若没有给输入框设置label，当其获得焦点时，屏幕阅读器会读出aria-label属性的值————为盲人设置，不会在视觉上呈现效果
-            aria-labelledby————当想要的标签文本已在其他元素中存在时，可以使用aria-labelledby，并将其值设为所读取的元素的id
-            如果一个元素同时有aria-labelledby与aria-label，优先读出aria-labelledby的内容
+                form表单的input组件都有对应的label，当input组件获取到焦点时，屏幕阅读器会读出相应label里的文本
+                aria-label————若没有给输入框设置label，当其获得焦点时，屏幕阅读器会读出aria-label属性的值————为盲人设置，不会在视觉上呈现效果
+                aria-labelledby————当想要的标签文本已在其他元素中存在时，可以使用aria-labelledby，并将其值设为所读取的元素的id
+                如果一个元素同时有aria-labelledby与aria-label，优先读出aria-labelledby的内容
 
-            <a href="#delModel" role="button" class="btn" data-toggle="modal">查看演示案例</a>————使用href属性绑定模态框
+                <a href="#delModel" role="button" class="btn" data-toggle="modal">查看演示案例</a>————使用href属性绑定模态框
             {% endcomment %}
             <div class="modal fade in" id="delModel" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
@@ -144,18 +144,18 @@
                         </div>
                         <input type="hidden" id="nodeId" value=""/>
                         {% comment %}
-                        {% autoescape off %}...{% endautoescape %}————关闭模板转义
-                        {{ var | safe }}————不转义特殊字符
+                            {% autoescape off %}...{% endautoescape %}————关闭模板转义
+                            {{ var | safe }}————不转义特殊字符
 
-                        使用特殊符号
-                        openblock————{%
-                        closeblock————%}
-                        openvariable————{{
-                        closevariable————}}
-                        openbrace————{
-                        closebrace————}
-                        opencomment————{#
-                        closecomment————#}
+                            使用特殊符号
+                            openblock————{%
+                            closeblock————%}
+                            openvariable————{{
+                            closevariable————}}
+                            openbrace————{
+                            closebrace————}
+                            opencomment————{#
+                            closecomment————#}
                         {% endcomment %}
                         <script id="ptemplate" type="x-tmpl-mustache">
                             <p>确定要删除【{% templatetag openvariable  %}nodeName{% templatetag closevariable %}】吗?</p>
@@ -239,18 +239,18 @@
     </div>
     <script>
         {% comment %}
-        /**
-         * replace(/&quot;/g,'"')————把&quot;转义回来
-         * eval()————计算某个字符串，并执行其中的的 JavaScript 代码
-         */
-        var menu_list = eval('{{ menu_list }}'.replace(/&quot;/g,'"'));
+            /**
+             * replace(/&quot;/g,'"')————把&quot;转义回来
+             * eval()————计算某个字符串，并执行其中的的 JavaScript 代码
+             */
+            var menu_list = eval('{{ menu_list }}'.replace(/&quot;/g,'"'));
 
-        var menu_list = eval({{ menu_list | safe }});
+            var menu_list = eval({{ menu_list | safe }});
         {% endcomment %}
         var menu_list = eval({{ menu_list | safe }});
     </script>
     <!--
     ?0002————清缓存（每次变动js，修改?后的值）
     -->
-    <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0007"></script>
+    <script type="text/javascript" src="{% static 'menu/js/menuTree.js' %}?0001"></script>
 {% endblock %}

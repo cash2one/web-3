@@ -60,8 +60,8 @@
                             {% url %}————返回一个绝对路径的引用(不包含域名的URL)
                             传递的参数需要在url捕获和在views参数里接收
 
-                            <a href="http://***" title="***">***</a>————window.location.href="http://***";         //在当前窗口打开
-                            <a href="http://***" title="***" target="_blank">***</a>————window.open("http://***"); //在新窗口中打开
+                            <a href="http://***" title="***">***</a>                ————window.location.href="http://***"; //在当前窗口打开
+                            <a href="http://***" title="***" target="_blank">***</a>————window.open("http://***");         //在新窗口中打开
                         {% endcomment %}
         {#                <a class="pull-left" href="{% url 'login' 'change_secret' %}" id="secret">忘记密码</a>#}
                         <a class="pull-right" href="{% url 'login' 'email_register' %}" id="register">免费注册</a>

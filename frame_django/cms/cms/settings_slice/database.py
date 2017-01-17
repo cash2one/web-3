@@ -15,9 +15,8 @@ if platform.system() == "Windows":
 '''
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
+# django自带的站点管理默认使用default，manage.py不加参数生成default数据库的表
 DATABASES = {
-    # django自带的站点管理默认使用default
-    # manage.py不加参数生成default数据库的表
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),

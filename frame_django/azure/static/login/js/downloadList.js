@@ -4,8 +4,6 @@
 
 /**
  * ajax提交数据中添加csrf_token
-  * @param name
- * @returns {*}
  */
 function getCookie(name) {
     var cookieValue = null;
@@ -22,8 +20,6 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-//jQuery Cookie插件————基于jquery，可以对cookie做读、写、删等操作
-//var csrftoken = $.cookie('csrftoken');
 
 var addDownload = function() {
     $.ajax({
@@ -32,7 +28,6 @@ var addDownload = function() {
         //dataType: "html",
         data: {
             csrfmiddlewaretoken: getCookie('csrftoken'),
-            // csrfmiddlewaretoken: '{{ csrf_token }}',
             create_name: $("[name=create_name]").val(),
             file_name: $("[name=file_name]").val(),
             address: $("[name=address]").val()

@@ -8,7 +8,7 @@
 """
 import os
 from settings_slice.database import *
-from settings_slice.manage import *
+from settings_slice.manager import *
 from settings_slice.webpage import *
 from settings_slice.local import *
 from settings_slice.security import *
@@ -19,24 +19,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # 定义应用————加入新建app
-# django.contrib包————Django自带的优秀附加组件(add-on)————可选
-# django.contrib是一套庞大的功能集，它是Django基本代码的组成部分
+# django.contrib包————Django自带的优秀附加组件(add-on、功能集、基本代码的组成部分)————可选、
 INSTALLED_APPS = [
-    # 管理工具
-    # 第一次运行syncdb命令时，系统会请你创建一个超级用户————旧版
-    'django.contrib.admin',
-    # 用户鉴别系统
-    'django.contrib.auth',
+    'django.contrib.admin',         # 管理工具
+    'django.contrib.auth',          # 用户鉴别系统
     'django.contrib.contenttypes',
-    # 使用数据库支持的session————匿名会话
-    'django.contrib.sessions',
+    'django.contrib.sessions',      # 使用数据库支持的session————匿名会话
     'django.contrib.messages',
-    # 收集每个应用（和指定地方）的静态文件到一个单独的位置
-    'django.contrib.staticfiles',
-    # 用户评注系统
-    # django.contrib.comments,
-    # 如果项目和sentry位于不同服务器，可能需要安装raven
-    # 'raven.contrib.django',
+    'django.contrib.staticfiles',   # 收集每个应用（和指定地方）的静态文件到一个单独的位置
+    # 'django.contrib.comments',    # 用户评注系统
+    # 'raven.contrib.django',       # 如果项目和sentry位于不同服务器，需要安装raven
     'base',
     'system',
 ]
@@ -44,27 +36,20 @@ INSTALLED_APPS = [
 # 中间件
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
-    # Session中间件
-    # 在 request 中附加 session 属性
-    # 在 response 的时候，适当的情况下保存 session 并发出相应的 cookie 到客户端
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',      # 给request加session属性，在response时，适当的情况下保存 session 并发送相应的cookie到客户端
     'django.middleware.common.CommonMiddleware',
     # 对跨站请求伪造简单易用的防护————默认验证每一个form的post请求
     # 跨站攻击————同时登陆多个网站时，恶意网站利用用户浏览器中的认证信息在其它网站上完成某些操作
     # 登录CSRF————攻击站点触发用户浏览器用其它人的认证信息登录到其它站点
     'django.middleware.csrf.CsrfViewMiddleware',
-    # 用户登录判断
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',   # 用户登录判断（后台）
     'django.contrib.messages.middleware.MessageMiddleware',
-    # 点击劫持防御
-    # 不允许资源加载到（别人的）frame或者iframe中
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 开启国际化的支持（放在Session后）————翻译管理工具
-    # 'django.middleware.locale.LocaleMiddleware',
-    # 自定义登录拦截器
-    # 'login.common.interceptor_middlewares.LoginMiddleware',
-    # 自定义权限验证拦截器
-    # 'login.common.interceptor_middlewares.MenuMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',    # 点击劫持防御————不允许资源加载到（别人的）frame/iframe中
+    # 'django.middleware.locale.LocaleMiddleware',               # 国际化的支持（放在Session后）————翻译管理工具
+    'system.common.interceptor_middlewares.LoginMiddleware',     # 自定义登录拦截器
+    'system.common.interceptor_middlewares.AuthMiddleware',      # 自定义权限验证拦截器
+    'django.middleware.cache.UpdateCacheMiddleware',             # 缓存站点
+    'django.middleware.cache.FetchFromCacheMiddleware'
 ]
 #
 # 根URLconf

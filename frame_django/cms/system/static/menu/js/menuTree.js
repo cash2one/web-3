@@ -98,15 +98,16 @@ var createNode = function (menu_obj) {
 
 var reload_ztree = function(){
     // $.ajax({
-    //     async      : false,              //false，同步执行；默认true，异步执行，请求未完成就执行回调函数
-    //     traditional: true,               //false，深度序列化参数对象；true，传统方式序列化参数对象
+    //     async      : false,                                    //默认true，异步执行（两个线程）；false，同步执行（请求期间锁住浏览器）
+    //     traditional: true,                                     //false，深度序列化参数对象；true，传统方式序列化参数对象
     //     cache      : false,
     //     type       : 'GET',
-    //     dataType   : "json",             //服务器预期返回的数据类型
+    //     contentType："application/x-www-form-urlencoded",      //发送信息至服务器时内容编码类型
+    //     dataType   : "json",                                   //服务器预期返回的数据类型（html、script、text、json、xml、jsonp）
     //     data       : {},
-    //     url        : "/menu/get_menu",                               //请求路径
-    //     error: function () { alert('数据请求失败'); },                //请求失败处理函数
-    //     success : function (data) { alert(data); treeNodes = data; } //请求成功处理函数，把后台封装好的简单Json赋给treeNodes
+    //     url        : "/menu/get_menu",                         //请求路径
+    //     error: function () { alert('数据请求失败'); },          //请求失败处理函数
+    //     success : function (data) { treeNodes = data; }        //请求成功处理函数，把后台封装好的简单Json赋给treeNodes
     //     complete: function (XMLHttpRequest, textStatus) {...}
     // });
     var node;
@@ -137,9 +138,9 @@ $(function() {
      * 添加、删除节点
      *
      * html页面文档加载时会对所有js/jq方法进行初始化
-     * $(function() {})是在html文档加载中最后执行的
-     * .suffixIcon是在$(function() {})中动态生成的html元素
-     * on()函数如果放在$(function() {})外，文档初始化时将找不到.suffixIcon元素
+     * $(document).ready(function(){})————$(function(){})————window.onload=function(){}————<body onload="XXX">————在html文档加载中最后执行
+     * .suffixIcon是在$(function(){})中动态生成的html元素
+     * on()函数如果放在$(function(){})外，文档初始化时将找不到.suffixIcon元素
      *
      * 如果给html标签绑定onclick=fun(...)，fun()定义位置无限制
      * 浏览器console是实时的，与文档加载无关
@@ -237,10 +238,16 @@ function onClick(event, treeId, treeNode, clickFlag) {
  * @returns {boolean}
  */
 function delNode() {
+    var zTree = $.fn.zTree.getZTreeObj("tree");
     var targetNode = zTree.getNodesByParam("id", $("#nodeId").val())[0];
+    debugger;
     $.ajax({
         url: '/system/menu/delete_menu',
-        data: {"id": $("#nodeId").val()},
+        data: {
+            "id": $("#nodeId").val(),
+            csrfmiddlewaretoken: getCookie('csrftoken'),
+            // csrfmiddlewaretoken: '{{ csrf_token }}',
+        },
         type: 'post',
         dataType: "json",
         success: function (result) {
@@ -268,6 +275,7 @@ $(document).ready(
 
 /**
  * 保存
+ * 添加或修改
  */
 function save(ef) {
     var type = $("#save_menu").attr("change_type");
@@ -300,6 +308,9 @@ function addNode() {
      */
     var zTree = $.fn.zTree.getZTreeObj("tree");
     var type = $("#save_menu").attr("change_type");
+    /**
+     * serialize()————jq序列化表单值
+     */
     $.ajax({
         url: '/system/menu/save_menu',
         type: 'post',
@@ -317,11 +328,33 @@ function addNode() {
                     var newNode = createNode(menu_obj);
                     zTree.addNodes(parentNode[0], newNode);
                 } else {
-                    var targetNode = zTree.getNodesByParam("id", menu.id, null)[0];
-                    targetNode.name = menu.menuName;
+                    var targetNode = zTree.getNodesByParam("id", menu_obj.id, null)[0];
+                    targetNode.name = menu_obj.menu_name;
                     zTree.updateNode(targetNode);
                 }
             }
         }
    });
 }
+
+
+/**
+ * js获取csrf_token，用于ajax提交数据
+ */
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+//jQuery Cookie插件————基于jquery，可以对cookie做读、写、删等操作
+//var csrftoken = $.cookie('csrftoken');
