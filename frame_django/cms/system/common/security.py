@@ -22,10 +22,3 @@ def check_pwd(phone, ps):
     pwd_bool = check_password(ps, u.passwd)
     return pwd_bool
 
-
-def create_session(request, phone, passwd):
-    if check_pwd(phone, passwd):
-        request.session['phone'] = phone
-        request.session['passwd'] = passwd
-        return True
-    return False

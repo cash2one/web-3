@@ -28,7 +28,7 @@ update_set_where ———— MODEL.objects.filter(field='zd').update(num1='100'
     + select_column ———— MODEL.field
 - 排序————默认根据classMeta的ordering排序
     + select_all_order_by ———— MODEL.objects.order_by('field', '-num1')
-- 获取单个dict对象————多于一个或者没有，抛出异常：DoesNotExist
+- 获取单个dict对象————多于一个或者没有，抛出异常：MODEL.DoesNotExist
     + select_one ———— MODEL.objects.get(field='zd')
     + select_one_value ———— MODEL.objects.get(field='zd').num1
 

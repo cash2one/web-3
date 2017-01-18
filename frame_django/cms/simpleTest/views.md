@@ -35,8 +35,11 @@
 |                           | 创建或修改session————request.session[key] = value          |
 |                           | request.session['foo']['bar'] = 'baz'                      |
 |                           | request.session['foo'] = {}                                |
-|                           | 获取session————request.session.get(key,default=None)       |
-|                           | 删除session（不存在时报错）————del request.session[key]    |
+|                           | request.session.get(key,default=None)                      |
+|                           | del request.session[key]（不存在时报错）                   |
+|                           | request.session.set_expiry(value)————session失效时间       |
+|                           | 整数（秒，0，用户关闭浏览器失效）、datatime或timedelta     |
+|                           | None，依赖settings策略                                     |
 
 ###简单函数视图
 ```

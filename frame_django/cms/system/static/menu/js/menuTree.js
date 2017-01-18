@@ -82,7 +82,7 @@ var setting = {
  */
 var treeNodes = [];
 var menu = $("#menu");
-var diy = "/static/common/css/zTreeStyle/img/diy/";
+var diy = "/static/common/zTree/imgages/diy/";
 var createNode = function (menu_obj) {
     return node = {
         pId      : menu_obj.parentid,

@@ -25,6 +25,7 @@ class SimpleUser(models.Model):
     modify_at = models.DateTimeField("最后修改时间", auto_now=True)
     remarks = models.CharField(verbose_name="备注", max_length=50)
     role = models.ManyToManyField('Role', through='UserRole')
+    current_role = models.IntegerField(default=-100)
 
     class Meta:
         verbose_name = "用户信息表"                         # 别名
@@ -53,11 +54,30 @@ class UserRole(models.Model):
     class Meta:
         db_table = "user_role"
 
-
-"""关联表————可以分别建立多个关联"""
+# 关联表————可以分别建立多个关联
+# 子表A————OneToOneField、ForeignKey、ManyToManyField字段所在的表
+# 母表B————子表关联字段指向的表
+# connectCol————OneToOneField、ForeignKey、ManyToManyField字段所在的列
+# 过滤函数
+# objects.get(...).field
+# objects.filter(...)
+# objects.filter(...).all()
+# objects.filter(...).values()
+# objects.filter(...).value_list()
 """
-col = OneToOneField("table"[, default=***[, to_field='field']])————一对一————用于某张表的补充（在子表中定义）
-to_field————默认关联母表的id，生成col_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+OneToOneField
+子查母————一对一（OneToOneField、ForeignKey）————A.objects.get(...).connectCol.B字段————B.objects.get/filter(A表名小写__A字段="***")
+子查母————一对多（ManyToManyField）————A.objects.get(...).connectCol.all()/filter()————B.objects.filter(A表名小写__A字段="***")
+
+母查子————一对一（OneToOneField）————B.objects.get(...).A表名小写.A字段————A.objects.get/filter(connectCol__B字段="***")
+母查子————一对多（ForeignKey、ManyToManyField）————B.objects.get(...).A表名小写_set.all()/filter()————A.objects.filter(connectCol__B字段="***")————A.objects.filter(connectCol=B.objects.get(B字段="***")))
+
+添加对象————a = A.objects.get(...);b = B.objects.get(...);a.connectCol.add(b)
+删除对象————a = A.objects.get(...);b = B.objects.get(...);a.connectCol.remove(b) 或者 a.connectCol.filter(...).delete()
+"""
+# connectCol = OneToOneField("table"[, default=***[, to_field='field']])————一对一————用于某张表的补充（在子表中定义）
+"""
+to_field————默认关联母表的id，生成connectCol_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
 
 CREATE TABLE `role` (
     ...
@@ -65,8 +85,8 @@ CREATE TABLE `role` (
     CONSTRAINT `role_menu_id_25fd2e17_fk_menu_id` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
 )
 """
+# connectCol = models.ManyToManyField("table")————多对多————默认关联母表的id
 """
-col = models.ManyToManyField("table")————多对多————默认关联母表的id
 through————指定中间表对应的model
 through_fields————明确指定（中间表中）哪些外键作为两表的关联字段————接收一个二元组，默认是table_id、self_id字段
 related_name————定义抽象model (abstract models) 时，必须显式指定反向名称
@@ -84,9 +104,9 @@ CREATE TABLE `role_menu` (
 )
 self = models.ManyToManyField("self")————针对自身建立多对多关系
 """
+# connectCol = models.ForeignKey(Menu)————一对多（外键）————默认生成connectCol_id字段
 """
-col = models.ForeignKey(Menu)————一对多（外键）————默认生成col_id字段
-to_field————默认关联母表的id，生成col_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
+to_field————默认关联母表的id，生成connectCol_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
 db_constraint————默认为True，在数据库上建立外键约束
 related_name————让关联的对象反查到源对象，设为 '+' 或者以'+' 结尾，不让Django 创建反向关联
 null=True————允许NULL值，分配None来删除对应的关联性
@@ -151,7 +171,7 @@ class Menu(models.Model):
 
     # toDict————把QuerySet对象转化为字典对象（类似于django内置values()函数）
     def toDict(self):
-        # python类三元表达式
+        # python三元表达式
         self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None
         self.parent_url_code = self.parent_url_code if hasattr(self, 'parent_url_code') else None
         # self.user_num = self.user_num if hasattr(self, 'user_num') else None

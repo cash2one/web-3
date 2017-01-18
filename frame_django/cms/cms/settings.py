@@ -12,7 +12,7 @@ from settings_slice.manager import *
 from settings_slice.webpage import *
 from settings_slice.local import *
 from settings_slice.security import *
-from settings_slice.session import *
+from settings_slice.caches import *
 #
 # os.path.abspath('.')————取决于工作目录，此处不能用
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
