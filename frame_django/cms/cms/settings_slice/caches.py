@@ -47,29 +47,26 @@ NEVER_REDIS_TIMEOUT = 365 * 24 * 60 * 60
 #
 # session————会话
 #
-# session后端存储方式
 SESSION_ENGINES = [
+    'django.contrib.sessions.backends.cached_db',      # 数据库+缓存
     'django.contrib.sessions.backends.cache',          # 使用缓存
     'django.contrib.sessions.backends.db',             # 默认使用数据库
                                                        # django.contrib.sessions.models，一个标准模型
                                                        # 通过migrate建表————django_session，在需要的时候才会读取
                                                        # 可以使用Django数据库API来存取session
-    'django.contrib.sessions.backends.cached_db',      # 数据库+缓存
     'django.contrib.sessions.backends.file',           # 文件
     'django.contrib.sessions.backends.signed_cookies'  # 基于Cookie的会话(数据存储使用Django加密签名工具和SECRET_KEY设置)
 ]
-
-SESSION_ENGINE = SESSION_ENGINES[0]
-SESSION_CACHE_ALIAS = 'default'
-#
-# False————默认————使用SESSION_COOKIE_AGE设置
-# True————浏览器关闭时，使cookie失效
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-
+# from django.contrib.sessions.backends import cache
+SESSION_ENGINE = SESSION_ENGINES[0]                                        # session后端存储方式
+SESSION_CACHE_ALIAS = 'default'                                            # 使用的缓存别名
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True                                     # cookie超时设置
+                                                                           # False————默认，使用SESSION_COOKIE_AGE设置
+                                                                           # True————浏览器关闭时，使cookie失效
 SESSION_COOKIE_DOMAIN = None                                               # 使用session cookies的站点
                                                                            # 默认None————用于单个站点
                                                                            # 设成字符串（".example.com"）————用于跨站（cross-domain）的cookie
-SESSION_COOKIE_NAME = "my_session_id"                                      # 会话的cookie名
+SESSION_COOKIE_NAME = "personal_session_id"                                # 会话的cookie名
                                                                            # 客户端用来识别session
                                                                            # 服务器端session的session_key
                                                                            # 数据库django_session表的主键
