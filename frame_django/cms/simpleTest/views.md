@@ -1,45 +1,45 @@
 ###HttpRequest对象————包含当前请求URL的一些信息
 
-|         属性/方法         |                         说明/举例                          |
-|---------------------------|------------------------------------------------------------|
-| request.path              | 除域名以外的请求路径，以正斜杠开头-->"/hello/"             |
-| request.get_host()        | 主机名（域名）-->"127.0.0.1:8000"、"www.***.com"           |
-| request.get_full_path()   | 请求路径，可能包含查询字符串-->"/hello/?p=true"            |
-| request.is_secure()       | 是否通过HTTPS访问，返回True/False                          |
-|---------------------------|------------------------------------------------------------|
-| request.META              | 一个字典————包含了所有本次HTTP请求的Header信息             |
-|                           | 比如用户IP、用户Agent（浏览器的名称和版本号）              |
-|                           | Header信息的完整列表取决于用户和服务器                     |
-|                           | 用户所发送的Header信息                                     |
-|                           | 服务器端设置的Header信息                                   |
-|                           | header信息————用户浏览器提交的、不应该信任的`额外`数据     |
-|                           |                                                            |
-|                           | HTTP_REFERER————进站前链接网页                             |
-|                           | HTTP_USER_AGENT————用户浏览器的user-agent字符串            |
-|                           | REMOTE_ADDR————客户端IP                                    |
-|                           | 如果经过代理服务器，那么它可能是以逗号分割的多个IP         |
-|---------------------------|------------------------------------------------------------|
-| request.GET               | 用户get提交的信息————类字典对象————不需要视图传参          |
-|                           | 数据可能来自 form 提交                                     |
-|                           | 也可能是URL中的查询字符串(the query string)                |
-| request.POST              | 用户post提交的信息————类字典对象————数据来自form提交       |
-| request.body              | 获取请求体                                                 |
-| request.raw_data          | 获取 post提交的xml原始数据                                 |
-| request.POST.getlist(key) | 获取{'key':[...]}                                          |
-| request.raw_post_data     | simplejson.loads(request.raw_post_data)————接收json数据    |
-|---------------------------|------------------------------------------------------------|
-| request.COOKIES           | 类字典对象————每一个HttpRequest对象都有                    |
-|                           | 可以使用它读取任何浏览器发送给视图（view）的cookies        |
-|---------------------------|------------------------------------------------------------|
-| request.session           | 类字典对象————启用SessionMiddleware后，每个HttpRequest都有 |
-|                           | 创建或修改session————request.session[key] = value          |
-|                           | request.session['foo']['bar'] = 'baz'                      |
-|                           | request.session['foo'] = {}                                |
-|                           | request.session.get(key,default=None)                      |
-|                           | del request.session[key]（不存在时报错）                   |
-|                           | request.session.set_expiry(value)————session失效时间       |
-|                           | 整数（秒，0，用户关闭浏览器失效）、datatime或timedelta     |
-|                           | None，依赖settings策略                                     |
+|         属性/方法         |                        说明/举例                         |
+|---------------------------|----------------------------------------------------------|
+| request.path              | 除域名以外的请求路径，以正斜杠开头-->"/hello/"           |
+| request.get_host()        | 主机名（域名）-->"127.0.0.1:8000"、"www.***.com"         |
+| request.get_full_path()   | 请求路径，可能包含查询字符串-->"/hello/?p=true"          |
+| request.is_secure()       | 是否通过HTTPS访问，返回True/False                        |
+|---------------------------|----------------------------------------------------------|
+| request.META              | 一个字典————包含了所有本次HTTP请求的Header信息           |
+|                           | 比如用户IP、用户Agent（浏览器的名称和版本号）            |
+|                           | Header信息的完整列表取决于用户和服务器                   |
+|                           | 用户所发送的Header信息                                   |
+|                           | 服务器端设置的Header信息                                 |
+|                           | header信息————用户浏览器提交的、不应该信任的`额外`数据   |
+|                           |                                                          |
+|                           | HTTP_REFERER————进站前链接网页                           |
+|                           | HTTP_USER_AGENT————用户浏览器的user-agent字符串          |
+|                           | REMOTE_ADDR————客户端IP                                  |
+|                           | 如果经过代理服务器，那么它可能是以逗号分割的多个IP       |
+|---------------------------|----------------------------------------------------------|
+| request.GET               | 用户get提交的信息————类字典对象————不需要视图传参        |
+|                           | 数据可能来自 form 提交                                   |
+|                           | 也可能是URL中的查询字符串(the query string)              |
+| request.POST              | 用户post提交的信息————类字典对象————数据来自form提交     |
+| request.body              | 获取请求体                                               |
+| request.raw_data          | 获取 post提交的xml原始数据                               |
+| request.POST.getlist(key) | 获取{'key':[...]}                                        |
+| request.raw_post_data     | simplejson.loads(request.raw_post_data)————接收json数据  |
+|---------------------------|----------------------------------------------------------|
+| request.COOKIES           | 类字典对象————每个HttpRequest对象都有                    |
+|                           | 可以使用它读取任何浏览器发送给视图（view）的cookies      |
+|---------------------------|----------------------------------------------------------|
+| request.session           | 类字典对象，启用SessionMiddleware后，每个HttpRequest都有 |
+|                           | request.session[key] = value————创建或修改session        |
+|                           | request.session[key][key] = value                        |
+|                           | request.session.get(key,default=None)                    |
+|                           | del request.session[key]（不存在时报错）                 |
+|                           | request.session.set_expiry(value)————设置session超时     |
+|                           | 整数（秒；0，用户关闭浏览器失效）、datatime或timedelta   |
+|                           | None，依赖settings策略                                   |
+|                           | if "**" is request.session————检测session值              |
 
 ###简单函数视图
 ```
@@ -62,9 +62,11 @@ def login(request, param):
 ```
 
 ###HttpResponse对象
-
-| 属性/方法                       | 说明/举例 |
-| response.set_cookie(key, value) | 写cookie  |
+|                    属性/方法                     |  说明/举例  |
+|--------------------------------------------------|-------------|
+| response.set_cookie(key, value)                  | 写cookie    |
+| response.delete_cookie(key,path="/",domain=name) | 删除Cookies |
+| if "cookie_name" is request.COOKIES              | 检测Cookies |
 
 ###类字典对象————行为像Python标准字典对象，但在技术底层上不是标准字典对象
 - 都有get()、keys()和values()方法；

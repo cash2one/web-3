@@ -52,6 +52,7 @@ class LoginMiddleware(MiddlewareMixin):
 
 
 class AuthMiddleware(MiddlewareMixin):
+
     def process_request(self, request):
         if request.META.has_key('HTTP_X_FORWARDED_FOR'):
             ip = request.META['HTTP_X_FORWARDED_FOR']

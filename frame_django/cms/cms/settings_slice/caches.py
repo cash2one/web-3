@@ -3,6 +3,8 @@
 # @Last Modified time: 2016-12-25 23:06:27
 #
 import platform
+from django.contrib.sessions.backends import cached_db
+from django_redis.cache import RedisCache
 
 location = '127.0.0.1:6379'
 if platform.system() == "Windows":
@@ -13,18 +15,21 @@ BACKENDS = [
     'django.core.cache.backends.memcached.MemcachedCache',  # Memcached缓存           LOCATION: [（多个）服务器]
     'django.core.cache.backends.db.DatabaseCache',          # 数据库缓存               LOCATION: 'db://cache_table'
                                                             # python manage.py createcachetable [cache_table_name]
-    'django.core.cache.backends.filebased.FileBasedCache',  # 文件缓存                 LOCATION: 'file:///../.../cache_file'
+    'django.core.cache.backends.filebased.FileBasedCache',  # 文件缓存                 LOCATION: 'file://../.../cache_file'
     'django.core.cache.backends.dummy.DummyCache',          # 虚拟缓存（实现缓存的接口） LOCATION: 'dummy:///'
-    'django_redis.cache.RedisCache',                        # redis缓存
-                                                            # pip install django-redis
+    'django_redis.cache.RedisCache',                        # redis缓存 pip install django-redis
 ]
 
-# @cache_page(60 * 15) #设置缓存时间，当超过这个时间，请求会从views里取数据
 CACHES = {
     'default': {
-        'BACKEND': BACKENDS[-1],  # 定义缓存后端类（也可以自己写）
-        'TIMEOUT': 600,           # 设置后端超时时间（s）
+        'BACKEND': BACKENDS[-1],                                           # 缓存后端类（可以自己实现）
+        'TIMEOUT': 600,                                                    # 缓存过期时间（s），None永不过期，0立即过期，默认300
+        'MAX_ENTRIES': 300,                                                # 内存、文件、数据缓存最大条数，超出将删除旧值，默认300
         'LOCATION': location,
+        # 达到MAX_ENTRIES时，被删除的条目比率（1/cull_percentage）
+        # 设为2，删除一半
+        # 设为0，清空缓存————以丢失大量缓存为代价，大大提高访问速度
+        # 'CULL_PERCENTAGE': 1,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             # "PICKLE_VERSION": -1,                                        # pickle版本，默认使用最新的
@@ -32,7 +37,7 @@ CACHES = {
             "SOCKET_TIMEOUT": 5,                                           # 连接建立后的读写操作超时设置
             "COMPRESSOR": "django_redis.compressors.zlib.ZlibCompressor",  # 支持压缩, 默认关闭
             "IGNORE_EXCEPTIONS": True,                                     # 关闭时，忽略连接异常
-            "CONNECTION_POOL_KWARGS": {"max_connections": 100},            # 设置连接池的最大连接数量
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},            # 连接池的最大连接数量
         },
     },
 }
@@ -57,27 +62,19 @@ SESSION_ENGINES = [
     'django.contrib.sessions.backends.file',           # 文件
     'django.contrib.sessions.backends.signed_cookies'  # 基于Cookie的会话(数据存储使用Django加密签名工具和SECRET_KEY设置)
 ]
-# from django.contrib.sessions.backends import cache
-SESSION_ENGINE = SESSION_ENGINES[0]                                        # session后端存储方式
-SESSION_CACHE_ALIAS = 'default'                                            # 使用的缓存别名
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True                                     # cookie超时设置
-                                                                           # False————默认，使用SESSION_COOKIE_AGE设置
-                                                                           # True————浏览器关闭时，使cookie失效
-SESSION_COOKIE_DOMAIN = None                                               # 使用session cookies的站点
-                                                                           # 默认None————用于单个站点
-                                                                           # 设成字符串（".example.com"）————用于跨站（cross-domain）的cookie
-SESSION_COOKIE_NAME = "personal_session_id"                                # 会话的cookie名
-                                                                           # 客户端用来识别session
-                                                                           # 服务器端session的session_key
-                                                                           # 数据库django_session表的主键
-SESSION_COOKIE_SECURE = False                                              # 是否在session中使用安全cookie
-                                                                           # True，cookie只通过HTTPS来安全传输
-SESSION_FILE_PATH = None                                                   # session存储文件路径
-SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2                                  # session cookie在用户浏览器中保持时间————默认两周
-SESSION_SAVE_EVERY_REQUEST = False                                         # 是否每次请求都保存session，默认为False（需要的时候才送出cookie）
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'  # 会话的序列化（默认使用pickle内建模块）
-                                                                           # Session字典接受任何支持序列化的Python对象
-# from django.contrib.sessions.serializers import JSONSerializer
+SESSION_ENGINE = SESSION_ENGINES[0]          # session后端存储方式
+SESSION_CACHE_ALIAS = 'default'              # 缓存别名
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True       # cookie超时设置（默认False，使用SESSION_COOKIE_AGE设置；True，浏览器关闭时，使cookie失效
+SESSION_COOKIE_DOMAIN = None                 # 使用session cookies的站点（默认None，用于单个站点）
+                                             # 设成字符串（".example.com"）————用于跨站（cross-domain）的cookie
+SESSION_COOKIE_NAME = "personal_session_id"  # 会话的cookie名，客户端用来识别session，服务器端的session_key，django_session表的主键
+SESSION_COOKIE_SECURE = False                # 是否在session中使用安全cookie（只通过HTTPS来安全传输）
+SESSION_FILE_PATH = None                     # session存储文件路径
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 * 2    # session cookie在用户浏览器中保持时间————默认两周
+SESSION_SAVE_EVERY_REQUEST = False           # 是否每次请求都保存session，默认为False（需要的时候才送出cookie）
+#
+# session的序列化（默认使用pickle内建模块）————Session字典接受任何支持序列化的Python对象
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 '''
 每个session都由一个随机的32字节哈希串来标识，并存储于cookie中
 
@@ -90,5 +87,6 @@ session数据放在服务器上，当访问增多，会比较占用服务器的�
 
 Django session 框架完全而且只能基于cookie————自动生成一段字符串（cookie）发送到客户端的浏览器，同时把字符串当做key放在session里，在对应的value里设置任意值
 '''
-SECRET_KEY = '6a8w1=^^n-sj0=n$%gsj@=kk%#bg(943vnt1_vq3@ylhofrp%^'          # 密码哈希算法种子————一个随机字符串————越长越好
-
+#
+# 密码哈希算法种子————一个随机字符串，越长越好
+SECRET_KEY = '6a8w1=^^n-sj0=n$%gsj@=kk%#bg(943vnt1_vq3@ylhofrp%^'

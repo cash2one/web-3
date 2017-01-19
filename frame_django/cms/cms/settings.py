@@ -48,9 +48,10 @@ MIDDLEWARE_CLASSES = [
     # 'django.middleware.locale.LocaleMiddleware',               # 国际化的支持（放在Session后）————翻译管理工具
     'system.common.interceptor_middlewares.LoginMiddleware',     # 自定义登录拦截器
     'system.common.interceptor_middlewares.AuthMiddleware',      # 自定义权限验证拦截器
-    'django.middleware.cache.UpdateCacheMiddleware',             # 缓存站点
-    'django.middleware.cache.FetchFromCacheMiddleware'
+    # 'django.middleware.cache.UpdateCacheMiddleware',           # 开启全站缓存
+    # 'django.middleware.cache.FetchFromCacheMiddleware'
 ]
+
 #
 # 根URLconf
 ROOT_URLCONF = 'cms.urls'

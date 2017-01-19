@@ -28,9 +28,13 @@ ALLOWED_HOSTS = ['*']
 #     re.compile(r'^sohu-search')
 # ]
 #
-# 开发模式————缓存、出错信息等与正式环境有很大的区别
-# 如果DEBUG设置为True，（views匹配不到或者include不到）显示 TemplateDoesNotExist
-# 如果DEBUG设置为False，页面不会引发错误信息，静态文件都交给nginx、apache来处理
+# 开发模式
+# DEBUG为True
+# （views匹配不到或者include不到）显示 TemplateDoesNotExist
+# sql_queries————[{'sql': ..., 'time': ...},...]————请求期间到目前为止每个SQL 查询及花费的时间————按查询的顺序排序
+# DEBUG为False
+# 页面不会引发错误信息，静态文件都交给nginx、apache来处理
+#
 DEBUG = False
 if platform.system() == "Windows":
     DEBUG = True

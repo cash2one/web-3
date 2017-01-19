@@ -2,8 +2,6 @@
 import json
 from system.common.security import check_pwd
 from system.models import SimpleUser, UserRole, Role
-from django.conf import settings
-from django.core.cache import cache
 
 
 def init_user_info(user_id=None):
@@ -40,22 +38,3 @@ def login(request, user_id):
             create_session(request, u)
             pass
 
-
-def read_from_cache(user_id):
-    key = user_id
-    value = cache.get(key, None)  # 获取缓存数据，key唯一
-    if value is None:
-        data = None
-    else:
-        data = json.loads(value)
-    return data
-
-
-def write_to_cache(user_id, u):
-    # key = 'user_id_of_' + user_id
-    key = user_id
-    # 存储缓存数据
-    # key唯一
-    # data为存储的数据
-    # 60*15为缓存数据的时间
-    cache.set(key, json.dumps(u), settings.NEVER_REDIS_TIMEOUT)
