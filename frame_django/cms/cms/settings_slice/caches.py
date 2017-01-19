@@ -41,7 +41,7 @@ CACHES = {
         },
     },
 }
-CACHE_MIDDLEWARE_KEY_PREFIX = ''    # 当多个站点使用同一个配置的时候，避免发生冲突
+CACHE_MIDDLEWARE_KEY_PREFIX = ''    # 当多个站点使用同一个缓存配置的时候，设成唯一（当前网站名），避免发生冲突
 CACHE_MIDDLEWARE_SECONDS = 600      # 每个页面应该被缓存的秒数
 CACHE_MIDDLEWARE_ALIAS = 'default'  # 用来存储的缓存别名
 

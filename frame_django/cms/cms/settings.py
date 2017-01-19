@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 #
 # 中间件
 MIDDLEWARE_CLASSES = [
+    # 'django.middleware.cache.UpdateCacheMiddleware',           # 开启全站缓存————必须放在开始位置
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',      # 给request加session属性，在response时，适当的情况下保存 session 并发送相应的cookie到客户端
     'django.middleware.common.CommonMiddleware',
@@ -46,10 +47,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',    # 点击劫持防御————不允许资源加载到（别人的）frame/iframe中
     # 'django.middleware.locale.LocaleMiddleware',               # 国际化的支持（放在Session后）————翻译管理工具
-    'system.common.interceptor_middlewares.LoginMiddleware',     # 自定义登录拦截器
-    'system.common.interceptor_middlewares.AuthMiddleware',      # 自定义权限验证拦截器
-    # 'django.middleware.cache.UpdateCacheMiddleware',           # 开启全站缓存
-    # 'django.middleware.cache.FetchFromCacheMiddleware'
+    'system.common.interceptors.LoginMiddleware',     # 自定义登录拦截器
+    'system.common.interceptors.AuthMiddleware',      # 自定义权限验证拦截器
+    # 'django.middleware.cache.FetchFromCacheMiddleware'         # 必须放在最后
 ]
 
 #

@@ -19,6 +19,11 @@ from cms import settings
 #
 # @cache_control(private=True)
 # 控制缓存
+#
+# 模板碎片缓存
+# {% load cache %}{% cache 500 sidebar *args %}...{% endcache %}
+# 在给定的时间内缓存了块的内容————参数: 缓存超时时间（s） 缓存片段名称  额外参数
+# 缓存超时时间可以作为模板变量
 
 
 # 获取缓存数据，key唯一
@@ -32,9 +37,13 @@ def read_from_cache(key):
     return data
 
 
-# 存储缓存数据，key唯一，data为存储的数据，60*15为缓存时间
-# add()————新增键值对
+# 存储缓存数据，key唯一，data为存储的数据，60*15为缓存时间，会更新已经存在的键值
 def write_to_cache(key, data):
     # key = 'user_id_of_' + user_id
     key = key
     cache.set(key, json.dumps(data), settings.NEVER_REDIS_TIMEOUT)
+
+# cache.add(key, data, timeout)————新增键值对，不会更新已经存在的键值
+# cache.delete(key)
+# cache.incr()/cache.decr()————增加、减少已经存在的键值，默认情况下，增加或减少的值是1
+# cache.get_many(['a', 'b', 'c'])————获取多个（未超时的）缓存数据
