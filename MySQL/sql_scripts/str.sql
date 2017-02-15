@@ -1,6 +1,6 @@
 /*
 * @Date:   2016-10-20 17:30:30
-* @Last Modified time: 2016-12-29 14:37:35
+* @Last Modified time: 2017-02-15 11:01:22
 */
 USE `crm`;
 -- 2016 05 20 09 17 56
@@ -52,3 +52,10 @@ SELECT
         )
     END AS startdate
 FROM `jiya_connecting` jc;
+
+
+-- 连接一列字符串
+SELECT
+    GROUP_CONCAT(oc.id) AS a
+FROM `open_customer` oc
+WHERE oc.`id` BETWEEN 100 AND 105
