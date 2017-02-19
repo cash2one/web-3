@@ -1,10 +1,13 @@
 # encoding=utf-8
 __author__ = ''
 # import MySQLdb
+#
+# pip install mysql-connector
 import mysql.connector
 
 
 class DataBase(object):
+
     def __init__(self, config):
         self.config = config
         self.conn = mysql.connector.connect(host=self.config.host,

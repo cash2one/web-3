@@ -1,6 +1,6 @@
 # encoding:utf-8
 '''
-forward和redirect的区别		
+forward和redirect的区别
 forward内部跳转，redirect重定向跳转的区别
 
 1.从地址栏显示来说

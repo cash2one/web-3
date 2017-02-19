@@ -7,7 +7,7 @@ Environment的构建器可以指定undefined参数，它可以是undefined types
 UndefinedError:
 Traceback (most recent call last):
 ...
-Jinja2.exceptions.UndefinedError: 'foo' is undefined 
+Jinja2.exceptions.UndefinedError: 'foo' is undefined
 '''
 #(1)
 from jinja2 import Undefined

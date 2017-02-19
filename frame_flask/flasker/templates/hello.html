@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello from Flask</title>
+		<!--
+		加载CSS 和 JavaScript 配置文件
+        包或模块旁边创建一个名为static的文件夹
+
+		使用选定的 'static' 端点生成相应的URL:url_for('static',filename='style.css')
+		-->
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='hello.css') }}">
+</head>
+<body>
+	<h1>hello {{name}}</h1>
+</body>
+</html>
