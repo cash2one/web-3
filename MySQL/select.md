@@ -9,7 +9,6 @@
 | column1??' 字符 '??... AS info  | “或”运算，连接字符           |
 | CONCAT(column1,':',column2,...) | 联合字符或者多个列           |
 
->?? -> ||
 SELECT中加上DISTINCT去除重复字段
 
 ######[WHERE]
@@ -36,3 +35,10 @@ SELECT中加上DISTINCT去除重复字段
 ######;
 
 *子查询相当于左联查一个*
+
+
+#####<>————!=
+<>在任何SQL中都起作用，但是!=在某些软件中是语法错误，不兼容
+
+#####不包含
+select * from tt where 字段 not like '%张%'  and 字段 not like '%王%' and 字段 not like '%李%'

@@ -13,7 +13,7 @@ a=RawQuery()
 			############################
 			############
 #############1.查询数据############
-			############		
+			############
 var = table_name.select().where(table_name.column_name == value)[index]
 ############
 var = table_name.select(table_name.column_nameX).where(table_name.column_name? == value)[index]

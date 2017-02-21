@@ -1,3 +1,0 @@
-主从库
-主库 insert、update
-从库 select
