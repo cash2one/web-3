@@ -2,12 +2,10 @@
 # @Date:   2017-02-27 11:48:09
 # @Last Modified time: 2017-02-27 11:49:19
 import traceback
-from threading import Thread
-
 import requests
-from page import Page
-
-from core.kit.req import Req
+from threading import Thread
+from kit.page import Page
+from kit.req import Req
 
 
 class Spider(Thread):
@@ -53,7 +51,7 @@ class Spider(Thread):
                     if request_item._retry < 3:
                         request_item._retry = request_item._retry + 1
                         self.current_job.pushItem(request_item, isRetry=True)
-                except Exception, ex:
+                except Exception, e:
                     traceback.print_exc()  # .format_exc()
 
             self.thread_q.task_done()
