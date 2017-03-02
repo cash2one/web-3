@@ -8,7 +8,14 @@ from core.kit.utils import get_mashine_ip, get_process_id, correct
 
 
 class BaseJob(object):
+    """
+    往队列里存取数据
+    已爬队列使用set（自动去重）
+    未爬队列使用list
+    """
+
     def __init__(self, job_id, instance_id, redis_pool=None):
+        self.redis_pool = redis_pool
         self._instance_id = instance_id
         self._job_id = job_id
 
@@ -39,6 +46,7 @@ class BaseJob(object):
     def push_item(self, req, is_retry=False):
         """
         向待执行url队列里添加新url
+        :param is_retry:
         :param req:
         :return:
         """
@@ -48,7 +56,7 @@ class BaseJob(object):
         pass
 
 
-class Job(BaseJob):
+class RedisJob(BaseJob):
 
     def __init__(self, job_id, instance_id, redis_pool=None):
         self.redis = redis.StrictRedis(connection_pool=redis_pool)

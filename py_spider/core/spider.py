@@ -9,6 +9,9 @@ from kit.req import Req
 
 
 class Spider(Thread):
+    """
+    一个爬虫线程
+    """
 
     def __init__(self, thread_q, pipline, current_job, script_module, proxies=None):
         super(Spider, self).__init__()
@@ -44,7 +47,7 @@ class Spider(Thread):
             except Exception, e:
                 traceback.print_exc()  # .format_exc()
                 try:
-                    print(request_item.dumpJson())
+                    print(request_item.dump_json())
                 except:
                     pass
                 try:
@@ -58,6 +61,11 @@ class Spider(Thread):
             self.work_status = False
 
     def download(self, request):
+        """
+        项目爬虫程序（处理get请求）
+        :param request:
+        :return:
+        """
         args = {
             "headers": {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0"},
             "timeout": 60

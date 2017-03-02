@@ -63,11 +63,11 @@ def create_child(thread_count, job_id, instance_id, script_name, use_http_proxy=
     """
     http_proxy = create_proxy() if use_http_proxy else None
     if debug:
-        from core.jobs import DebugJob as job
+        from core.kit.jobs import DebugJob as job
         from core.kit.piplines import DebugPipline as pipline
         redis_pool = None
     else:
-        from core.jobs import Job as job
+        from core.kit.jobs import RedisJob as job
         from core.kit.piplines import MongodbPipline as pipline
         redis_pool = create_redis_pool()
     current_job = job(job_id, instance_id, redis_pool=redis_pool)
@@ -85,9 +85,9 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', help='script name')
-    parser.add_argument("-p", "--process", help="[option,only effective in worker mode] process count ,default is cpu count", type=int, default=cpu_count())
-    parser.add_argument("-t", "--thread", help="[option,only effective in worker mode] thread count in every process,default is 1", type=int, default=1)
-    parser.add_argument('-worker', help='[option] run with online,please easy', action='store_true')
+    parser.add_argument("-p", "--process", help="[option] only effective in server mode process count, default is cpu count", type=int, default=cpu_count())
+    parser.add_argument("-t", "--thread", help="[option] only effective in server mode thread count in every process, default is 1", type=int, default=1)
+    parser.add_argument('-worker', help='[option] run with online, please easy', action='store_true')
 
     args = parser.parse_args()
     debug = True

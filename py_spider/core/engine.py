@@ -13,7 +13,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-class Engine:
+class Engine(object):
 
     @staticmethod
     def run(current_job, pipline, script_name, thread_count=1, proxies=None):
@@ -22,12 +22,12 @@ class Engine:
             if not current_job.get_job_status():
                 print("job is not start")
                 return
-            script =importlib.import_module('scripts.'+script_name)
+            script = importlib.import_module('scripts.'+script_name)
 
-            print(current_job.get_pid()+" process start")
+            print(current_job.get_pid()+"process start")
             thread_q = Queue(maxsize=thread_count*3)
-            for starturl in script.starturl:
-                current_job.push_item(req=Req(starturl))
+            for start_url in script.start_url:
+                current_job.push_item(req=Req(start_url))
 
             """
             创建工作线程
@@ -57,7 +57,7 @@ class Engine:
                                     has_thread_running = True
                                     break
                             if not has_thread_running:
-                                current_job.set_mashine_status("waitother")
+                                current_job.set_mashine_status("wait other")
                         time.sleep(3)
                     else:
                         current_job.set_mashine_status("running")
@@ -67,21 +67,20 @@ class Engine:
             traceback.print_exc()
         print(current_job.get_pid()+" process end")
 
-
     @staticmethod
     def debug_run(current_job, pipline, script_name, thread_count=1, proxies=None):
 
         try:
-            script =importlib.import_module('scripts.'+script_name)
+            script = importlib.import_module('scripts.'+script_name)
 
             thread_q = current_job.queue
-            for starturl in script.starturl:
-                current_job.pushItem(req=Req(starturl))
+            for start_url in script.start_url:
+                current_job.pushItem(req=Req(start_url))
 
             """
             创建工作线程
             """
-            spiders=[]
+            spiders = []
             for i in range(thread_count):
                 sp = Spider(thread_q, pipline, current_job, script, proxies=proxies)
                 sp.daemon = True
@@ -90,5 +89,5 @@ class Engine:
             for s in spiders:
                 s.join()
 
-        except Exception,e:
+        except Exception, e:
             traceback.print_exc()

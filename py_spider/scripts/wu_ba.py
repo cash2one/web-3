@@ -2,7 +2,7 @@
 import time
 
 __author__ = 'zdd'
-starturl = ["http://bj.58.com/job/?utm_source=market&spm=b-31580022738699-me-f-824.bdpz_biaoti&key="]
+start_url = ["http://bj.58.com/job/?utm_source=market&spm=b-31580022738699-me-f-824.bdpz_biaoti&key="]
 hangye = range(244, 288)
 hangye.append(3527)
 xingzhi = range(1476, 1486)
