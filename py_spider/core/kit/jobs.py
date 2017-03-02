@@ -114,9 +114,9 @@ class DebugJob(BaseJob):
     def push_item(self, req, is_retry=False):
         req._url = correct(req.get_url())
         if (not self.duplicate(req.get_url())) or is_retry:
-            self.queue.put(req.dumpJson())
+            self.queue.put(req.dump_json())
         else:
-            print("dup:" + req.getUrl())
+            print("dup:" + req.get_url())
 
     def duplicate(self, url_str):
         url_str = hashlib.sha1(url_str).hexdigest()

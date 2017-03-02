@@ -46,6 +46,9 @@ class Spider(Thread):
             try:
                 r = self.download(req)
                 if r.status_code == 200:
+                    """
+                    把每次请求的req、response相关信息封装成page对象，再传给脚本的process方法
+                    """
                     p = Page(req, r, r.text, self.current_job)
                     self.process(p)
                     for result in p.get_results():
@@ -54,13 +57,13 @@ class Spider(Thread):
             except Exception, e:
                 traceback.print_exc()  # .format_exc()
                 try:
-                    print(request_item.dump_json())
+                    print(req.dump_json())
                 except:
                     pass
                 try:
-                    if request_item._retry < 3:
-                        request_item._retry = request_item._retry + 1
-                        self.current_job.push_item(request_item, is_retry=True)
+                    if req._retry < 3:
+                        req._retry = req._retry + 1
+                        self.current_job.push_item(req, is_retry=True)
                 except Exception, e:
                     traceback.print_exc()  # .format_exc()
 

@@ -15,12 +15,15 @@
     + getset(self, name, value)————设置新值并获取原来的值
     + getrange(self, key, start, end)————获取子序列（根据字节获取，非字符）
     + setrange(self, name, offset, value)
-    + lpop(self, name)————在name对应列表的左侧获取第一个元素并移除，返回第一个元素
-    + rpop(self, name)
-    + lpush(self, name, *values)———在name对应的list中添加元素到列表的最左边
-    + rpush(self, name, *values)
-    + sismember(self, name, value)————检查value是否是name对应的集合的成员
-    + hset(self, name, key, value)————单个增加或修改hash
+    + list操作
+        * lpop(self, name)————在name对应列表的左侧获取第一个元素并移除，返回第一个元素
+        * rpop(self, name)
+        * lpush(self, name, *values)———在name对应的list中添加元素到列表的最左边
+        * rpush(self, name, *values)
+    + set操作
+        * sismember(self, name, value)————检查value是否是name对应的集合的成员
+    + hash操作
+        * hset(self, name, key, value)————单个增加或修改hash
 - class Redis————StrictRedis的子类，用于向后兼容旧版本的redis-py；
 - 连接池————管理对一个redis server的所有连接，避免每次建立、释放连接的开销
     + pool = redis.ConnectionPool(host='***', port=6379)

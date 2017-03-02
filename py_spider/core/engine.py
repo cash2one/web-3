@@ -30,12 +30,15 @@ class Engine(object):
             for start_url in script.start_url:
                 """
                 主线程通过current_job与redis交互，添加url到item、dup，判断获取到的url是否dup过
+                dup————set类型，存放已经爬过和待爬（item）的url，如果往item存放成功，则再往item里放
                 """
                 current_job.push_item(req=Req(start_url))
 
             """
             创建工作线程
             每个进程的主线程从头执行一次爬虫脚本script
+            每个进程的主线程都是从start_url开始拿url（包括分布式的进程）
+            主线程通过thread_q控制各个子进程阻塞或者执行script程序
             每个进程内的线程共享
                 pipline      mongodb入库管道
                 current_job  redis队列交互
