@@ -60,6 +60,7 @@ def create_proxy():
 def create_child(thread_count, job_id, instance_id, script_name, use_http_proxy=False, debug=True):
     """
     创建子进程
+    每个子进程创建一个job、一个pipline、一个engine
     """
     http_proxy = create_proxy() if use_http_proxy else None
     if debug:

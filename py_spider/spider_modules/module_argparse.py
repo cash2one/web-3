@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-03-02 10:21:49
-# @Last Modified time: 2017-03-02 10:41:44
+# @Last Modified time: 2017-03-02 14:17:07
 """
 argparse————python命令行解析工具
 python module_argparse.py -s ***
@@ -18,3 +18,4 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-s', help='a num', type=int, default=1)
 args = parser.parse_args()
 print args
+print args.s

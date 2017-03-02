@@ -11,6 +11,7 @@ from kit.req import Req
 class Spider(Thread):
     """
     一个爬虫线程
+    每个线程导入一次爬虫脚本，执行时传入一个page对象给脚本的process函数
     """
 
     def __init__(self, thread_q, pipline, current_job, script_module, proxies=None):
@@ -34,12 +35,18 @@ class Spider(Thread):
 
     def run(self):
         while True:
-            request_item = Req.from_request_item(self.thread_q.get())
+            """
+            queue.get()调用队列对象的get()方法从队头删除并返回一个项目
+            可选参数为block，默认为True
+                如果队列为空且block为True，get()使调用线程暂停，直至有项目可用
+                如果队列为空且block为False，get()使队列引发Empty异常
+            """
+            req = Req.from_request_item(self.thread_q.get())
             self.work_status = True
             try:
-                r = self.download(request_item)
+                r = self.download(req)
                 if r.status_code == 200:
-                    p = Page(request_item, r, r.text, self.current_job)
+                    p = Page(req, r, r.text, self.current_job)
                     self.process(p)
                     for result in p.get_results():
                         self.pipline.save(result)
@@ -53,14 +60,14 @@ class Spider(Thread):
                 try:
                     if request_item._retry < 3:
                         request_item._retry = request_item._retry + 1
-                        self.current_job.pushItem(request_item, isRetry=True)
+                        self.current_job.push_item(request_item, is_retry=True)
                 except Exception, e:
                     traceback.print_exc()  # .format_exc()
 
             self.thread_q.task_done()
             self.work_status = False
 
-    def download(self, request):
+    def download(self, req):
         """
         项目爬虫程序（处理get请求）
         :param request:
@@ -72,8 +79,8 @@ class Spider(Thread):
         }
         if self._proxies:
             args["proxies"] = self._proxies
-        if request._method.lower() == "get":
-            r = requests.get(request.getUrl(), **args)
+        if req._method.lower() == "get":
+            r = requests.get(req.get_url(), **args)
             r.encoding = self._site["encoding"]
-            print(request.getUrl())
+            print(req.get_url())
         return r

@@ -6,7 +6,7 @@ import json
 
 class Req:
     """
-    Req对象，封装了每次request的相关信息（每次请求实例化一次）
+    Req，把一个url封装转换为每次request的相关信息（每次请求实例化一次）
     给字典对象_ext，添加以键取值、更新键值对的方法————put_ext、get_ext
     类（实例）的对象可以直接获取、修改、判断，封装方法只是方便调用
     """
@@ -62,11 +62,3 @@ class Req:
             "retry": self._retry,
             "level": self._level
         }
-
-if __name__ == "__main__":
-    r = Req()
-    print r._ext
-    r._ext['a'] = 1
-    print r._ext
-    r.put_ext('b', 2)
-    print r._ext

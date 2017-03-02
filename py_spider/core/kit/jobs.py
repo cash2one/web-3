@@ -96,7 +96,6 @@ class DebugJob(BaseJob):
     """
     用于本地调试的job
     """
-
     def __init__(self, job_id, instance_id, redis_pool=None):
         self.queue = Queue()
         self._instance_id = instance_id

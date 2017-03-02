@@ -5,7 +5,8 @@ import importlib
 import sys
 import time
 import traceback
-from Queue import Queue
+from Queue import Queue              # 线程级Queue，线程间共享
+# from multiprocessing import Queue  # 进程级Queue，进程间共享
 from core.kit.req import Req
 from spider import Spider
 
@@ -27,10 +28,20 @@ class Engine(object):
             print(current_job.get_pid()+"process start")
             thread_q = Queue(maxsize=thread_count*3)
             for start_url in script.start_url:
+                """
+                主线程通过current_job与redis交互，添加url到item、dup，判断获取到的url是否dup过
+                """
                 current_job.push_item(req=Req(start_url))
 
             """
             创建工作线程
+            每个进程的主线程从头执行一次爬虫脚本script
+            每个进程内的线程共享
+                pipline      mongodb入库管道
+                current_job  redis队列交互
+                proxies      代理信息
+                script       脚本代码
+                thread_q     线程级队列（创建线程之后，空队列阻塞线程，先运行下面的job代码）
             """
 
             spiders = []
@@ -40,6 +51,7 @@ class Engine(object):
                 sp.start()
                 spiders.append(sp)
             """
+            主线程
             1，判断分布式job是否停止
             2，从队列(redis)取request，分发给线程(Queue中继)
             3，通知集群，本进程的工作状态
@@ -53,7 +65,7 @@ class Engine(object):
                         if current_job.get_job_status():
                             has_thread_running = False
                             for status in spiders:
-                                if status.getWorkStatus():
+                                if status.get_work_status():
                                     has_thread_running = True
                                     break
                             if not has_thread_running:
