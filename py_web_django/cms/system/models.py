@@ -1,17 +1,21 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:41:26
-# @Last Modified time: 2016-12-22 12:10:53
+# @Last Modified time: 2017-03-02 22:30:04
 from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
 
 
 class SimpleUser(models.Model):
-    # _database = "base"                                                            # 使用多个数据库时指明用哪个
-    id = models.AutoField(verbose_name="用户id", primary_key=True)                  # 自增长主键————id，默认自动生成
+    # _database = "base"
+    # # 使用多个数据库时指明用哪个
+    # 自增长主键————id，默认自动生成
+    id = models.AutoField(verbose_name="用户id", primary_key=True)
     phone = models.BigIntegerField(verbose_name="电话号码", blank=True, null=True)
-    email = models.EmailField(verbose_name="邮箱", max_length=50)                   # 使用 EmailValidator 来验证输入合法性
-    security_code = models.CharField(verbose_name='验证码', max_length=4)           # CharField————必须设置max_length
+    # 使用 EmailValidator 来验证输入合法性
+    email = models.EmailField(verbose_name="邮箱", max_length=50)
+    # CharField————必须设置max_length
+    security_code = models.CharField(verbose_name='验证码', max_length=4)
     is_active = models.SmallIntegerField(verbose_name='是否通过验证', default=0)
     name = models.CharField(verbose_name="用户名", max_length=20)
     SEX_CHOICE = (
@@ -19,7 +23,8 @@ class SimpleUser(models.Model):
         (1, u'男'),
         (2, u'女'),
     )
-    sex = models.SmallIntegerField(verbose_name="性别", choices=SEX_CHOICE, default=0)
+    sex = models.SmallIntegerField(
+        verbose_name="性别", choices=SEX_CHOICE, default=0)
     pass_word = models.CharField(verbose_name="密码", max_length=100)
     create_at = models.DateTimeField("创建时间", auto_now_add=True)
     modify_at = models.DateTimeField("最后修改时间", auto_now=True)
@@ -31,7 +36,8 @@ class SimpleUser(models.Model):
         verbose_name = "用户信息表"                         # 别名
         verbose_name_plural = "用户信息表"                  # 别名复数，默认'别名s'
         db_table = 'simple_user'                            # 自定义数据库表名————默认'库名_模块名'
-        unique_together = ('phone', 'email')                # 联合主键————不重复的字段组合————一维或多维元组
+        # 联合主键————不重复的字段组合————一维或多维元组
+        unique_together = ('phone', 'email')
         # ordering = ["-id"]                                # 缺省排序字段，"-"表示倒序，"?"表示随机
         # managed = True                                    # 由manage.py命令管理生命周期，设为False，关联表也不接受管理
         # default_permissions = ('add', 'change', 'delete') # 减少默认权限
@@ -65,7 +71,6 @@ class UserRole(models.Model):
 # objects.filter(...).values()
 # objects.filter(...).value_list()
 """
-OneToOneField
 子查母————一对一（OneToOneField、ForeignKey）————A.objects.get(...).connectCol.B字段————B.objects.get/filter(A表名小写__A字段="***")
 子查母————一对多（ManyToManyField）————A.objects.get(...).connectCol.all()/filter()————B.objects.filter(A表名小写__A字段="***")
 
@@ -75,7 +80,8 @@ OneToOneField
 添加对象————a = A.objects.get(...);b = B.objects.get(...);a.connectCol.add(b)
 删除对象————a = A.objects.get(...);b = B.objects.get(...);a.connectCol.remove(b) 或者 a.connectCol.filter(...).delete()
 """
-# connectCol = OneToOneField("table"[, default=***[, to_field='field']])————一对一————用于某张表的补充（在子表中定义）
+# connectCol = OneToOneField("table"[, default=***[,
+# to_field='field']])————一对一————用于某张表的补充（在子表中定义）
 """
 to_field————默认关联母表的id，生成connectCol_id字段————如果指定关联其它列，母表须设置unique=True————唯一、非空，不能设默认值
 
@@ -162,9 +168,11 @@ class Menu(models.Model):
         (1, u'菜单'),
         (2, u'功能'),
     )
-    type = models.SmallIntegerField(verbose_name="菜单类型", choices=TYPE_CHOICE, db_index=0)
+    type = models.SmallIntegerField(
+        verbose_name="菜单类型", choices=TYPE_CHOICE, db_index=0)
     url_code = models.CharField(verbose_name="请求路径", max_length=100)
-    code = models.CharField(verbose_name="菜单编码", max_length=10, help_text='0，目录；1，菜单；2，功能')
+    code = models.CharField(verbose_name="菜单编码",
+                            max_length=10, help_text='0，目录；1，菜单；2，功能')
     isvisible = models.CharField(verbose_name="是否可见", max_length=2)
     parentid = models.CharField(verbose_name="父级菜单id", max_length=10)
     menu_order = models.CharField(verbose_name="菜单排序", max_length=10)
@@ -172,8 +180,10 @@ class Menu(models.Model):
     # toDict————把QuerySet对象转化为字典对象（类似于django内置values()函数）
     def toDict(self):
         # python三元表达式
-        self.parent_name = self.parent_name if hasattr(self, 'parent_name') else None
-        self.parent_url_code = self.parent_url_code if hasattr(self, 'parent_url_code') else None
+        self.parent_name = self.parent_name if hasattr(
+            self, 'parent_name') else None
+        self.parent_url_code = self.parent_url_code if hasattr(
+            self, 'parent_url_code') else None
         # self.user_num = self.user_num if hasattr(self, 'user_num') else None
         return {
             'id': self.id,
@@ -217,7 +227,8 @@ class DownLoad(models.Model):
     create_at = models.DateTimeField(default=timezone.now())
     create_name = models.CharField(max_length=20)
     address = models.CharField(max_length=200)
-    # objects = models.Manager()  # 管理器————django查询接口————默认为objects————可以在每个模型类中重命名
+    # objects = models.Manager()  #
+    # 管理器————django查询接口————默认为objects————可以在每个模型类中重命名
 
     class Meta:
         verbose_name = "下载信息表"
