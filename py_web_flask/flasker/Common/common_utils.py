@@ -22,7 +22,7 @@ class CommonUtils(object):
         return response.read()
 
     """
-    get请求返回string对象
+    post请求返回string对象
     """
 
     @staticmethod
@@ -94,28 +94,32 @@ class CommonUtils(object):
 
     @staticmethod
     def upload_img(file_path, file_name):
-        oss = OssAPI("oss-cn-beijing.aliyuncs.com", "D8POxD4e4EOaGap7", "cAnUGRVSmDAHjHKtpLelLcssKIDaNR")
+        oss = OssAPI("oss-cn-beijing.aliyuncs.com",
+                     "D8POxD4e4EOaGap7", "cAnUGRVSmDAHjHKtpLelLcssKIDaNR")
         res = oss.put_object_from_file("building-images", file_name, file_path)
         if res.status == 200:
             return 'building-images.oss-cn-beijing.aliyuncs.com/{0}'.format(file_name)
 
     @staticmethod
     def upload_img_qiniu(file_path, file_name):
-        q = Auth("ODF9cqw7TnYotPWHzo1RyTZ4amFnABF_Fw-2HtqT", "M0blVKOhJGhtqWysOegJqd7I6FKZy236yzWYQGz0")
+        q = Auth("ODF9cqw7TnYotPWHzo1RyTZ4amFnABF_Fw-2HtqT",
+                 "M0blVKOhJGhtqWysOegJqd7I6FKZy236yzWYQGz0")
         token = q.upload_token("ubanoffice")
         ret, info = put_file(token, file_name, file_path, check_crc=True)
         print(ret)
 
     @staticmethod
     def upload_void_qiniu(file_path, file_name):
-        q = Auth("ODF9cqw7TnYotPWHzo1RyTZ4amFnABF_Fw-2HtqT", "M0blVKOhJGhtqWysOegJqd7I6FKZy236yzWYQGz0")
+        q = Auth("ODF9cqw7TnYotPWHzo1RyTZ4amFnABF_Fw-2HtqT",
+                 "M0blVKOhJGhtqWysOegJqd7I6FKZy236yzWYQGz0")
         token = q.upload_token("privatevideo")
         ret, info = put_file(token, file_name, file_path, check_crc=True)
-        print (ret)
+        print(ret)
 
     @staticmethod
     def delete_img(file_name):
-        oss = OssAPI("oss-cn-beijing.aliyuncs.com", "D8POxD4e4EOaGap7", "cAnUGRVSmDAHjHKtpLelLcssKIDaNR")
+        oss = OssAPI("oss-cn-beijing.aliyuncs.com",
+                     "D8POxD4e4EOaGap7", "cAnUGRVSmDAHjHKtpLelLcssKIDaNR")
         res = oss.delete_object("building-images", file_name)
         if res.status == 204:
             return 'ok'
@@ -138,7 +142,7 @@ class CommonUtils(object):
         # format = '%Y-%m-%d'
         # value为传入的值为时间戳(整形)，如：1332888820
         # value = time.localtime(value)
-        ## 经过localtime转换后变成
+        # 经过localtime转换后变成
         ## time.struct_time(tm_year=2012, tm_mon=3, tm_mday=28, tm_hour=6, tm_min=53, tm_sec=40, tm_wday=2, tm_yday=88, tm_isdst=0)
         # 最后再经过strftime函数转换为正常日期格式。
         # dt = time.strftime(format, value)
@@ -151,7 +155,7 @@ class CommonUtils(object):
         # format = '%Y-%m-%d'
         # value为传入的值为时间戳(整形)，如：1332888820
         # value = time.localtime(value)
-        ## 经过localtime转换后变成
+        # 经过localtime转换后变成
         ## time.struct_time(tm_year=2012, tm_mon=3, tm_mday=28, tm_hour=6, tm_min=53, tm_sec=40, tm_wday=2, tm_yday=88, tm_isdst=0)
         # 最后再经过strftime函数转换为正常日期格式。
         # dt = time.strftime(format, value)
@@ -164,7 +168,7 @@ class CommonUtils(object):
         # format = '%Y-%m-%d'
         # value为传入的值为时间戳(整形)，如：1332888820
         # value = time.localtime(value)
-        ## 经过localtime转换后变成
+        # 经过localtime转换后变成
         ## time.struct_time(tm_year=2012, tm_mon=3, tm_mday=28, tm_hour=6, tm_min=53, tm_sec=40, tm_wday=2, tm_yday=88, tm_isdst=0)
         # 最后再经过strftime函数转换为正常日期格式。
         # dt = time.strftime(format, value)

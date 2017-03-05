@@ -57,9 +57,9 @@ bin/
 
 
 # django project
-frame_django/cms/static/
+py_web_django/cms/static/
 migrations/
-frame_django/cms/temp/
+py_web_django/cms/temp/
 
 
 # log
