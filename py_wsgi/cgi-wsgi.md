@@ -21,14 +21,12 @@
 - 再接下来是一些HTML的起始标签，然后连接数据库并执行一些查询操作，获取指定数据，在遍历数据的同时，生成一个HTML列表；
 - 最后，输出HTML的结束标签并且关闭数据库连接；
 
-#####WSGI————一个统一的接口，让Python专注于编写Web业务
-把接受HTTP请求、解析HTTP请求、发送HTTP响应这些底层代码由专门的服务器软件实现，用Python专注于生成HTML文档，不接触到TCP连接、HTTP原始请求和响应格式。
-
-WSGI接口定义非常简单，它只要求Web开发者`实现一个函数，就可以响应HTTP请求`。
-
-######WSGI————Web Server Gateway Interface
+#####WSGI————Python Web服务器网关接口————Web Server Gateway Interface
+- 把接受HTTP请求、解析HTTP请求、发送HTTP响应这些底层代码由专门的服务器软件实现；
+- 一个统一的接口，只要求Web开发者`实现一个函数，就可以响应HTTP请求`；
+- 让Python专注于编写Web业务（生成HTML文档），不接触TCP连接、HTTP原始请求和响应格式；
 - 基于现存的`CGI`标准而设计，提升可移植Web应用开发的共同点；
-- WSGI位于web应用程序（框架）与web服务器之间，所在层的位置低于CGI；
+- 位于web应用程序（框架）与web服务器之间，所在层的位置低于CGI；
 - WSGI只是一份标准并没有定义如何去实现；
 - 一个简单的普遍适用的服务器与Web框架之间的接口；
 - WSGI是Python Web方面最Pythonic的类似于Java中的"servlet" API；
@@ -47,6 +45,5 @@ PythonWeb服务器网关接口————Python Web Server Gateway Interface，
 - 2008年： Lua WSAPI，Lua版本
 - 2009年： JSGI，Java版本
 - 2009年： PSGI，Perl版本
-
 
 ###Python Paste————WSGI底层工具集，包括多线程、SSL和 基于Cookies、sessions等的验证(authentication)库，可以用Paste方便地搭建自己的Web框架。
