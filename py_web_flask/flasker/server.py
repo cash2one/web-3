@@ -8,6 +8,7 @@ from flask import Flask
 from Controller import route_config, session_config # 路由、会话
 from Common.logger import logger # 错误日志
 
+
 def get_server_path():
     return os.path.split(os.path.realpath(__file__))[0] # 获取当前路径
 

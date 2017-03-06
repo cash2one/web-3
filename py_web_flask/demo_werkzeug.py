@@ -7,4 +7,5 @@
 假设为了解决 lighttpd 的错误，你要使用一个来自 Werkzeug 包的中间件，那么可以这样做:
 """
 from werkzeug.contrib.fixers import LighttpdCGIRootFix
+from simple_flask.run import app
 app.wsgi_app = LighttpdCGIRootFix(app.wsgi_app)

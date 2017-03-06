@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>request</title>
+    <!--
+    加载CSS 和 JavaScript 配置文件
+    包或模块旁边创建一个名为static的文件夹
+    使用选定的 'static' 端点生成相应的URL:url_for('static',filename='style.css')
+    -->
+    {# <link rel=stylesheet type=text/css href="static/test.css"> #}
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='test.css') }}">
+</head>
+<body>
+<h3>
+    request.method：{{ request.method }}
+    <!--获取/操作当前请求方法（GET、POST等）-->
+</h3>
+<h3>
+    request.args：{{ request.args }}
+    <!--操作URL（?s=1 ）中提交的所有参数（ImmutableMultiDict）-->
+    <!--使用get（或通过捕捉KeyError）来访问URL参数————request.args.get(key, 默认赋值, 指定数据类型)-->
+    <br/>
+    request.args.s：{{ request.args.s }}
+    <br/>
+    request.form：{{ request.form }}
+    <!--操作form提交的参数-->
+    <!--request.form.get()-->
+</h3>
+<h3>
+    request.cookies：{{ request.cookies }}
+    <!--request.cookies.get(key)————访问cookies-->
+    <!--request.set_cookie()————————设置cookies-->
+</h3>
+<h3>
+    request.path：{{ request.path }}
+    <!--获取页面地址栏路径-->
+    <br/>
+    request.url_rule：{{ request.url_rule }}
+    <!--获取页面地址栏路径-->
+    <br/>
+    {{ request.url_rule.rule == request.path }}
+    {{ request.path.lower().startswith("/req") }}
+</h3>
+<h3>
+    request.host：{{ request.host }}
+    <br/>
+    {{ request.host.lower().startswith('127.0') }}
+    <!--获取host服务地址-->
+</h3>
+<h3>
+    request.remote_addr：{{ request.remote_addr }}
+    <!--获取服务器IP地址-->
+</h3>
+<h3>
+    request.headers：{{ request.headers }}
+    <!--返回请求信息-->
+    <!--request.headers.get(key)-->
+</h3>
+</body>
+</html>
