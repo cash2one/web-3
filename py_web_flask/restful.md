@@ -7,7 +7,7 @@
     + Uniform Interface（统一接口）：客户端与服务器端的通讯方法必需是统一的；
     + Code on demand（按需执行代码）：服务器端可以在上下文中执行代码；
 
-诸如docker daemon等服务都是提供了RESTful API，docker的CLI可以通过该API的URL地址与之通信。
+诸如docker、daemon等服务都是提供了RESTful API，docker的CLI可以通过该API的URL地址与之通信。
 
 #####Flask-RESTful————快速构建REST API的Flask插件
 - 它能和现有的ORM配合实现轻量级数据抽象。

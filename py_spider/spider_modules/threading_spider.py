@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-03-02 13:33:36
-# @Last Modified time: 2017-03-02 14:27:32
+# @Last Modified time: 2017-03-06 10:18:40
 import urllib2
 import time
 from threading import Thread
@@ -13,6 +13,10 @@ class GetUrlThread(Thread):
         super(GetUrlThread, self).__init__()
 
     def run(self):
+        """
+        所有的线程共享全局变量
+        # print g
+        """
         """
         通过实例来创建线程
         类变量是共享的
@@ -31,6 +35,8 @@ def simple_spider(urls):
     url顺序的被请求
     除非cpu从一个url获得了回应，否则不会去请求下一个url
     """
+    # g = 10
+    # global g
     for url in urls:
         try:
             resp = urllib2.urlopen(url)

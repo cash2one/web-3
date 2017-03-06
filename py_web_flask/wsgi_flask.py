@@ -1,14 +1,17 @@
-# coding:utf-8
+# -*- coding: utf-8 -*-
+# @Date:   2016-11-28 09:23:52
+# @Last Modified time: 2017-03-06 10:57:03
 import sys
 
-#Expand Python classes path with your app's path
+# Expand Python classes path with your app's path
 sys.path.insert(0, "c:/Test_Web")
 
-from test import app#test为flask运行入口文件
+# 从flask运行入口文件导入app
+from simple_flask import app
 
-#Put logging code (and imports) here ...
+# Put logging code (and imports) here ...
 
-#Initialize WSGI app object
+# Initialize WSGI app object
 application = app
 
 '''
