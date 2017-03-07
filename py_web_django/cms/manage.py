@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-22 21:14:08
-# @Last Modified time: 2017-01-02 21:42:08
+# @Last Modified time: 2017-03-07 23:29:04
 import os
 import sys
 
 if __name__ == "__main__":
-    # 设置项目使用的settings文件
+    """
+    设置项目使用的settings文件
+    """
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cms.settings")
     try:
         from django.core.management import execute_from_command_line

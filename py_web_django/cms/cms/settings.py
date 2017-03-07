@@ -14,7 +14,7 @@ from _settings.local import *
 from _settings.security import *
 from _settings.caches import *
 #
-# os.path.abspath('.')————取决于工作目录，此处不能用
+# os.path.abspath('.')————取决于工作目录
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -29,8 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',   # 收集每个应用（和指定地方）的静态文件到一个单独的位置
     # 'django.contrib.comments',    # 用户评注系统
     # 'raven.contrib.django',       # 如果项目和sentry位于不同服务器，需要安装raven
-    'base',
-    'cms.system',
+    'cms.test_apps.simple',
+    'cms.test_apps.system',
 ]
 #
 # 中间件

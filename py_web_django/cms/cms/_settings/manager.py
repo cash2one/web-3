@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-22 21:14:08
 # @Last Modified time: 2017-01-02 21:29:20
-from password import password
+# from password import password
 ############
 # 发送邮件
 ############
@@ -18,7 +18,7 @@ EMAIL_PORT = 465
 #
 # 发送邮件的邮箱、密码
 EMAIL_HOST_USER = '2271404280@qq.com'
-EMAIL_HOST_PASSWORD = password
+# EMAIL_HOST_PASSWORD = password
 #
 # 与SMTP服务器通信时使用的安全链接协议
 # EMAIL_USE_TLS = True
