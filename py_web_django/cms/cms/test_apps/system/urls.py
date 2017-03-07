@@ -2,8 +2,8 @@
 # @Date:   2016-12-21 17:28:37
 # @Last Modified time: 2017-01-03 16:37:52
 from django.conf.urls import url, include
-from system import views
 
+from cms.system import views
 
 urlpatterns = [
     # 声明共同的路径前缀，然后include

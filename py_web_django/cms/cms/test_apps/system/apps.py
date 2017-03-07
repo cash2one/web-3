@@ -3,5 +3,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class SimpletestConfig(AppConfig):
-    name = 'simpleTest'
+class TestSystemConfig(AppConfig):
+    name = 'cms.test_app.test_system'

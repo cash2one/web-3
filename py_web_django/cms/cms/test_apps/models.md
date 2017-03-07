@@ -52,7 +52,7 @@ admin.site.register(mcj, mcjAdmin)
 ```
 - date_hierarchy接受一个字符串*，对一个日期型字段进行层次划分。修改好后，页面中的列表顶端会有一个逐层深入的导航条。
 - ordering选项基本像模块中class Meta的ordering那样工作，但它只用列表中的第一个字段名。如果要实现降序，仅需在传入的列表或元组的字段前加上一个减号(-)。
-- fields选项，改变表单中的字段顺序。  
+- fields选项，改变表单中的字段顺序。
 - filter_horizontal，在这个元组中指定每个多对多字段的名字。
 - filter_vertical，它像filter_horizontal那样工作，但控件都是垂直排列。
 - filter_horizontal和filter_vertical选项只能用在多对多字段上，而不能用于ForeignKey字段。默认地，管理工具使用`下拉框`来展现`外键`字段。但是，正如`多对多字段`那样，有时候你不想忍受因装载并显示这些选项而产生的大量开销，以致于添加页面装载时间较久。解决这个问题的办法是使用`raw_id_fields`选项。它是一个包含外键字段名称的元组，它包含的字段将被展现成`文本框`，而不再是`下拉框`。

@@ -1,7 +1,5 @@
 # coding:utf-8
-import json
-from system.common.security import check_pwd
-from system.models import SimpleUser, UserRole, Role
+from cms.system import SimpleUser, Role
 
 
 def init_user_info(user_id=None):

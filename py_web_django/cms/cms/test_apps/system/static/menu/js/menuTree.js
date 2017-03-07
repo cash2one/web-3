@@ -226,7 +226,7 @@ function onClick(event, treeId, treeNode, clickFlag) {
         menu.find("#code")           .val(md.code);
         menu.find("#isvisible").prop("checked", md.isvisible == 1 ? true : false);
         menu.find("#menuOrder")      .val(md.menu_order);
-        menu.find("#userNum").html("<a style='color:blue' href=\"/system/user.html?menuId="+treeNode.id+"\">" + md.user_num + "</a>");
+        menu.find("#userNum").html("<a style='color:blue' href="+treeNode.id+"\"/cms/system/user.html?menuId=\">" + md.user_num + "</a>");
         menu.find("#roles")         .html(md.roles);
         menu.find("#save_menu").attr("type", "edit");
     });

@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-01-02 20:06:42
-# @Last Modified time: 2017-01-10 14:57:09
+# @Last Modified time: 2017-03-07 13:47:07
 
-from django.test import TestCase
+# from django.test import TestCase
 
-# Create your tests here.
 """
 每一个视图总是以一个django.http.HttpRequest实例————request，作为第一个参数。
 这是一个触发这个视图、包含当前Web请求信息的对象。

@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 # @Date:   2016-12-21 17:31:48
 # @Last Modified time: 2016-12-22 23:45:30
+import json
+
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.template.context_processors import csrf
 from django.views import View
-from django.shortcuts import render
-from django.views.generic import TemplateView, ListView, FormView, DetailView
+from django.views.generic import TemplateView
+
+from cms.common.json_change import values_to_json_list_str
+from cms.system import create_pwd
+from cms.system import send_email_code
 from forms import LoginForm, EmailRegisterForm
-from system.common.validate_code import send_email_code
-from system.common.security import create_pwd
 from models import SimpleUser, Menu, UserRole, RoleMenu
-from base.common.json_change import to_list, to_json_str, to_json_list_str, values_to_json_list_str
-import json
+
 """
 @csrf_protect————让表单使用csrf_token
 @csrf_exempt————不让表单使用csrf_token

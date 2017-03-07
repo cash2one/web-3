@@ -43,7 +43,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',  # 模板引擎
         # 'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [                                                      # 为filesystem.Loader添加查找目录，按搜索顺序排列
-            os.path.join(BASE_DIR, "simpleTest/test"),
+            os.path.join(BASE_DIR, "cms/simpleTest/test"),
         ],
         # 'APP_DIRS': True,                                            # 是否在已安装app内查找模板源文件，当loaders存在，APP_DIRS不要设置
         # 'NAME': '',                                                  # 模板引擎别名————在渲染时可以选择一个引擎
