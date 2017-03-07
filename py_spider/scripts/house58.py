@@ -13,10 +13,8 @@ pip install pyocr
 Python脚本文件和读取的验证码图片都要保存在"D:\P\Python\Lib\site-packages\pytesseract"
 """
 import os
-import sys
 import pyocr
 import pytesseract
-import traceback
 from PIL import Image
 
 
@@ -25,7 +23,8 @@ filepath = os.path.abspath(".")
 filename = os.path.join(filepath, "scripts\images\showphone.png")
 
 
-starturl = ["http://bj.58.com/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1"]
+starturl = [
+    "http://bj.58.com/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1"]
 '''
 0，个人
 pve_1092_0，出租
@@ -77,7 +76,8 @@ def process(p):
         list_urls = xpath("//div[@class='pager']/a/@href").textall()
         for url in list_urls:
             p.addurl(url, level="liebiaoye")
-        detail_urls = xpath("//table[@class='tbimg']/tr/td[@class='t']/a/@href").textall()
+        detail_urls = xpath(
+            "//table[@class='tbimg']/tr/td[@class='t']/a/@href").textall()
         for url in detail_urls:
             if '/haozu' in url:
                 continue
@@ -89,14 +89,18 @@ def process(p):
         district = xpath("//ul[@class='info']/li[1]/a[1]/text()").text()
         circle = xpath("//ul[@class='info']/li[1]/a[2]/text()").text()
         office_name = xpath("//ul[@class='info']/li[2]/text()").text()
-        address = xpath("//ul[@class='info']/li[3]/text()").text().replace(' ', '').strip()
+        address = xpath(
+            "//ul[@class='info']/li[3]/text()").text().replace(' ', '').strip()
         type = xpath("//ul[@class='info']/li[4]/text()").text().strip()
         area = xpath("//ul[@class='info']/li[5]/text()").text()
         price = xpath("//ul[@class='info']/li[6]/em/text()").text()
         unit = xpath("//ul[@class='info']/li[6]/text()").text().strip()
-        script = xpath("//div[@id='newuser']/following-sibling::script[1]/text()").text()
-        user = p.TextSelector(script).re("username:'.+'", 0).text().strip("username:'").strip("'")
-        company = xpath("//div[@id='newuser']/ul[@class='userinfo']/li[5]/label/text()").text()
+        script = xpath(
+            "//div[@id='newuser']/following-sibling::script[1]/text()").text()
+        user = p.TextSelector(script).re(
+            "username:'.+'", 0).text().strip("username:'").strip("'")
+        company = xpath(
+            "//div[@id='newuser']/ul[@class='userinfo']/li[5]/label/text()").text()
         p.put({
             'keyid': keyid,
             'district': district,
@@ -119,7 +123,8 @@ def process(p):
             })
         else:
             phone_script = xpath("//span[@id='t_phone']/script/text()").text()
-            phone_url = p.TextSelector(phone_script).re("src='.+'", 0).text().strip("src='").strip("'")
+            phone_url = p.TextSelector(phone_script).re(
+                "src='.+'", 0).text().strip("src='").strip("'")
             p.addurl(phone_url, level="get_image", ext={'keyid': keyid})
 
     elif p.isLevel("get_image"):
