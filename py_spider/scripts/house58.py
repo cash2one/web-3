@@ -3,14 +3,11 @@ __author__ = 'zdd'
 """
 pytesseract或者pyocr
 
-依赖PIL（图像处理库）、tesseract-ocr（google的ocr识别引擎）
-http://www.pythonware.com/products/pil/
-https://sourceforge.net/projects/tesseract-ocr-alt/files/
-
+依赖PIL——————————————图像处理库—————————————http://www.pythonware.com/products/pil/
+依赖tesseract-ocr————google的ocr识别引擎————https://sourceforge.net/projects/tesseract-ocr-alt/files/
 pip install pytesseract
 pip install pyocr
-添加path: C:\Program Files (x86)\Tesseract-OCR，修改pytesseract.py tesseract_cmd = 'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-Python脚本文件和读取的验证码图片都要保存在"D:\P\Python\Lib\site-packages\pytesseract"
+添加path: C:\Program Files (x86)\Tesseract-OCR，重启
 """
 import os
 import pyocr
@@ -18,9 +15,8 @@ import pytesseract
 from PIL import Image
 
 
-filepath = os.path.abspath(".")
-# filename = os.path.join(filepath, "scripts\images\showphone.gif")
-filename = os.path.join(filepath, "scripts\images\showphone.png")
+work_path = os.path.abspath(".")         # 工作目录（可能会变）
+# file_path = os.path.dirname(__file__)  # 文件目录，斜杠反了
 
 
 starturl = [
@@ -56,20 +52,19 @@ districts = [
 
 def process(p):
     if p.isDefaultLevel():
-        for i in districts:
-            u = 'http://bj.58.com/'
-            u += i
-            u += '/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1'
-            p.addurl(u, level="qishiye")
+        # for i in districts:
+        i = 'beijingzhoubian'
+        u = 'http://bj.58.com/'
+        u += i
+        u += '/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1'
+        p.addurl(u, level="qishiye")
 
     elif p.isLevel("qishiye"):
         xpath = p.HtmlSelector().xpath
         start_urls = xpath("//div[@class='subarea']/a/@href").textall()
         i = 0
         for url in start_urls:
-            if i < 3:
-                p.addurl(url, level="liebiaoye")
-            i += 1
+            p.addurl(url, level="liebiaoye")
 
     elif p.isLevel("liebiaoye"):
         xpath = p.HtmlSelector().xpath
@@ -99,8 +94,10 @@ def process(p):
             "//div[@id='newuser']/following-sibling::script[1]/text()").text()
         user = p.TextSelector(script).re(
             "username:'.+'", 0).text().strip("username:'").strip("'")
-        company = xpath(
-            "//div[@id='newuser']/ul[@class='userinfo']/li[5]/label/text()").text()
+        script1 = xpath("//script[1]/text()").text()
+        company_info = p.TextSelector(script1).re(
+            "_trackParams:\[.+(I\":10276,\"V\":\"[^\"]+).+\]", 0).text()  # [^..]，正则取反
+        company = company_info.strip('I":10276,"V":"')
         p.put({
             'keyid': keyid,
             'district': district,
@@ -114,8 +111,7 @@ def process(p):
             'user': user,
             'company': company
         })
-        phone_str = xpath("//span[@id='t_phone']/text()").text().strip()
-        phone = p.TextSelector(phone_str).re("^\d+$", 0).text()
+        phone = xpath("//span[@id='t_phone']/text()").text().strip()
         if phone:
             p.put({
                 'keyid': keyid,
@@ -128,14 +124,26 @@ def process(p):
             p.addurl(phone_url, level="get_image", ext={'keyid': keyid})
 
     elif p.isLevel("get_image"):
+        # file_name = os.path.join(work_path, "images", "showphone.png")
+        # 单线程条件下可以反复读写同一文件
+        # 多进程+单线程条件下，必须每次生成新文件
+        name = str(p._request._ext['keyid']) + '.png'
+        file_name = os.path.join(work_path, 'scripts', 'images', name)
         response = p._response
-        f = open(filename, 'wb')
+        f = open(file_name, 'wb')
         f.write(response.content)
         f.close()
 
-        image = Image.open(filename)
+        image = Image.open(file_name)
         """
-        vcode = pytesseract.image_to_string(image)
+        try:
+            vcode = pytesseract.image_to_string(image)
+            p.put({
+                'keyid': p._request._ext['keyid'],
+                'phone': vcode
+            })
+        except Exception, e:
+            print e
         """
         tools = pyocr.get_available_tools()[:]
         if len(tools) == 0:

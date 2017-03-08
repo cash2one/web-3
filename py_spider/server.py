@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-02-27 08:54:30
-# @Last Modified time: 2017-02-27 09:00:31
+# @Last Modified time: 2017-03-08 11:45:43
 import sys
 from multiprocessing import cpu_count, Pool
 
@@ -86,14 +86,19 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', help='script name')
-    parser.add_argument("-p", "--process", help="[option] only effective in server mode process count, default is cpu count", type=int, default=cpu_count())
-    parser.add_argument("-t", "--thread", help="[option] only effective in server mode thread count in every process, default is 1", type=int, default=1)
-    parser.add_argument('-worker', help='[option] run with online, please easy', action='store_true')
+    parser.add_argument(
+        "-p", "--process", help="[option] only effective in server mode process count, default is cpu count", type=int, default=cpu_count())
+    parser.add_argument(
+        "-t", "--thread", help="[option] only effective in server mode thread count in every process, default is 1", type=int, default=1)
+    parser.add_argument(
+        '-worker', help='[option] run with online, please easy', action='store_true')
 
     args = parser.parse_args()
     debug = True
+    use_http_proxy = False
     if args.worker:
         debug = False
+        use_http_proxy = True
 
     process_count = args.process
     thread_count = args.thread
@@ -104,7 +109,6 @@ if __name__ == '__main__':
     print("main process start")
 
     job_id = args.s
-    use_http_proxy = False
 
     pool = Pool(processes=process_count)
     for i in range(process_count):
