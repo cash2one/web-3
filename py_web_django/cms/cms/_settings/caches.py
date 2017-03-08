@@ -87,6 +87,4 @@ session数据放在服务器上，当访问增多，会比较占用服务器的�
 
 Django session 框架完全而且只能基于cookie————自动生成一段字符串（cookie）发送到客户端的浏览器，同时把字符串当做key放在session里，在对应的value里设置任意值
 '''
-#
-# 密码哈希算法种子————一个随机字符串，越长越好
-SECRET_KEY = '6a8w1=^^n-sj0=n$%gsj@=kk%#bg(943vnt1_vq3@ylhofrp%^'
+

@@ -18,7 +18,8 @@ from cms import settings
 urlpatterns = [
     url(r'^admin/', admin.site.urls),                       # django默认的后台管理（会重定向多次，变成一个长地址）
     # url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', RedirectView.as_view(url='/system/login')),  # 重定向（如果有了拦截器重定向，可以不写）站点根目录URL（"^$"，代表一个空字符串）
+
+    # url(r'^$', RedirectView.as_view(url='/system/login')),  # 重定向（如果有了拦截器重定向，可以不写）站点根目录URL（"^$"，代表一个空字符串）
 ]
 
 """

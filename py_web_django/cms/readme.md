@@ -41,14 +41,39 @@ cmd> python                     打开python交互式shell；
 - linux————django-admin startproject ***
 
 #####python ${manage.py} ***（cmd/terminal下）
-|     参数     |                             含义                            |
-|--------------|-------------------------------------------------------------|
-| startapp *** | cd到任意路径，创建App                                       |
-| shell        | 打开django交互式shell（测试Django代码，区别于python交互式） |
-| runserver    | 通过django自带的轻量级服务器启动Project，开发调试           |
+|               参数              |                         含义                        |
+|---------------------------------|-----------------------------------------------------|
+| startapp ***                    | cd到任意路径，创建App                               |
+| 无参数                          | 列出可用参数                                        |
+|---------------------------------|-----------------------------------------------------|
+| shell                           | Django项目环境终端（区别于python交互式）            |
+| dbshell                         | 数据库命令行，可以执行数据库的SQL语句               |
+|---------------------------------|-----------------------------------------------------|
+| diffsettings                    | 显示当前settings文件与默认设置的不同                |
+| check                           | ==旧版validate————检查                              |
+|---------------------------------|-----------------------------------------------------|
+| makemigrations [appName]        | 基于models在appName/migrations下生成本次迁移文件    |
+| migrate [--database="db"]       | ==旧版syncdb————执行迁移，操作数据库（默认Default） |
+| inspectdb [> models.py]         | 反向生成models                                      |
+|---------------------------------|-----------------------------------------------------|
+| sqlmigrate [appName]            | ==旧版sqlall————显示迁移的SQL语句                   |
+| sqlflush                        | ==旧版flush————清空数据库                           |
+| dumpdata appName > appName.json | 导出数据                                            |
+| loaddata appName.json           | 导入数据                                            |
+|---------------------------------|-----------------------------------------------------|
+| runserver 0.0.0.0:9000          | 启动自带`轻量级`服务器（默认8000端口），调试项目    |
+| collectstatic                   | 收集static文件，并复制到STATIC_ROOT                 |
+|---------------------------------|-----------------------------------------------------|
+| createsuperuser                 | 创建超级管理员                                      |
+| changepassword username         | 修改用户密码                                        |
 
-#####后台管理————图形化操作数据库
-【127.0.0.1/phpmyadmin图形化Appserv数据库】
+
+#####数据库管理
+yum install MySQL-python
+
+save(using='legacy_users')指定要操作的数据库
+
+删除数据库后如果要重新生成，需要删掉migrations下的迁移文件，并删除django_migrations里的建表记录
 
 *在1.7.1之后版本，django在运行之后会自动生成sqlite3数据库。*
 

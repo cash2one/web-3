@@ -67,3 +67,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # @xframe_options_sameorigin————视图可以显示在iframe框架里
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 # X_FRAME_OPTIONS = 'DENY'
+
+#
+# 密码哈希算法种子————一个随机字符串，越长越好
+SECRET_KEY = '6a8w1=^^n-sj0=n$%gsj@=kk%#bg(943vnt1_vq3@ylhofrp%^'

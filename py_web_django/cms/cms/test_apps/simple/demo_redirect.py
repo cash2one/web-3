@@ -5,7 +5,7 @@
 """
 重定向
 """
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
@@ -23,4 +23,8 @@ def page3(request):
 
 
 def page4(request):
-    return redirect('/test/hello')
+    return redirect('/test/page5')
+
+
+def real_page(request):
+    return HttpResponse("real_page")

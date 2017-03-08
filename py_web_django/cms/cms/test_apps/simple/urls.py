@@ -7,23 +7,25 @@
 from django.conf.urls import url, include
 from django.views.generic import RedirectView
 
-from demo_response import _str, _template, _get_template, _render_to_response, _render
+from demo_response import _str, template_str, template_file, render_html
 from demo_redirect import page1, page2, page3, page4
+import demo_redirect
+
 
 urlpatterns = [
     url(r'^test/', include([
         url(r'^_str', _str),
-        url(r'^_template', _template),
-        url(r'^_get_template', _get_template),
-        url(r'^_render_to_response', _render_to_response),
-        url(r'^_render', _render),
+        url(r'^template_str', template_str),
+        url(r'^template_file', template_file),
+        url(r'^render_html', render_html),
 
-        url(r'^page1', page1),                                     # 在views中重定向
+        url(r'^page1', page1),                                   # 在views中重定向
         url(r'^page2', page2),
         url(r'^page3', page3, name='page3'),
-        url(r'^page4', page4, name='page4'),                       # name用于重定向等
+        url(r'^page4', page4, name='page4'),                     # 使用name重定向
 
-        # url(r'^surface_page', RedirectView.as_view(url='/test/real_page')),  # RedirectView————url重定向
-        # url(r'^short', tests.short),
+        url(r'^page5', RedirectView.as_view(url='/test/page')),  # RedirectView————url重定向
+
+        url(r'^page', demo_redirect.real_page),
     ]))
 ]

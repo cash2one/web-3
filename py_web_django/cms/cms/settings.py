@@ -49,8 +49,8 @@ MIDDLEWARE_CLASSES = [
     # 点击劫持防御————不允许资源加载到（别人的）frame/iframe中
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # 'django.middleware.locale.LocaleMiddleware',               # 国际化的支持（放在Session后）————翻译管理工具
-    'cms.system.common.interceptors.LoginMiddleware',     # 自定义登录拦截器
-    'cms.system.common.interceptors.AuthMiddleware',      # 自定义权限验证拦截器
+    # 'cms.test_apps.system.common.interceptors.LoginMiddleware',     # 自定义登录拦截器
+    # 'cms.test_apps.system.common.interceptors.AuthMiddleware',      # 自定义权限验证拦截器
     # 'django.middleware.cache.FetchFromCacheMiddleware'         # 必须放在最后
 ]
 
