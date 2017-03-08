@@ -1,22 +1,12 @@
 # coding: utf-8
 __author__ = 'zdd'
-"""
-pytesseract或者pyocr
-
-依赖PIL——————————————图像处理库—————————————http://www.pythonware.com/products/pil/
-依赖tesseract-ocr————google的ocr识别引擎————https://sourceforge.net/projects/tesseract-ocr-alt/files/
-pip install pytesseract
-pip install pyocr
-添加path: C:\Program Files (x86)\Tesseract-OCR，重启
-"""
 import os
 import pyocr
 import pytesseract
 from PIL import Image
 
 
-work_path = os.path.abspath(".")         # 工作目录（可能会变）
-# file_path = os.path.dirname(__file__)  # 文件目录，斜杠反了
+file_path = os.path.dirname(__file__)
 
 
 starturl = [
@@ -121,30 +111,24 @@ def process(p):
             phone_script = xpath("//span[@id='t_phone']/script/text()").text()
             phone_url = p.TextSelector(phone_script).re(
                 "src='.+'", 0).text().strip("src='").strip("'")
+            p.put({
+                'keyid': keyid,
+                'phone_url': phone_url
+            })
             p.addurl(phone_url, level="get_image", ext={'keyid': keyid})
 
     elif p.isLevel("get_image"):
         # file_name = os.path.join(work_path, "images", "showphone.png")
         # 单线程条件下可以反复读写同一文件
-        # 多进程+单线程条件下，必须每次生成新文件
+        # 多进程+多线程条件下，必须每次生成新文件
         name = str(p._request._ext['keyid']) + '.png'
-        file_name = os.path.join(work_path, 'scripts', 'images', name)
+        file_name = os.path.join(file_path, 'test_images', name)
         response = p._response
         f = open(file_name, 'wb')
         f.write(response.content)
         f.close()
 
         image = Image.open(file_name)
-        """
-        try:
-            vcode = pytesseract.image_to_string(image)
-            p.put({
-                'keyid': p._request._ext['keyid'],
-                'phone': vcode
-            })
-        except Exception, e:
-            print e
-        """
         tools = pyocr.get_available_tools()[:]
         if len(tools) == 0:
             print("No OCR tool found")
