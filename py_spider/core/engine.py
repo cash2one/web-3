@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-02-27 09:09:04
-# @Last Modified time: 2017-02-27 09:10:18
+# @Last Modified time: 2017-03-13 16:12:12
 import importlib
 import sys
 import time
 import traceback
-from Queue import Queue              # 线程级Queue，线程间共享
-# from multiprocessing import Queue  # 进程级Queue，进程间共享
+from Queue import Queue
 from core.kit.req import Req
 from spider import Spider
 
@@ -23,10 +22,10 @@ class Engine(object):
             if not current_job.get_job_status():
                 print("job is not start")
                 return
-            script = importlib.import_module('scripts.'+script_name)
+            script = importlib.import_module('scripts.' + script_name)
 
-            print(current_job.get_pid()+"process start")
-            thread_q = Queue(maxsize=thread_count*3)
+            print(current_job.get_pid() + "process start")
+            thread_q = Queue(maxsize=thread_count * 3)
             for start_url in script.start_url:
                 """
                 主线程通过current_job与redis交互，添加url到item、dup，判断获取到的url是否dup过
@@ -80,13 +79,13 @@ class Engine(object):
             current_job.set_mashine_status("stop")
         except Exception, e:
             traceback.print_exc()
-        print(current_job.get_pid()+" process end")
+        print(current_job.get_pid() + " process end")
 
     @staticmethod
     def debug_run(current_job, pipline, script_name, thread_count=1, proxies=None):
 
         try:
-            script = importlib.import_module('scripts.'+script_name)
+            script = importlib.import_module('scripts.' + script_name)
 
             thread_q = current_job.queue
             for start_url in script.start_url:
@@ -97,7 +96,8 @@ class Engine(object):
             """
             spiders = []
             for i in range(thread_count):
-                sp = Spider(thread_q, pipline, current_job, script, proxies=proxies)
+                sp = Spider(thread_q, pipline, current_job,
+                            script, proxies=proxies)
                 sp.daemon = True
                 sp.start()
                 spiders.append(sp)

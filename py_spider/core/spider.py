@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-02-27 11:48:09
-# @Last Modified time: 2017-02-27 11:49:19
+# @Last Modified time: 2017-03-13 16:16:57
 import traceback
 import requests
 from threading import Thread
@@ -36,10 +36,7 @@ class Spider(Thread):
     def run(self):
         while True:
             """
-            queue.get()调用队列对象的get()方法从队头删除并返回一个项目
-            可选参数为block，默认为True
-                如果队列为空且block为True，get()使调用线程暂停，直至有项目可用
-                如果队列为空且block为False，get()使队列引发Empty异常
+            get()阻塞线程，直到Queue队列有数据
             """
             req = Req.from_request_item(self.thread_q.get())
             self.work_status = True
