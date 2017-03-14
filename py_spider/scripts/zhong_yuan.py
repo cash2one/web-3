@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Date:   2017-03-14 17:38:55
-# @Last Modified time: 2017-03-14 17:39:01
+# @Last Modified time: 2017-03-14 18:05:05
 from __future__ import division
 import logging
 
@@ -39,13 +39,13 @@ def process(p):
             "//div[@class='topbase_cont fr']/ul[1]/li[2]/span[@class='f000 txt_r']/text()").text().strip("平米 ")
 
         if p.getUrl().startswith("http://bj.centanet.com/"):
-            city = "北京"
+            city = u"北京"
             floor = xpath(
                 "//div[@class='topbase_cont fr']/ul[2]/li[3]/span[@class='f000 txt_r']/text()").text().strip()
             zx = xpath(
                 "//div[@class='topbase_cont fr']/ul[2]/li[5]/span[@class='f000 txt_r']/text()").text().strip()
         else:
-            city = "上海"
+            city = u"上海"
             floor = xpath(
                 "//div[@class='topbase_cont fr']/ul[2]/li[2]/span[@class='f000 txt_r']/text()").text().strip()
             zx = xpath(
