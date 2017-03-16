@@ -6,5 +6,3 @@ pip install pika
 - txAMQP————Twisted 框架的AMQP库；
     + 允许异步I/O————高性能；
     + Twisted框架较重；
-
-

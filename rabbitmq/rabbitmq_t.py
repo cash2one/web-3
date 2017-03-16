@@ -1,8 +1,8 @@
-#encoding:utf-8
+# encoding:utf-8
 from amqplib import client_0_8 as amqp
-conn=amqp.Connection(host='localhost:5672',userid='guest',
-	password='guest',virtual_host='/',insist=False)
-chan=conn.channel
+conn = amqp.Connection(host='localhost:5672', userid='guest',
+                       password='guest', virtual_host='/', insist=False)
+chan = conn.channel
 '''
 每个channel都被分配了一个整数标识，自动由Connection()类的.channel()方法维护。
 或者，你可以使用.channel(x)来指定channel标识，其中x是你想要使用的channel标识。
@@ -12,11 +12,11 @@ chan=conn.channel
 现在，我们的代码将分成两个应用，生产者（producer）和消费者（consumer）。
 我们先创建一个消费者程序，他会创建一个叫做“po_box”的队列和一个叫“sorting_room”的交换机：
 '''
-chan.queue_declare(queue='po_box',durable=True,#####队列——Queue
-	exclusive=False,auto_delete=False)
+chan.queue_declare(queue='po_box', durable=True,  # 队列——Queue
+                   exclusive=False, auto_delete=False)
 
-chan.exchange_declare(exchange='sorting_room',type='direct',durable=True,#####交换机——exchange
-	auto_delete=False)
+chan.exchange_declare(exchange='sorting_room', type='direct', durable=True,  # 交换机——exchange
+                      auto_delete=False)
 '''
 这段代码干了啥？
 首先，它创建了一个名叫“po_box”的队列，
@@ -47,8 +47,8 @@ auto_delete和durable的含义和队列是一样的。
 '''
 
 
-chan.queue_bind(queue='po_box',exchange='sorting_room',
-	routing_key='jason')
+chan.queue_bind(queue='po_box', exchange='sorting_room',
+                routing_key='jason')
 
 
 '''
@@ -57,12 +57,12 @@ chan.queue_bind(queue='po_box',exchange='sorting_room',
 
 现在，你有两种方法从队列当中取出消息。
 第一个是调用chan.basic_get()，主动从队列当中拉出下一个消息
-（如果队列当中没有消息，chan.basic_get()会返回None， 
+（如果队列当中没有消息，chan.basic_get()会返回None，
 因此下面代码当中print msg.body 会在没有消息的时候崩掉）：
 '''
 
 
-msg=chan.basic_get('po_box')
+msg = chan.basic_get('po_box')
 print msg.body
 chan.basic_ack(msg.delivery_tag)
 
