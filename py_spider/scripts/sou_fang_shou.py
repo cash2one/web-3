@@ -121,8 +121,8 @@ def process(p):
 
         house_no = keyid = p.TextSelector(p.getUrl()).re("(\d+)", 1).text()
 
-        public_time = p.HtmlSelector().xpath(
-            "//div[@class='title']/p[@class='gray9']/text()").text().split("：")[-1].strip("( ")
+        public_time = p.HtmlSelector().wildcard(
+            '发布时间：*(<span id="Time">', 0).text().strip("(").strip()
         update_time = p.HtmlSelector().xpath(
             "//div[@class='title']/p[@class='gray9']/span[@id='Time']/text()").text().strip(u"更新").strip()
         description = p.HtmlSelector().xpath(
