@@ -49,12 +49,17 @@ def process(p):
             xingzhi = "个人" if "个人" in contact_name else "中介"
             name = p.HtmlSelector(text=dd).xpath(
                 "//span[@class='spName']/text()").text()
+            if not contact_name or not xingzhi or not name:
+                logging.error('[%s, %s, %s, %s]' %
+                              (p.getUrl(), contact_name, xingzhi, name))
             ext = {
                 'contact_name': contact_name,
                 'xingzhi': xingzhi,
                 'name': name
             }
             p.addurl(url, level="xiangqingye", ext=ext)
+            p.addurl("http://office.fang.com/shou/1_105520417.html",
+                     level="xiangqingye", ext=ext)
 
     elif p.isLevel("xiangqingye"):
         text = p.HtmlSelector().xpath("//div[@class='inforTxt']").text()
@@ -64,13 +69,22 @@ def process(p):
             city = "sh"
         else:
             city = "bj"
-        price_month = xpath(
-            "//dl[1]/dt[1]/span[@class='red20b']/text()").text().strip()
-        wan = xpath("//dl[1]/dt[1]/span[@class='black']/text()").text().strip()
-        if wan:
-            price_month *= 10000
         price_text = xpath("//dl[1]/dt[1]").text()
+        price_month = p.HtmlSelector(
+            text=price_text).wildcard("（总价：*万）", 0).text()
+        if not price_month:
+            price_month = p.HtmlSelector(text=price_text).wildcard(
+                '总<span class="padl27"></span>价：<span class="red20b">*</span>', 0).text()
+        if price_month:
+            price_month = float(price_month)
+            price_month *= 10000
+        else:
+            price_month = 0
+            logging.error(p.getUrl() + "price")
         price = p.HtmlSelector(text=price_text).wildcard('(*元/*)', 0).text()
+        if not price:
+            price = p.HtmlSelector(text=price_text).wildcard(
+                '<span class="red20b">*</span>*元/平方米', 0).text()
 
         area = filter(str.isdigit, xpath(
             "//dl[1]/dd[1]/span/text()").text().encode("utf-8"))
@@ -117,6 +131,9 @@ def process(p):
         name = p.getExt("name")
         xingzhi = p.getExt("xingzhi")
         contact_name = p.getExt("contact_name")
+        if not contact_name:
+            contact_name = p.HtmlSelector().xpath(
+                "//div[@class='mainBoxR']/div[1]/div/ul/li/strong/text()").text()
 
         result = {
             "keyid": keyid,

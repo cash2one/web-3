@@ -10,7 +10,8 @@ file_path = os.path.dirname(__file__)
 
 
 starturl = [
-    "http://bj.58.com/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1"]
+    "http://bj.58.com/zhaozu/0/pve_1092_0/?PGTID=0d30000d-0000-1ce8-6db0-e86136a47008&ClickID=1"
+]
 '''
 0，个人
 pve_1092_0，出租
