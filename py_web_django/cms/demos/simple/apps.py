@@ -4,4 +4,4 @@ from django.apps import AppConfig
 
 
 class TestSimpleConfig(AppConfig):
-    name = 'cms.test_apps.simple'
+    name = 'tests.simple'

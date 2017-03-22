@@ -11,9 +11,9 @@
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import RedirectView
-from cms.test_apps.system import urls as system_urls
+
 from cms import settings
+from tests.system import urls as system_urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),                       # django默认的后台管理（会重定向多次，变成一个长地址）
@@ -32,7 +32,7 @@ if settings.DEBUG and isTest:
     include————包含其它URLconf，此处r'^'不应有$
     """
     urlpatterns += [
-        url(r'^', include('cms.test_apps.simple.urls'))
+        url(r'^', include('tests.simple.urls'))
     ]
 else:
     urlpatterns += [

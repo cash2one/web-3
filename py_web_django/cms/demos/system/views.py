@@ -10,10 +10,10 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from cms.common.json_change import values_to_json_list_str
-from cms.test_apps.system.common.security import create_pwd
-from cms.test_apps.system.common.validate_code import send_email_code
 from forms import LoginForm, EmailRegisterForm
 from models import SimpleUser, Menu, UserRole, RoleMenu
+from tests.system.common import create_pwd
+from tests.system.common import send_email_code
 
 """
 @csrf_protect————让表单使用csrf_token

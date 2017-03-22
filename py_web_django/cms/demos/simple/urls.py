@@ -7,10 +7,9 @@
 from django.conf.urls import url, include
 from django.views.generic import RedirectView
 
-from demo_response import _str, template_str, template_file, render_html
-from demo_redirect import page1, page2, page3, page4
 import demo_redirect
-
+from demo_redirect import page1, page2, page3, page4
+from demo_response import _str, template_str, template_file, render_html
 
 urlpatterns = [
     url(r'^test/', include([

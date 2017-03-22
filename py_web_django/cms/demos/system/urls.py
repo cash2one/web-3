@@ -3,7 +3,7 @@
 # @Last Modified time: 2017-01-03 16:37:52
 from django.conf.urls import url, include
 
-from cms.test_apps.system import views
+from tests.system import views
 
 urlpatterns = [
     # 声明共同的路径前缀，然后include

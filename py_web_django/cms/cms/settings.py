@@ -29,8 +29,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',   # 收集每个应用（和指定地方）的静态文件到一个单独的位置
     # 'django.contrib.comments',    # 用户评注系统
     # 'raven.contrib.django',       # 如果项目和sentry位于不同服务器，需要安装raven
-    'cms.test_apps.simple',
-    'cms.test_apps.system',
 ]
 #
 # 中间件
