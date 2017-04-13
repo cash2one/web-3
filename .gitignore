@@ -33,17 +33,16 @@ $RECYCLE.BIN/
 .tags
 .tags_sorted_by_file
 
-# >>>>>>>>>>(2)Python<<<<<<<<<<
-
+# Python
+# ==========================
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
 
-# >>>>>>>>>>>(3)Java<<<<<<<<<<
-
 # Java
+# ==========================
 # Package Files #
 *.jar
 *.war
